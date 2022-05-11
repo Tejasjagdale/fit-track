@@ -14,11 +14,14 @@ import {
   FormControl,
   FormHelperText,
   InputRightElement,
-  useToast
+  useToast,
 } from "@chakra-ui/react";
 import { FaUserAlt, FaLock } from "react-icons/fa";
 import Header from "../components/Header";
-import Link1 from 'next/link';
+import { DatePicker } from "chakra-ui-date-input";
+import Link1 from "next/link";
+import { GiBodyHeight } from "react-icons/gi";
+import Cookies from "universal-cookie";
 
 const CFaUserAlt = chakra(FaUserAlt);
 const CFaLock = chakra(FaLock);
@@ -26,8 +29,25 @@ const CFaLock = chakra(FaLock);
 const signup = () => {
   const toast = useToast();
   const [showPassword, setShowPassword] = useState(false);
+  const [email, setemail] = useState("");
+  const [age, setage] = useState("");
+  const [height, setheight] = useState("");
+  const [pass, setpass] = useState("");
+  const cookies = new Cookies();
 
   const handleShowClick = () => setShowPassword(!showPassword);
+
+  const SignUp = (event) => {
+    event.preventDefault();
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: email, password: pass }),
+    };
+    fetch(`http://localhost:3000/api/Register`, requestOptions)
+      .then((response) => response.json())
+      .then((data) => console.log(data));
+  };
 
   return (
     <>
@@ -62,7 +82,15 @@ const signup = () => {
                       pointerEvents="none"
                       children={<CFaUserAlt color="black" />}
                     />
-                    <Input type="email" placeholder="Email Address" />
+                    <Input
+                      type="email"
+                      onChange={(e) => {
+                        setemail(e.target.value);
+                      }}
+                      value={email}
+                      required
+                      placeholder="Email Address"
+                    />
                   </InputGroup>
                 </FormControl>
                 <FormControl>
@@ -75,6 +103,10 @@ const signup = () => {
                     <Input
                       type={showPassword ? "text" : "password"}
                       placeholder="Choose Password"
+                      value={pass}
+                      onChange={(e) => {
+                        setpass(e.target.value);
+                      }}
                     />
                     <InputRightElement width="4.5rem">
                       <Button h="1.75rem" size="sm" onClick={handleShowClick}>
@@ -82,6 +114,47 @@ const signup = () => {
                       </Button>
                     </InputRightElement>
                   </InputGroup>
+                </FormControl>
+                <FormControl>
+                  <InputGroup>
+                    <InputLeftElement
+                      pointerEvents="none"
+                      children={<CFaUserAlt color="black" />}
+                    />
+                    <Input
+                      type="number"
+                      onChange={(e) => {
+                        setage(e.target.value);
+                      }}
+                      value={age}
+                      required
+                      placeholder="Enter Age"
+                    />
+                  </InputGroup>
+                </FormControl>
+                <FormControl>
+                  <InputGroup>
+                    <InputLeftElement
+                      pointerEvents="none"
+                      children={<GiBodyHeight color="black" />}
+                    />
+                    <Input
+                      type="number"
+                      onChange={(e) => {
+                        setheight(e.target.value);
+                      }}
+                      value={height}
+                      required
+                      placeholder="Enter Height"
+                    />
+                  </InputGroup>
+                </FormControl>
+                <FormControl>
+                  <DatePicker
+                    placeholder="Date of Birth"
+                    name="date"
+                    onChange={(date) => console.log(date)}
+                  />
                 </FormControl>
                 <Button
                   borderRadius={0}
@@ -91,6 +164,7 @@ const signup = () => {
                   color="white"
                   colorScheme="blackAlpha"
                   width="full"
+                  onClick={SignUp}
                 >
                   SignUp
                 </Button>
@@ -100,7 +174,7 @@ const signup = () => {
         </Stack>
         <Box color="white">
           Already Signed up?
-          <Link1  href="/">
+          <Link1 href="/">
             <Link>Login</Link>
           </Link1>
         </Box>
