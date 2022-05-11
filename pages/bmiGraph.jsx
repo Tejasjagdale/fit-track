@@ -1,5 +1,4 @@
-import React from "react";
-import Header from "../components/Header";
+import React, { useState } from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -9,59 +8,164 @@ import {
   Title,
   Tooltip,
   Legend,
-} from 'chart.js';
-import { Line } from 'react-chartjs-2';
-import {faker} from '@faker-js/faker';
-
+  Utils,
+} from "chart.js";
+import { Line } from "react-chartjs-2";
+import Cookies from "universal-cookie";
+import { useEffect } from "react";
+import Router from "next/router";
+import NavBar from "../components/NavBar";
+import { Wrap } from "@chakra-ui/react";
+import Annotation from "chartjs-plugin-annotation";
 
 const bmiGraph = () => {
+  const cookies = new Cookies();
+  const [userdata, setUserData] = useState();
+  const [weight, setWeight] = useState();
+  const date =  new Date()
+  console.log(date)
+
+  useEffect(() => {
+    if (cookies.get("id")) {
+      fetch(`http://localhost:3000/api/userData?email=${cookies.get("id")}`)
+        .then((response) => response.json())
+        .then((data) => {
+          setUserData(data[cookies.get("id")]);
+        })
+        .catch((err) => console.log(err));
+    } else {
+      Router.push("/");
+    }
+  }, []);
+
+  useEffect(() => {
+    if (userdata) {
+      setWeight(userdata.data_track.may_2022);
+    }
+  }, [userdata]);
+
   ChartJS.register(
     CategoryScale,
     LinearScale,
     PointElement,
+    Annotation,
     LineElement,
     Title,
     Tooltip,
     Legend
   );
-  
+
+  const day30 = ["february","april","june","august","october","november"];
+  const day31 = ["january","march","may","july","september","december"];
+
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "august",
+    "september",
+    "november",
+    "december",
+  ];
+
+  let i = 1
+  let max_days = 30
+
+  const annotation1 = {
+    type: "box",
+    backgroundColor: "rgba(38, 246, 0, 0.4)",
+    borderColor: "rgb(101, 33, 171)",
+    borderWidth: 1,
+    click: function ({ chart, element }) {
+      console.log("Box annotation clicked");
+    },
+    drawTime: "beforeDatasetsDraw",
+    xMax: [max_days],
+    xMin: [0],
+    xScaleID: "x",
+    yMax: [63],
+    yMin: [56],
+    yScaleID: "y",
+  };
+
   const options = {
+    color:"white",
+    background: "white",
+    maintainAspectRatio:true,
     responsive: true,
     plugins: {
       legend: {
-        position: 'top',
+        position: "top",
+        labels: {
+          font: {
+            size: 14,
+          },
+        },
       },
       title: {
         display: true,
-        text: 'Chart.js Line Chart',
+        text: "Weight track according to BMI Index",
+        color:"white",
+        font:{
+          size:20
+        }
+      },
+      annotation: {
+        annotations: {
+          annotation1,
+        },
       },
     },
+    scales: {
+      y: {
+        ticks: {
+          color: 'white',
+          size:20
+        }
+      },
+      x: {
+        ticks: {
+          color: 'white',
+          size:22
+        }
+      }
+    },
+    Tooltip:{
+      text:"hey"
+    },
   };
-  
-  const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-  
+
+
+  const labels = [];
+
+  while (i < max_days) {
+    labels.push(i)
+    i++
+  }
+
+
   const data = {
     labels,
     datasets: [
       {
-        label: 'Dataset 1',
-        data: labels.map(() => faker.datatype.number({ min: -1000, max: 1000 })),
-        borderColor: 'rgb(255, 99, 132)',
-        backgroundColor: 'rgba(255, 99, 132, 0.5)',
-      },
-      {
-        label: 'Dataset 2',
-        data: labels.map(() => faker.datatype.number({ min: -1000, max: 1000 })),
-        borderColor: 'rgb(53, 162, 235)',
-        backgroundColor: 'rgba(53, 162, 235, 0.5)',
+        label: "Weight on that day",
+        data: weight,
+        borderColor: "rgb(53, 162, 235)",
+        backgroundColor: "rgba(53, 162, 235, 0.5)",
       },
     ],
   };
 
   return (
     <>
-      <Header />
-      <Line options={options} data={data} />
+      <NavBar />
+      <Wrap width="80wh" minHeight="88vh" padding='20' sm={"padding:'0'"} background="#1A202C">
+        <Line options={options} data={data} />
+      </Wrap>
     </>
   );
 };

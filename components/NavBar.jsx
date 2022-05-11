@@ -10,11 +10,20 @@ import {
   Image,
 } from "@chakra-ui/react";
 import { HamburgerIcon } from "@chakra-ui/icons";
+import Router from "next/router";
 import Link from "next/link";
+import Cookies from "universal-cookie";
 
-const Header = (props) => {
+const NavBar = (props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const handleToggle = () => (isOpen ? onClose() : onOpen());
+  const cookies = new Cookies();
+
+  const Logout = (event) => {
+    event.preventDefault();
+    cookies.remove("id");
+    Router.push("/");
+  };
 
   return (
     <Flex
@@ -30,11 +39,7 @@ const Header = (props) => {
       <Flex align="center" mr={5}>
         <Link href="/">
           <Flex align="center" mr={5}>
-            <Image
-              maxWidth="45px"
-              mr={2}
-              src="http://localhost:3000/favicon.ico"
-            />
+            <Image maxWidth="45px" mr={2} src="http://localhost:3000/favicon.ico" />
             <Heading
               as="h1"
               size="lg"
@@ -51,21 +56,39 @@ const Header = (props) => {
         <HamburgerIcon />
       </Box>
 
+      <Stack
+        direction={{ base: "column", md: "row" }}
+        display={{ base: isOpen ? "block" : "none", md: "flex" }}
+        width={{ base: "full", md: "auto" }}
+        alignItems="center"
+        flexGrow={1}
+        mt={{ base: 4, md: 0 }}
+      >
+        <Link href="/Profile">
+          <a>Profile</a>
+        </Link>
+        <Link href="/bmiGraph">
+          <a>BMI_Graph</a>
+        </Link>
+        <Link href="/dailyUpdate">
+          <a>Daily_Update</a>
+        </Link>
+      </Stack>
+
       <Box
         display={{ base: isOpen ? "block" : "none", md: "block" }}
         mt={{ base: 4, md: 0 }}
       >
-        <Link href="/Signup">
-          <Button
-            variant="outline"
-            _hover={{ bg: "white", borderColor: "white", color: "black" }}
-          >
-            Create account
-          </Button>
-        </Link>
+        <Button
+          variant="outline"
+          _hover={{ bg: "red.500", borderColor: "red.500", color: "white" }}
+          onClick={Logout}
+        >
+          Logout
+        </Button>
       </Box>
     </Flex>
   );
 };
 
-export default Header;
+export default NavBar;

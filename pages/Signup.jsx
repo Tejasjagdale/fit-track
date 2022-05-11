@@ -9,19 +9,22 @@ import {
   InputLeftElement,
   chakra,
   Box,
-  Link,
   Avatar,
+  Link,
   FormControl,
   FormHelperText,
   InputRightElement,
+  useToast
 } from "@chakra-ui/react";
 import { FaUserAlt, FaLock } from "react-icons/fa";
 import Header from "../components/Header";
+import Link1 from 'next/link';
 
 const CFaUserAlt = chakra(FaUserAlt);
 const CFaLock = chakra(FaLock);
 
 const signup = () => {
+  const toast = useToast();
   const [showPassword, setShowPassword] = useState(false);
 
   const handleShowClick = () => setShowPassword(!showPassword);
@@ -33,7 +36,7 @@ const signup = () => {
         flexDirection="column"
         width="100wh"
         height="88vh"
-        backgroundColor="gray.200"
+        background="#1A202C"
         justifyContent="center"
         alignItems="center"
       >
@@ -43,8 +46,8 @@ const signup = () => {
           justifyContent="center"
           alignItems="center"
         >
-          <Avatar bg="black" />
-          <Heading color="black">Welcome</Heading>
+          <Avatar backgroundColor="#2DCEAA" />
+          <Heading color="white">Welcome To FIT-TRACK</Heading>
           <Box minW={{ base: "90%", md: "468px" }}>
             <form>
               <Stack
@@ -95,11 +98,11 @@ const signup = () => {
             </form>
           </Box>
         </Stack>
-        <Box>
+        <Box color="white">
           Already Signed up?
-          <Link color="black" href="/Login">
-            Login
-          </Link>
+          <Link1  href="/">
+            <Link>Login</Link>
+          </Link1>
         </Box>
       </Flex>
     </>
