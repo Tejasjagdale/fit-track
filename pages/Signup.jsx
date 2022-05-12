@@ -22,6 +22,8 @@ import { DatePicker } from "chakra-ui-date-input";
 import Link1 from "next/link";
 import { GiBodyHeight } from "react-icons/gi";
 import Cookies from "universal-cookie";
+import { MdDriveFileRenameOutline } from "react-icons/md";
+import Router from 'next/router'
 
 const CFaUserAlt = chakra(FaUserAlt);
 const CFaLock = chakra(FaLock);
@@ -30,9 +32,11 @@ const signup = () => {
   const toast = useToast();
   const [showPassword, setShowPassword] = useState(false);
   const [email, setemail] = useState("");
+  const [name, setname] = useState("");
   const [age, setage] = useState("");
   const [height, setheight] = useState("");
   const [pass, setpass] = useState("");
+  const [DOB, setDOB] = useState("");
   const cookies = new Cookies();
 
   const handleShowClick = () => setShowPassword(!showPassword);
@@ -42,11 +46,38 @@ const signup = () => {
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email: email, password: pass }),
+      body: JSON.stringify({
+        email: email,
+        password: pass,
+        details: {
+          name: name,
+          age:age,
+          height:height,
+          dob:DOB
+        },
+      }),
     };
     fetch(`http://localhost:3000/api/Register`, requestOptions)
-      .then((response) => response.json())
-      .then((data) => console.log(data));
+      .then((res) =>{
+        if(res.status === 200){
+          toast({
+            description: "Registration successfull",
+            status: "success",
+            duration: 3000,
+            isClosable: true,
+          });
+          cookies.set("id", email, { path: "/" });
+          console.log(cookies.get("id"));
+          Router.push("/dailyUpdate");
+        }else{
+          toast({
+            description: 'Registration Failed',
+            status: "error",
+            duration: 5000,
+            isClosable: true,
+          });
+        }
+      } )
   };
 
   return (
@@ -89,6 +120,8 @@ const signup = () => {
                       }}
                       value={email}
                       required
+                      autoComplete
+                      autoCorrect
                       placeholder="Email Address"
                     />
                   </InputGroup>
@@ -104,6 +137,7 @@ const signup = () => {
                       type={showPassword ? "text" : "password"}
                       placeholder="Choose Password"
                       value={pass}
+                      required
                       onChange={(e) => {
                         setpass(e.target.value);
                       }}
@@ -113,6 +147,23 @@ const signup = () => {
                         {showPassword ? "Hide" : "Show"}
                       </Button>
                     </InputRightElement>
+                  </InputGroup>
+                </FormControl>
+                <FormControl>
+                  <InputGroup>
+                    <InputLeftElement
+                      pointerEvents="none"
+                      children={<MdDriveFileRenameOutline color="black" />}
+                    />
+                    <Input
+                      type="text"
+                      onChange={(e) => {
+                        setname(e.target.value);
+                      }}
+                      value={name}
+                      required
+                      placeholder="Enter UserName"
+                    />
                   </InputGroup>
                 </FormControl>
                 <FormControl>
@@ -153,7 +204,9 @@ const signup = () => {
                   <DatePicker
                     placeholder="Date of Birth"
                     name="date"
-                    onChange={(date) => console.log(date)}
+                    value={DOB}
+                    required
+                    onChange={(date) => setDOB(date)}
                   />
                 </FormControl>
                 <Button

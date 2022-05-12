@@ -21,6 +21,7 @@ import Annotation from "chartjs-plugin-annotation";
 const bmiGraph = () => {
   const cookies = new Cookies();
   const [userdata, setUserData] = useState();
+  const [bmi,setbmi] = useState([])
   const [weight, setWeight] = useState();
   const date =  new Date()
   console.log(date)
@@ -41,6 +42,7 @@ const bmiGraph = () => {
   useEffect(() => {
     if (userdata) {
       setWeight(userdata.data_track.may_2022);
+      setbmi(userdata.bmi_range)
     }
   }, [userdata]);
 
@@ -87,8 +89,8 @@ const bmiGraph = () => {
     xMax: [max_days],
     xMin: [0],
     xScaleID: "x",
-    yMax: [63],
-    yMin: [56],
+    yMax: [bmi[1]],
+    yMin: [bmi[0]],
     yScaleID: "y",
   };
 

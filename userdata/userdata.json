@@ -1,16 +1,21 @@
 {
-    "users":{
-        "emails":["tejasjagdale60@gmail.com"],
-        "passwords":["tejas1234"],
-        "details":[{
-            "name":"tejas",
-            "height":"174"
-        }]
-    },
-    "tejasjagdale60@gmail.com":{
-        "month_year":["may_2022"],
-        "data_track":{
-            "may_2022":["50","50.10","49.75","50.25","60"]
-        }
+  "users": {
+    "emails": ["tejasjagdale60@gmail.com"],
+    "passwords": ["1234"],
+    "details": [
+      {
+        "name": "tejas jagdale",
+        "age": "20",
+        "height": "173",
+        "dob": "05/02/2002"
+      }
+    ]
+  },
+  "tejasjagdale60@gmail.com": {
+    "bmi_range": [56.8651, 74.8225],
+    "month_year": [],
+    "data_track": {
+      "may_2022":[50,50,50]
     }
+  }
 }
