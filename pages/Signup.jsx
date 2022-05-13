@@ -150,6 +150,15 @@ const signup = () => {
                   </InputGroup>
                 </FormControl>
                 <FormControl>
+                  <DatePicker
+                    placeholder="Date of Birth"
+                    name="date"
+                    value={DOB}
+                    required
+                    onChange={(date) => setDOB(date)}
+                  />
+                </FormControl>
+                <FormControl>
                   <InputGroup>
                     <InputLeftElement
                       pointerEvents="none"
@@ -199,15 +208,6 @@ const signup = () => {
                       placeholder="Enter Height"
                     />
                   </InputGroup>
-                </FormControl>
-                <FormControl>
-                  <DatePicker
-                    placeholder="Date of Birth"
-                    name="date"
-                    value={DOB}
-                    required
-                    onChange={(date) => setDOB(date)}
-                  />
                 </FormControl>
                 <Button
                   borderRadius={0}

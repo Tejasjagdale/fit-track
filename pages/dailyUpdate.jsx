@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import NavBar from "../components/NavBar";
 import Cookies from "universal-cookie";
 import Router from "next/router";
@@ -16,10 +16,21 @@ import {
   FormControl,
   FormLabel,
   Input,
+  useToast,
 } from "@chakra-ui/react";
+import { DatePicker } from "chakra-ui-date-input";
 
 const dailyUpdate = () => {
   const cookies = new Cookies();
+  const toast = useToast()
+
+  let tDate = new Date();
+  const [weight, setWeight] = useState("");
+  const [userdata, setUserData] = useState();
+  const [status, setstatus] = useState(false);
+  const [wdate, setWdate] = useState(
+    `${tDate.getDate()}/${tDate.getMonth() + 1}/${tDate.getFullYear()}`
+  );
 
   useEffect(() => {
     if (cookies.get("id")) {
@@ -34,6 +45,56 @@ const dailyUpdate = () => {
     }
   }, []);
 
+  useEffect(() => {
+    fetch(
+      `http://localhost:3000/api/addWeight?email=${cookies.get("id")}&date=${wdate}`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        if(data.msg){
+          setWeight(data.weight)
+        }else{
+          setWeight("")
+        }
+        setstatus(data.msg);
+      })
+      .catch((err) => console.log(err));
+  }, [wdate]);
+
+  const addWeight = (event) => {
+    event.preventDefault();
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email: cookies.get(
+          "id"
+        ),
+        weight: weight,
+        date:wdate
+      }),
+    };
+    fetch(`http://localhost:3000/api/addWeight`, requestOptions).then((res) => {
+      if (res.status === 200) {
+        toast({
+          description: "Weight Added successfull",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
+        setWeight("")
+        setWdate(`${tDate.getDate()}/${tDate.getMonth() + 1}/${tDate.getFullYear()}`)
+      } else {
+        toast({
+          description: "Something went wrong",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
+      }
+    });
+  };
+
   return (
     <>
       <NavBar />
@@ -46,7 +107,7 @@ const dailyUpdate = () => {
         alignItems="center"
         boxShadow="#1A202C"
       >
-        <Box w="300px" rounded="20px" overflow="hidden" bg="#E7EEF1" mt={10}>
+        <Box w="300px" bg="#E7EEF1" mt={10}>
           <Image
             src="https://images-platform.99static.com/3CzoydPCp5pXI83EODhEOibNLmk=/100x100:900x900/500x500/top/smart/99designs-contests-attachments/93/93858/attachment_93858260"
             alt="Card Image"
@@ -55,26 +116,53 @@ const dailyUpdate = () => {
           ></Image>
           <Box p={5}>
             <Stack align="center" mb={5}>
-              <Badge variant="solid" colorScheme="red" rounded="full" px={2}>
-                Weight not Entered
+              <Badge
+                variant="solid"
+                colorScheme={status ? "green" : "red"}
+                rounded="full"
+                px={2}
+              >
+                {status ? "Weight Entered" : "Weight Not Entered"}
               </Badge>
             </Stack>
 
             <Stack align="center">
-              {/* <Text as="h2" fontWeight="normal" my={2}>
-                A Computer Science Portal for Geeks
-              </Text> */}
               <FormControl>
-                <FormLabel >Enter your todays weight</FormLabel>
-                <Input id="email" bg="white" type="number" />
+                <FormLabel>Enter your todays weight in KGs</FormLabel>
+                <Input
+                  id="number"
+                  onChange={(e) => {
+                    setWeight(e.target.value);
+                  }}
+                  value={weight}
+                  required
+                  bg="white"
+                  type="number"
+                />
               </FormControl>
-            </Stack>
-            <Flex mt={6}>
-              <Spacer />
-              <Button variant="solid" colorScheme="green" size="sm">
-                Enter Weight
+              <FormControl>
+                <FormLabel>
+                  Choose the date of which Weight you want to enter
+                </FormLabel>
+                <DatePicker
+                  placeholder="Choose Date"
+                  name="date"
+                  value={wdate}
+                  required
+                  onChange={(date) => setWdate(date)}
+                />
+              </FormControl>
+              <Button
+                onClick={addWeight}
+                variant="solid"
+                colorScheme={status ? "blue" : "green"}
+                size="md"
+                mt={10}
+                width="full"
+              >
+                {status ? "Update Weight" : "Enter Weight"}
               </Button>
-            </Flex>
+            </Stack>
           </Box>
         </Box>
       </Flex>

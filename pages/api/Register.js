@@ -28,8 +28,3 @@ export default async function handler(req, res) {
          });
     }
 }
-
-// "tejasjagdale60@gmail.com": {
-//   "month_year": ["may_2022"],
-//   "data_track": { "may_2022": ["50", "50.10", "49.75", "50.25", "60"] }
-// }
