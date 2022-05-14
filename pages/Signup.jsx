@@ -153,6 +153,7 @@ const signup = () => {
                   <DatePicker
                     placeholder="Date of Birth"
                     name="date"
+                    dateFormat="MM/YYYY"
                     value={DOB}
                     required
                     onChange={(date) => setDOB(date)}

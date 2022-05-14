@@ -16,15 +16,18 @@ import { useEffect } from "react";
 import Router from "next/router";
 import NavBar from "../components/NavBar";
 import { Wrap } from "@chakra-ui/react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import Annotation from "chartjs-plugin-annotation";
 
 const bmiGraph = () => {
   const cookies = new Cookies();
+  let tDate = new Date();
+
   const [userdata, setUserData] = useState();
-  const [bmi,setbmi] = useState([])
-  const [weight, setWeight] = useState();
-  const date =  new Date()
-  console.log(date)
+  const [bmi, setbmi] = useState([]);
+  const [max,setmax] =  useState(29)
+  const [weight, setWeight] = useState([]);
 
   useEffect(() => {
     if (cookies.get("id")) {
@@ -41,8 +44,11 @@ const bmiGraph = () => {
 
   useEffect(() => {
     if (userdata) {
-      setWeight(userdata.data_track.may_2022);
-      setbmi(userdata.bmi_range)
+      setWeight(
+        userdata.data_track[`${tDate.getFullYear()}`][`${tDate.getMonth() + 1}`]
+          .weight
+      );
+      setbmi(userdata.bmi_range);
     }
   }, [userdata]);
 
@@ -57,8 +63,7 @@ const bmiGraph = () => {
     Legend
   );
 
-  const day30 = ["february","april","june","august","october","november"];
-  const day31 = ["january","march","may","july","september","december"];
+  let i = 1;
 
   const months = [
     "January",
@@ -74,9 +79,6 @@ const bmiGraph = () => {
     "december",
   ];
 
-  let i = 1
-  let max_days = 30
-
   const annotation1 = {
     type: "box",
     backgroundColor: "rgba(38, 246, 0, 0.4)",
@@ -86,7 +88,7 @@ const bmiGraph = () => {
       console.log("Box annotation clicked");
     },
     drawTime: "beforeDatasetsDraw",
-    xMax: [max_days],
+    xMax: [max],
     xMin: [0],
     xScaleID: "x",
     yMax: [bmi[1]],
@@ -95,9 +97,9 @@ const bmiGraph = () => {
   };
 
   const options = {
-    color:"white",
+    color: "white",
     background: "white",
-    maintainAspectRatio:true,
+    maintainAspectRatio: true,
     responsive: true,
     plugins: {
       legend: {
@@ -111,10 +113,10 @@ const bmiGraph = () => {
       title: {
         display: true,
         text: "Weight track according to BMI Index",
-        color:"white",
-        font:{
-          size:20
-        }
+        color: "white",
+        font: {
+          size: 20,
+        },
       },
       annotation: {
         annotations: {
@@ -125,30 +127,57 @@ const bmiGraph = () => {
     scales: {
       y: {
         ticks: {
-          color: 'white',
-          size:20
-        }
+          color: "white",
+          size: 20,
+        },
       },
       x: {
         ticks: {
-          color: 'white',
-          size:22
-        }
-      }
+          color: "white",
+          size: 22,
+        },
+      },
     },
-    Tooltip:{
-      text:"hey"
+    Tooltip: {
+      text: "hey",
     },
   };
 
-
   const labels = [];
 
-  while (i < max_days) {
-    labels.push(i)
-    i++
+  while (i < max + 1) {
+    labels.push(i);
+    i++;
   }
 
+  const [startDate, setStartDate] = useState(new Date());
+
+  function daysInMonth(month, year) {
+    return new Date(year, month, 0).getDate();
+  }
+
+  useEffect(() => {
+    
+    if(userdata){
+      if(userdata.data_track[`${startDate.getFullYear()}`][`${startDate.getMonth() + 1}`]){
+        daysInMonth(startDate.getMonth() + 1,startDate.getFullYear())
+        while (i < daysInMonth(startDate.getMonth() + 1,startDate.getFullYear())) {
+          labels.push(i);
+          i++;
+        }
+        setmax(daysInMonth(startDate.getMonth() + 1,startDate.getFullYear()))
+        setWeight(userdata.data_track[`${startDate.getFullYear()}`][`${startDate.getMonth() + 1}`].weight)
+      }else{
+        daysInMonth(startDate.getMonth() + 1,startDate.getFullYear())
+        while (i < daysInMonth(startDate.getMonth() + 1,startDate.getFullYear())) {
+          labels.push(i);
+          i++;
+        }
+        setmax(daysInMonth(startDate.getMonth() + 1,startDate.getFullYear()))
+        setWeight([])
+      }
+    } 
+  }, [startDate]);
 
   const data = {
     labels,
@@ -165,7 +194,20 @@ const bmiGraph = () => {
   return (
     <>
       <NavBar />
-      <Wrap width="80wh" minHeight="88vh" padding='20' sm={"padding:'0'"} background="#1A202C">
+      <Wrap
+        width="80wh"
+        minHeight="88vh"
+        padding="20"
+        sm={"padding:'0'"}
+        background="#1A202C"
+      >
+        <DatePicker
+          selected={startDate}
+          onChange={(date) => setStartDate(date)}
+          dateFormat="MMMM yyyy"
+          showMonthYearPicker
+          inline
+        />
         <Line options={options} data={data} />
       </Wrap>
     </>

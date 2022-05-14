@@ -53,7 +53,7 @@ export default async function handler(req, res) {
           if (
             edata[`${idata.email}`]["data_track"][`${year}`][`${month}`].weight[
               parseInt(day) - 1
-            ] === 0
+            ] === null
           ) {
             res.status(200).json({ msg: false });
           } else {
@@ -68,7 +68,7 @@ export default async function handler(req, res) {
           }
         } else {
           edata[`${idata.email}`]["data_track"][year][month] = {
-            weight: new Array(daysInMonth(month, year)).fill(0),
+            weight: new Array(daysInMonth(month, year)).fill(null),
           };
           fs.writeFile(
             "userdata/userdata.json",
@@ -84,7 +84,7 @@ export default async function handler(req, res) {
       } else {
         edata[`${idata.email}`]["data_track"][year] = {};
         edata[`${idata.email}`]["data_track"][year][month] = {
-          weight: new Array(daysInMonth(month, year)).fill(0),
+          weight: new Array(daysInMonth(month, year)).fill(null),
         };
         fs.writeFile("userdata/userdata.json", JSON.stringify(edata), (err) => {
           if (err) {
