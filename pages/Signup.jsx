@@ -57,6 +57,7 @@ const signup = () => {
         },
       }),
     };
+
     fetch(`http://localhost:3000/api/Register`, requestOptions)
       .then((res) =>{
         if(res.status === 200){
@@ -110,7 +111,7 @@ const signup = () => {
                 <FormControl>
                   <InputGroup>
                     <InputLeftElement
-                      pointerEvents="none"
+                      pointerEvents={"none"}
                       children={<CFaUserAlt color="black" />}
                     />
                     <Input
@@ -129,8 +130,8 @@ const signup = () => {
                 <FormControl>
                   <InputGroup>
                     <InputLeftElement
-                      pointerEvents="none"
-                      color="black"
+                      pointerEvents={"none"}
+                      color={"black"}
                       children={<CFaLock color="black" />}
                     />
                     <Input

@@ -4,7 +4,10 @@ import Link from "next/link";
 const errorpage = () => {
   return (
     <section className="page_404">
-	<link href="http://fonts.cdnfonts.com/css/signature-of-the-ancient" rel="stylesheet" />
+      <link
+        href="http://fonts.cdnfonts.com/css/signature-of-the-ancient"
+        rel="stylesheet"
+      />
       <div className="container">
         <div className="row">
           <div className="col-sm-12 ">
@@ -14,7 +17,7 @@ const errorpage = () => {
               </div>
 
               <div className="contant_box_404">
-                <h3 className="h2">Look's like you're lost</h3>
+                <h3 className="h2">{"Look's like you're lost"}</h3>
 
                 <p>the page you are looking for not avaible!</p>
 
