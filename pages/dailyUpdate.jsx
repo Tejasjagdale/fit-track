@@ -20,7 +20,7 @@ import {
 } from "@chakra-ui/react";
 import { DatePicker } from "chakra-ui-date-input";
 
-const dailyUpdate = () => {
+const DailyUpdate = () => {
   const cookies = new Cookies();
   const toast = useToast()
 
@@ -170,4 +170,4 @@ const dailyUpdate = () => {
   );
 };
 
-export default dailyUpdate;
+export default DailyUpdate;

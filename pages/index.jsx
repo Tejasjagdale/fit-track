@@ -24,7 +24,7 @@ import Router from "next/router";
 const CFaUserAlt = chakra(FaUserAlt);
 const CFaLock = chakra(FaLock);
 
-const index = () => {
+const Index = () => {
   const toast = useToast()
   const [showPassword, setShowPassword] = useState(false);
   const [email, setemail] = useState("");
@@ -162,4 +162,4 @@ const index = () => {
   );
 };
 
-export default index;
+export default Index;

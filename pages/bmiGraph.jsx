@@ -20,7 +20,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Annotation from "chartjs-plugin-annotation";
 
-const bmiGraph = () => {
+const BmiGraph = () => {
   const cookies = new Cookies();
   let tDate = new Date();
 
@@ -214,4 +214,4 @@ const bmiGraph = () => {
   );
 };
 
-export default bmiGraph;
+export default BmiGraph;
