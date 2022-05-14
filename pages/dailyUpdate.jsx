@@ -34,7 +34,7 @@ const DailyUpdate = () => {
 
   useEffect(() => {
     if (cookies.get("id")) {
-      fetch(`https://fit-track.vercel.app/api/userData?email=${cookies.get("id")}`)
+      fetch(`${process.env.NEXT_PUBLIC_URL}/api/userData?email=${cookies.get("id")}`)
         .then((response) => response.json())
         .then((data) => {
           setUserData(data[cookies.get("id")]);
@@ -47,7 +47,7 @@ const DailyUpdate = () => {
 
   useEffect(() => {
     fetch(
-      `https://fit-track.vercel.app/api/addWeight?email=${cookies.get("id")}&date=${wdate}`
+      `${process.env.NEXT_PUBLIC_URL}/api/addWeight?email=${cookies.get("id")}&date=${wdate}`
     )
       .then((response) => response.json())
       .then((data) => {
@@ -74,7 +74,7 @@ const DailyUpdate = () => {
         date:wdate
       }),
     };
-    fetch(`https://fit-track.vercel.app/api/addWeight`, requestOptions).then((res) => {
+    fetch(`${process.env.NEXT_PUBLIC_URL}/api/addWeight`, requestOptions).then((res) => {
       if (res.status === 200) {
         toast({
           description: "Weight Added successfull",

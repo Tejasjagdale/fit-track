@@ -57,7 +57,7 @@ const Signup = () => {
       }),
     };
 
-    fetch(`https://fit-track.vercel.app/api/Register`, requestOptions)
+    fetch(`${process.env.NEXT_PUBLIC_URL}/api/Register`, requestOptions)
       .then((res) =>{
         if(res.status === 200){
           toast({
