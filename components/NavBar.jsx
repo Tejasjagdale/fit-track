@@ -39,7 +39,7 @@ const NavBar = (props) => {
       <Flex align="center" mr={5}>
         <Link href="/">
           <Flex align="center" mr={5}>
-            <Image maxWidth="45px" mr={2} src="http://localhost:3000/favicon.ico" />
+            <Image maxWidth="45px" mr={2} src="https://fit-track.vercel.app/favicon.ico" />
             <Heading
               as="h1"
               size="lg"

@@ -35,7 +35,7 @@ const Index = () => {
 
   useEffect(() => {
     if (cookies.get("id")) {
-      fetch(`http://localhost:3000/api/userData?email=${cookies.get("id")}`)
+      fetch(`https://fit-track.vercel.app/api/userData?email=${cookies.get("id")}`)
         .then(() => Router.push("/bmiGraph"))
         .catch((err) => console.log(err));
     }
@@ -43,7 +43,7 @@ const Index = () => {
 
   const AuthUser = (event) => {
     event.preventDefault();
-    fetch(`http://localhost:3000/api/userAuth?email=${email}&password=${pass}`)
+    fetch(`https://fit-track.vercel.app/api/userAuth?email=${email}&password=${pass}`)
       .then((res) => {
         if(res.status === 200){
           toast({

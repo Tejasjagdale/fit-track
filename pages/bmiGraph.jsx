@@ -31,7 +31,7 @@ const BmiGraph = () => {
 
   useEffect(() => {
     if (cookies.get("id")) {
-      fetch(`http://localhost:3000/api/userData?email=${cookies.get("id")}`)
+      fetch(`https://fit-track.vercel.app/api/userData?email=${cookies.get("id")}`)
         .then((response) => response.json())
         .then((data) => {
           setUserData(data[cookies.get("id")]);

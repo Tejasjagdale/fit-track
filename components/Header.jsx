@@ -33,7 +33,7 @@ const Header = (props) => {
             <Image
               maxWidth="45px"
               mr={2}
-              src="http://localhost:3000/favicon.ico"
+              src="https://fit-track.vercel.app/favicon.ico"
             />
             <Heading
               as="h1"
