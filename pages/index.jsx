@@ -100,8 +100,9 @@ const Index = () => {
                     <InputLeftElement
                       pointerEvents="none"
                       color="black"
-                      children={<CFaUserAlt color="black" />}
-                    />
+                    >
+                    <CFaUserAlt color="black" />
+                    </InputLeftElement>
 
                     <Input
                       type="email"
@@ -120,8 +121,9 @@ const Index = () => {
                     <InputLeftElement
                       pointerEvents="none"
                       color="black"
-                      children={<CFaLock color="black" />}
-                    />
+                    >
+                    <CFaLock color="black" />
+                    </InputLeftElement>
                     <Input
                       type={showPassword ? "text" : "password"}
                       placeholder="Password"

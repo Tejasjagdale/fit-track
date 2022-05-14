@@ -111,8 +111,9 @@ const Signup = () => {
                   <InputGroup>
                     <InputLeftElement
                       pointerEvents={"none"}
-                      children={<CFaUserAlt color="black" />}
-                    />
+                    >
+                    <CFaUserAlt color="black" />
+                    </InputLeftElement>
                     <Input
                       type="email"
                       onChange={(e) => {
@@ -131,8 +132,9 @@ const Signup = () => {
                     <InputLeftElement
                       pointerEvents={"none"}
                       color={"black"}
-                      children={<CFaLock color="black" />}
-                    />
+                    >
+                    <CFaLock color="black" />
+                    </InputLeftElement>
                     <Input
                       type={showPassword ? "text" : "password"}
                       placeholder="Choose Password"
@@ -163,8 +165,9 @@ const Signup = () => {
                   <InputGroup>
                     <InputLeftElement
                       pointerEvents="none"
-                      children={<MdDriveFileRenameOutline color="black" />}
-                    />
+                    >
+                    <MdDriveFileRenameOutline color="black" />
+                    </InputLeftElement>
                     <Input
                       type="text"
                       onChange={(e) => {
@@ -180,8 +183,9 @@ const Signup = () => {
                   <InputGroup>
                     <InputLeftElement
                       pointerEvents="none"
-                      children={<CFaUserAlt color="black" />}
-                    />
+                    >
+                    <CFaUserAlt color="black" />
+                    </InputLeftElement>
                     <Input
                       type="number"
                       onChange={(e) => {
@@ -197,8 +201,9 @@ const Signup = () => {
                   <InputGroup>
                     <InputLeftElement
                       pointerEvents="none"
-                      children={<GiBodyHeight color="black" />}
-                    />
+                    >
+                    <GiBodyHeight color="black" />
+                    </InputLeftElement>
                     <Input
                       type="number"
                       onChange={(e) => {
