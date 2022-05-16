@@ -15,7 +15,7 @@ import Cookies from "universal-cookie";
 import { useEffect } from "react";
 import Router from "next/router";
 import NavBar from "../components/NavBar";
-import { Wrap } from "@chakra-ui/react";
+import { Wrap, WrapItem } from "@chakra-ui/react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Annotation from "chartjs-plugin-annotation";
@@ -26,12 +26,14 @@ const BmiGraph = () => {
 
   const [userdata, setUserData] = useState();
   const [bmi, setbmi] = useState([]);
-  const [max,setmax] =  useState(29)
+  const [max, setmax] = useState(29);
   const [weight, setWeight] = useState([]);
 
   useEffect(() => {
     if (cookies.get("id")) {
-      fetch(`${process.env.NEXT_PUBLIC_URL}/api/userData?email=${cookies.get("id")}`)
+      fetch(
+        `${process.env.NEXT_PUBLIC_URL}/api/userData?email=${cookies.get("id")}`
+      )
         .then((response) => response.json())
         .then((data) => {
           setUserData(data[cookies.get("id")]);
@@ -157,26 +159,37 @@ const BmiGraph = () => {
   }
 
   useEffect(() => {
-    
-    if(userdata){
-      if(userdata.data_track[`${startDate.getFullYear()}`][`${startDate.getMonth() + 1}`]){
-        daysInMonth(startDate.getMonth() + 1,startDate.getFullYear())
-        while (i < daysInMonth(startDate.getMonth() + 1,startDate.getFullYear())) {
+    if (userdata) {
+      if (
+        userdata.data_track[`${startDate.getFullYear()}`][
+          `${startDate.getMonth() + 1}`
+        ]
+      ) {
+        daysInMonth(startDate.getMonth() + 1, startDate.getFullYear());
+        while (
+          i < daysInMonth(startDate.getMonth() + 1, startDate.getFullYear())
+        ) {
           labels.push(i);
           i++;
         }
-        setmax(daysInMonth(startDate.getMonth() + 1,startDate.getFullYear()))
-        setWeight(userdata.data_track[`${startDate.getFullYear()}`][`${startDate.getMonth() + 1}`].weight)
-      }else{
-        daysInMonth(startDate.getMonth() + 1,startDate.getFullYear())
-        while (i < daysInMonth(startDate.getMonth() + 1,startDate.getFullYear())) {
+        setmax(daysInMonth(startDate.getMonth() + 1, startDate.getFullYear()));
+        setWeight(
+          userdata.data_track[`${startDate.getFullYear()}`][
+            `${startDate.getMonth() + 1}`
+          ].weight
+        );
+      } else {
+        daysInMonth(startDate.getMonth() + 1, startDate.getFullYear());
+        while (
+          i < daysInMonth(startDate.getMonth() + 1, startDate.getFullYear())
+        ) {
           labels.push(i);
           i++;
         }
-        setmax(daysInMonth(startDate.getMonth() + 1,startDate.getFullYear()))
-        setWeight([])
+        setmax(daysInMonth(startDate.getMonth() + 1, startDate.getFullYear()));
+        setWeight([]);
       }
-    } 
+    }
   }, [startDate]);
 
   const data = {
@@ -194,21 +207,24 @@ const BmiGraph = () => {
   return (
     <>
       <NavBar />
-      <Wrap
-        width="80wh"
-        minHeight="88vh"
-        padding="20"
-        sm={"padding:'0'"}
-        background="#1A202C"
-      >
-        <DatePicker
-          selected={startDate}
-          onChange={(date) => setStartDate(date)}
-          dateFormat="MMMM yyyy"
-          showMonthYearPicker
-          inline
-        />
-        <Line options={options} data={data} />
+      <Wrap padding={{ lg: 20, md: 10, sm: 0 }} background="#1A202C">
+        <WrapItem width="100vw" justifyContent="center" >
+          <DatePicker
+            selected={startDate}
+            onChange={(date) => setStartDate(date)}
+            dateFormat="MMMM yyyy"
+            showMonthYearPicker
+            inline
+          />
+        </WrapItem>
+
+        <WrapItem width="100vw">
+          <Line
+            options={options}
+            data={data}
+            style={{ height: { lg: "500", sm: "500" }, width: "auto" }}
+          />
+        </WrapItem>
       </Wrap>
     </>
   );

@@ -87,7 +87,7 @@ const Signup = () => {
         flexDirection="column"
         width="100wh"
         height="88vh"
-        background="#1A202C"
+        bg="#1A202C"
         justifyContent="center"
         alignItems="center"
       >
@@ -155,7 +155,6 @@ const Signup = () => {
                   <DatePicker
                     placeholder="Date of Birth"
                     name="date"
-                    dateFormat="MM/YYYY"
                     value={DOB}
                     required
                     onChange={(date) => setDOB(date)}

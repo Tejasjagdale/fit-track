@@ -39,7 +39,11 @@ const NavBar = (props) => {
       <Flex align="center" mr={5}>
         <Link href="/">
           <Flex align="center" mr={5}>
-            <Image maxWidth="45px" mr={2} src={`${process.env.NEXT_PUBLIC_URL}/favicon.ico`} />
+            <Image
+              maxWidth="45px"
+              mr={2}
+              src={`${process.env.NEXT_PUBLIC_URL}/favicon.ico`}
+            />
             <Heading
               as="h1"
               size="lg"
@@ -64,15 +68,21 @@ const NavBar = (props) => {
         flexGrow={1}
         mt={{ base: 4, md: 0 }}
       >
-        <Link href="/Profile">
-          <a>Profile</a>
-        </Link>
-        <Link href="/bmiGraph">
-          <a>BMI_Graph</a>
-        </Link>
-        <Link href="/dailyUpdate">
-          <a>Daily_Update</a>
-        </Link>
+        <Box>
+          <Link href="/Profile">
+            <a>Profile</a>
+          </Link>
+        </Box>
+        <Box>
+          <Link href="/bmiGraph">
+            <a>BMI_Graph</a>
+          </Link>
+        </Box>
+        <Box>
+          <Link href="/dailyUpdate">
+            <a>Daily_Update</a>
+          </Link>
+        </Box>
       </Stack>
 
       <Box
