@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import NavBar from "../components/NavBar";
 import Cookies from "universal-cookie";
 import Router from "next/router";
@@ -7,6 +7,7 @@ import { Flex } from "@chakra-ui/react";
 
 const Profile = () => {
   const cookies = new Cookies();
+  const [userData,setUserData] = useState()
 
   useEffect(() => {
     if (cookies.get("id")) {
@@ -19,6 +20,7 @@ const Profile = () => {
     } else {
       Router.push("/");
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

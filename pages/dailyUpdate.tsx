@@ -2,17 +2,14 @@ import React, { useEffect, useState } from "react";
 import NavBar from "../components/NavBar";
 import Cookies from "universal-cookie";
 import Router from "next/router";
-import Card from "../components/Card";
+// import Card from "../components/Card";
 import {
   Box,
   Image,
   Badge,
-  Text,
   Stack,
-  useColorMode,
   Button,
   Flex,
-  Spacer,
   FormControl,
   FormLabel,
   Input,
@@ -21,12 +18,13 @@ import {
 import { DatePicker } from "chakra-ui-date-input";
 
 const DailyUpdate = () => {
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const cookies = new Cookies();
   const toast = useToast()
 
   let tDate = new Date();
   const [weight, setWeight] = useState("");
-  const [userdata, setUserData] = useState();
+  const [, setUserData] = useState();
   const [status, setstatus] = useState(false);
   const [wdate, setWdate] = useState(
     `${tDate.getDate()}/${tDate.getMonth() + 1}/${tDate.getFullYear()}`
@@ -43,6 +41,7 @@ const DailyUpdate = () => {
     } else {
       Router.push("/");
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -59,9 +58,10 @@ const DailyUpdate = () => {
         setstatus(data.msg);
       })
       .catch((err) => console.log(err));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [wdate]);
 
-  const addWeight = (event) => {
+  const addWeight = (event:any) => {
     event.preventDefault();
     const requestOptions = {
       method: "POST",
@@ -148,7 +148,7 @@ const DailyUpdate = () => {
                   placeholder="Choose Date"
                   name="date"
                   value={wdate}
-                  required
+                  isRequired={true}
                   onChange={(date) => setWdate(date)}
                 />
               </FormControl>

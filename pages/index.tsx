@@ -39,9 +39,10 @@ const Index = () => {
         .then(() => Router.push("/bmiGraph"))
         .catch((err) => console.log(err));
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const AuthUser = (event) => {
+  const AuthUser = (event:any) => {
     event.preventDefault();
     fetch(`${process.env.NEXT_PUBLIC_URL}/api/userAuth?email=${email}&password=${pass}`)
       .then((res) => {

@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { AiFillSave } from "react-icons/ai";
 
-function Card(props) {
+function Card(props:any) {
   const { product, summary, longLine } = props;
 
   return (

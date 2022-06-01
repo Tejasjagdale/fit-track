@@ -10,20 +10,11 @@ import {
   Image,
 } from "@chakra-ui/react";
 import { HamburgerIcon } from "@chakra-ui/icons";
-import Router from "next/router";
 import Link from "next/link";
-import Cookies from "universal-cookie";
 
-const NavBar = (props) => {
+const Header = (props:any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const handleToggle = () => (isOpen ? onClose() : onOpen());
-  const cookies = new Cookies();
-
-  const Logout = (event) => {
-    event.preventDefault();
-    cookies.remove("id");
-    Router.push("/");
-  };
 
   return (
     <Flex
@@ -37,9 +28,10 @@ const NavBar = (props) => {
       {...props}
     >
       <Flex align="center" mr={5}>
-        <Link href="/">
+        <Link href="/" passHref>
           <Flex align="center" mr={5}>
             <Image
+              alt="Logo"
               maxWidth="45px"
               mr={2}
               src={`${process.env.NEXT_PUBLIC_URL}/favicon.ico`}
@@ -60,45 +52,21 @@ const NavBar = (props) => {
         <HamburgerIcon />
       </Box>
 
-      <Stack
-        direction={{ base: "column", md: "row" }}
-        display={{ base: isOpen ? "block" : "none", md: "flex" }}
-        width={{ base: "full", md: "auto" }}
-        alignItems="center"
-        flexGrow={1}
-        mt={{ base: 4, md: 0 }}
-      >
-        <Box>
-          <Link href="/Profile">
-            <a>Profile</a>
-          </Link>
-        </Box>
-        <Box>
-          <Link href="/bmiGraph">
-            <a>BMI_Graph</a>
-          </Link>
-        </Box>
-        <Box>
-          <Link href="/dailyUpdate">
-            <a>Daily_Update</a>
-          </Link>
-        </Box>
-      </Stack>
-
       <Box
         display={{ base: isOpen ? "block" : "none", md: "block" }}
         mt={{ base: 4, md: 0 }}
       >
-        <Button
-          variant="outline"
-          _hover={{ bg: "red.500", borderColor: "red.500", color: "white" }}
-          onClick={Logout}
-        >
-          Logout
-        </Button>
+        <Link href="/Signup" passHref>
+          <Button
+            variant="outline"
+            _hover={{ bg: "white", borderColor: "white", color: "black" }}
+          >
+            Create account
+          </Button>
+        </Link>
       </Box>
     </Flex>
   );
 };
 
-export default NavBar;
+export default Header;

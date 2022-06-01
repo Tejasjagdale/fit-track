@@ -22,7 +22,7 @@ import Link1 from "next/link";
 import { GiBodyHeight } from "react-icons/gi";
 import Cookies from "universal-cookie";
 import { MdDriveFileRenameOutline } from "react-icons/md";
-import Router from 'next/router'
+import Router from "next/router";
 
 const CFaUserAlt = chakra(FaUserAlt);
 const CFaLock = chakra(FaLock);
@@ -40,7 +40,7 @@ const Signup = () => {
 
   const handleShowClick = () => setShowPassword(!showPassword);
 
-  const SignUp = (event) => {
+  const SignUp = (event:any) => {
     event.preventDefault();
     const requestOptions = {
       method: "POST",
@@ -50,16 +50,16 @@ const Signup = () => {
         password: pass,
         details: {
           name: name,
-          age:age,
-          height:height,
-          dob:DOB
+          age: age,
+          height: height,
+          dob: DOB,
         },
       }),
     };
 
-    fetch(`${process.env.NEXT_PUBLIC_URL}/api/Register`, requestOptions)
-      .then((res) =>{
-        if(res.status === 200){
+    fetch(`${process.env.NEXT_PUBLIC_URL}/api/Register`, requestOptions).then(
+      (res) => {
+        if (res.status === 200) {
           toast({
             description: "Registration successfull",
             status: "success",
@@ -69,15 +69,16 @@ const Signup = () => {
           cookies.set("id", email, { path: "/" });
           console.log(cookies.get("id"));
           Router.push("/dailyUpdate");
-        }else{
+        } else {
           toast({
-            description: 'Registration Failed',
+            description: "Registration Failed",
             status: "error",
             duration: 5000,
             isClosable: true,
           });
         }
-      } )
+      }
+    );
   };
 
   return (
@@ -109,10 +110,8 @@ const Signup = () => {
               >
                 <FormControl>
                   <InputGroup>
-                    <InputLeftElement
-                      pointerEvents={"none"}
-                    >
-                    <CFaUserAlt color="black" />
+                    <InputLeftElement pointerEvents={"none"}>
+                      <CFaUserAlt color="black" />
                     </InputLeftElement>
                     <Input
                       type="email"
@@ -121,19 +120,14 @@ const Signup = () => {
                       }}
                       value={email}
                       required
-                      autoComplete
-                      autoCorrect
                       placeholder="Email Address"
                     />
                   </InputGroup>
                 </FormControl>
                 <FormControl>
                   <InputGroup>
-                    <InputLeftElement
-                      pointerEvents={"none"}
-                      color={"black"}
-                    >
-                    <CFaLock color="black" />
+                    <InputLeftElement pointerEvents={"none"} color={"black"}>
+                      <CFaLock color="black" />
                     </InputLeftElement>
                     <Input
                       type={showPassword ? "text" : "password"}
@@ -156,16 +150,14 @@ const Signup = () => {
                     placeholder="Date of Birth"
                     name="date"
                     value={DOB}
-                    required
+                    isRequired={true}
                     onChange={(date) => setDOB(date)}
                   />
                 </FormControl>
                 <FormControl>
                   <InputGroup>
-                    <InputLeftElement
-                      pointerEvents="none"
-                    >
-                    <MdDriveFileRenameOutline color="black" />
+                    <InputLeftElement pointerEvents="none">
+                      <MdDriveFileRenameOutline color="black" />
                     </InputLeftElement>
                     <Input
                       type="text"
@@ -180,10 +172,8 @@ const Signup = () => {
                 </FormControl>
                 <FormControl>
                   <InputGroup>
-                    <InputLeftElement
-                      pointerEvents="none"
-                    >
-                    <CFaUserAlt color="black" />
+                    <InputLeftElement pointerEvents="none">
+                      <CFaUserAlt color="black" />
                     </InputLeftElement>
                     <Input
                       type="number"
@@ -198,10 +188,8 @@ const Signup = () => {
                 </FormControl>
                 <FormControl>
                   <InputGroup>
-                    <InputLeftElement
-                      pointerEvents="none"
-                    >
-                    <GiBodyHeight color="black" />
+                    <InputLeftElement pointerEvents="none">
+                      <GiBodyHeight color="black" />
                     </InputLeftElement>
                     <Input
                       type="number"
@@ -232,7 +220,7 @@ const Signup = () => {
         </Stack>
         <Box color="white">
           Already Signed up?
-          <Link1 href="/">
+          <Link1 href="/" passHref>
             <Link>Login</Link>
           </Link1>
         </Box>

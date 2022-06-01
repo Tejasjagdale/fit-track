@@ -8,7 +8,6 @@ import {
   Title,
   Tooltip,
   Legend,
-  Utils,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 import Cookies from "universal-cookie";
@@ -25,6 +24,9 @@ const BmiGraph = () => {
   let tDate = new Date();
 
   const [userdata, setUserData] = useState();
+  interface userdata {
+    data_track: object
+  }
   const [bmi, setbmi] = useState([]);
   const [max, setmax] = useState(29);
   const [weight, setWeight] = useState([]);
@@ -42,16 +44,21 @@ const BmiGraph = () => {
     } else {
       Router.push("/");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     if (userdata) {
-      setWeight(
-        userdata.data_track[`${tDate.getFullYear()}`][`${tDate.getMonth() + 1}`]
-          .weight
-      );
+      if (userdata.data_track[`${tDate.getFullYear()}`][`${tDate.getMonth() + 1}`]) {
+        setWeight(
+          userdata.data_track[`${tDate.getFullYear()}`][`${tDate.getMonth() + 1}`].weight
+        );
+      } else {
+        setWeight([])
+      }
       setbmi(userdata.bmi_range);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userdata]);
 
   ChartJS.register(
@@ -86,7 +93,7 @@ const BmiGraph = () => {
     backgroundColor: "rgba(38, 246, 0, 0.4)",
     borderColor: "rgb(101, 33, 171)",
     borderWidth: 1,
-    click: function ({ chart, element }) {
+    click: function () {
       console.log("Box annotation clicked");
     },
     drawTime: "beforeDatasetsDraw",
@@ -154,7 +161,7 @@ const BmiGraph = () => {
 
   const [startDate, setStartDate] = useState(new Date());
 
-  function daysInMonth(month, year) {
+  function daysInMonth(month: any, year: any) {
     return new Date(year, month, 0).getDate();
   }
 
@@ -162,7 +169,7 @@ const BmiGraph = () => {
     if (userdata) {
       if (
         userdata.data_track[`${startDate.getFullYear()}`][
-          `${startDate.getMonth() + 1}`
+        `${startDate.getMonth() + 1}`
         ]
       ) {
         daysInMonth(startDate.getMonth() + 1, startDate.getFullYear());
@@ -190,6 +197,7 @@ const BmiGraph = () => {
         setWeight([]);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [startDate]);
 
   const data = {
@@ -211,7 +219,7 @@ const BmiGraph = () => {
         <WrapItem width="100vw" justifyContent="center" >
           <DatePicker
             selected={startDate}
-            onChange={(date) => setStartDate(date)}
+            onChange={(date: Date) => setStartDate(date)}
             dateFormat="MMMM yyyy"
             showMonthYearPicker
             inline
@@ -222,7 +230,7 @@ const BmiGraph = () => {
           <Line
             options={options}
             data={data}
-            style={{ height: { lg: "500", sm: "500" }, width: "auto" }}
+            style={{ height: 500, width: "auto" }}
           />
         </WrapItem>
       </Wrap>
