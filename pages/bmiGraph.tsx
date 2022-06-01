@@ -23,11 +23,11 @@ const BmiGraph = () => {
   const cookies = new Cookies();
   let tDate = new Date();
 
-  const [userdata, setUserData] = useState();
+  const [userdata, setUserData] = useState<any>();
   interface userdata {
     data_track: object
   }
-  const [bmi, setbmi] = useState([]);
+  const [bmi, setbmi] = useState<Array<any>>([]);
   const [max, setmax] = useState(29);
   const [weight, setWeight] = useState([]);
 
@@ -48,6 +48,7 @@ const BmiGraph = () => {
   }, []);
 
   useEffect(() => {
+    console.log(userdata)
     if (userdata) {
       if (userdata.data_track[`${tDate.getFullYear()}`][`${tDate.getMonth() + 1}`]) {
         setWeight(
@@ -56,6 +57,7 @@ const BmiGraph = () => {
       } else {
         setWeight([])
       }
+
       setbmi(userdata.bmi_range);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -105,7 +107,7 @@ const BmiGraph = () => {
     yScaleID: "y",
   };
 
-  const options = {
+  const options:any = {
     color: "white",
     background: "white",
     maintainAspectRatio: true,
@@ -180,11 +182,17 @@ const BmiGraph = () => {
           i++;
         }
         setmax(daysInMonth(startDate.getMonth() + 1, startDate.getFullYear()));
-        setWeight(
-          userdata.data_track[`${startDate.getFullYear()}`][
-            `${startDate.getMonth() + 1}`
-          ].weight
-        );
+        setWeight(userdata.data_track[`${startDate.getFullYear()}`][`${startDate.getMonth() + 1}`].weight);
+
+        const max = Math.max.apply(null, userdata.data_track[`${startDate.getFullYear()}`][`${startDate.getMonth() + 1}`].weight);
+
+        if(userdata.bmi_range[0] > max){
+          setbmi([userdata.bmi_range[0],(userdata.bmi_range[0]+1)]);
+        }else if(userdata.bmi_range[0] < max && (userdata.bmi_range[1]+userdata.bmi_range[0])/2 > max){
+          setbmi([userdata.bmi_range[0],(userdata.bmi_range[1]+userdata.bmi_range[0])/2]);
+        }else{
+          setbmi(userdata.bmi_range);
+        }
       } else {
         daysInMonth(startDate.getMonth() + 1, startDate.getFullYear());
         while (

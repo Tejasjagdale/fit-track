@@ -23,7 +23,7 @@ const DailyUpdate = () => {
   const toast = useToast()
 
   let tDate = new Date();
-  const [weight, setWeight] = useState("");
+  const [weight, setWeight] = useState(0);
   const [, setUserData] = useState();
   const [status, setstatus] = useState(false);
   const [wdate, setWdate] = useState(
@@ -53,7 +53,7 @@ const DailyUpdate = () => {
         if(data.msg){
           setWeight(data.weight)
         }else{
-          setWeight("")
+          setWeight(0)
         }
         setstatus(data.msg);
       })
@@ -82,7 +82,7 @@ const DailyUpdate = () => {
           duration: 3000,
           isClosable: true,
         });
-        setWeight("")
+        setWeight(0)
         setWdate(`${tDate.getDate()}/${tDate.getMonth() + 1}/${tDate.getFullYear()}`)
       } else {
         toast({
@@ -132,7 +132,7 @@ const DailyUpdate = () => {
                 <Input
                   id="number"
                   onChange={(e) => {
-                    setWeight(e.target.value);
+                    setWeight(parseInt(e.target.value));
                   }}
                   value={weight}
                   required
