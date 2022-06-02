@@ -1,0 +1,197 @@
+[
+  {
+    "src": "https://www.bodybuilding.com/exercises/rickshaw-carry",
+    "name": "Rickshaw Carry",
+    "srno": 1,
+    "extra": {
+      "ext": [
+        "https://www.bodybuilding.com/exercises/exerciseImages/sequences/742/Male/l/742_1.jpg",
+        "https://www.bodybuilding.com/exercises/exerciseImages/sequences/742/Male/l/742_2.jpg"
+      ],
+      "muscle_img": "https://artifacts.bbcomcdn.com/@bbcom/exercises-app/2.1.2/img/guide-2.gif",
+      "video_src": "https://videos.bodybuilding.com/video/mp4/76000/77012l.mp4",
+      "stats": [
+        "Position the frame at the starting point, and load with the appropriate weight. Standing in the center of the frame, begin by gripping the handles and driving through your heels to lift the frame. Ensure your chest and head are up and your back is straight.",
+        "Immediately begin walking briskly with quick, controlled steps. Keep your chest up and head forward, and make sure you continue breathing. Bring the frame to the ground after you have reached the end point."
+      ],
+      "related_excercises": [{ "name": "Dumbbell farmer's walk" }],
+      "benifits": [
+        [
+          "Type: Strongman",
+          "https://www.bodybuilding.com/exercises/exercise-type/strongman"
+        ],
+        [
+          "Main Muscle Worked: Forearms",
+          "https://www.bodybuilding.com/exercises/muscle/forearms"
+        ],
+        [
+          "Equipment: Other",
+          "https://www.bodybuilding.com/exercises/equipment/other"
+        ],
+        "Level: Beginner"
+      ]
+    }
+  },
+  {
+    "src": "https://www.bodybuilding.com/exercises/single-leg-press",
+    "name": "Single-Leg Press",
+    "srno": 2,
+    "extra": {
+      "ext": [
+        "https://www.bodybuilding.com/images/2020/xdb/originals/xdb-50m-single-leg-leg-press-m1-16x9.jpg",
+        "https://www.bodybuilding.com/images/2020/xdb/originals/xdb-50m-single-leg-leg-press-m2-16x9.jpg"
+      ],
+      "muscle_img": "https://artifacts.bbcomcdn.com/@bbcom/exercises-app/2.1.2/img/guide-7.gif",
+      "video_src": "https://content.jwplatform.com/videos/S1TBSJgU-1zuboWt3.mp4",
+      "stats": [
+        "Builds stronger, more muscular quads",
+        "Using one leg at time allows for heightened focus",
+        "Also recruits helps from the hamstrings and glutes"
+      ],
+      "instructions": [
+        "Load the sled to an appropriate weight. Seat yourself on the machine, planting one foot on the platform in line with your hip. Your free foot can be placed on the ground. Maintain good spinal position with your head and chest up.",
+        "Supporting the weight, fully extend the knee and unlock the sled. This will be your starting position.",
+        "Lower the weight by flexing the hip and knee, continuing as far as flexibility allows. Do not allow your lumbar to take the load by moving your pelvis.",
+        "At the bottom of the motion pause briefly and then return to the starting position by extending the hip and knee.",
+        "Complete all repetitions for one leg before switching to the other."
+      ],
+      "related_excercises": [{ "name": "Barbell Bulgarian split squat" }],
+      "short_desc": "The single-leg leg press is an exercise targeting the quadriceps one leg at a time. Many lifters prefer the leg press to squatting for several reasons, including the perception that it’s safer for the spine.",
+      "benifits": [
+        [
+          "Type: Strength",
+          "https://www.bodybuilding.com/exercises/exercise-type/strength"
+        ],
+        [
+          "Main Muscle Worked: Quadriceps",
+          "https://www.bodybuilding.com/exercises/muscle/quadriceps"
+        ],
+        [
+          "Equipment: Machine",
+          "https://www.bodybuilding.com/exercises/equipment/machine"
+        ],
+        "Level: Intermediate"
+      ]
+    }
+  },
+  {
+    "src": "https://www.bodybuilding.com/exercises/landmine-180s",
+    "name": "Landmine twist",
+    "srno": 3,
+    "extra": {
+      "ext": [
+        "https://www.bodybuilding.com/images/2020/xdb/originals/xdb-129s-landmine-twist-m1-16x9.jpg",
+        "https://www.bodybuilding.com/images/2020/xdb/originals/xdb-129s-landmine-twist-m3-16x9.jpg"
+      ],
+      "muscle_img": "https://artifacts.bbcomcdn.com/@bbcom/exercises-app/2.1.2/img/guide-13.gif",
+      "video_src": "https://content.jwplatform.com/videos/Igo5cYNn-1zuboWt3.mp4",
+      "stats": [
+        "Maximizes force transfer through the legs, core, and arms",
+        "Powerful rotational core training",
+        "Trains coordination and power simultaneously"
+      ],
+      "instructions": [
+        "Position a bar into a landmine or securely anchor it in a corner. Load the bar to an appropriate weight.",
+        "Raise the bar from the floor, taking it to shoulder height with both hands with your arms extended in front of you. Adopt a wide stance. This will be your starting position.",
+        "Perform the movement by rotating the trunk and hips as you swing the weight all the way down to one side. Keep your arms extended throughout the exercise.",
+        "Reverse the motion to swing the weight all the way to the opposite side.",
+        "Continue alternating the movement until the set is complete."
+      ],
+      "related_excercises": [{ "name": "Russian twist" }],
+      "short_desc": "The landmine twist is a rotational abdominal movement performed using an angled barbell anchored at floor level in a landmine device. It can also be performed by sticking a barbell in the corner of a room, preferably in a towel to protect the walls. It targets the deep muscles of the core, including both the obliques and the transversus abdominis. It can be done fast or slow, for time or reps, either in traditional muscle-focused rep ranges such as 8-12 reps per side or for higher rep ranges.",
+      "benifits": [
+        [
+          "Type: Strength",
+          "https://www.bodybuilding.com/exercises/exercise-type/strength"
+        ],
+        [
+          "Main Muscle Worked: Abdominals",
+          "https://www.bodybuilding.com/exercises/muscle/abdominals"
+        ],
+        [
+          "Equipment: Other",
+          "https://www.bodybuilding.com/exercises/equipment/other"
+        ],
+        "Level: Intermediate"
+      ]
+    }
+  },
+  {
+    "src": "https://www.bodybuilding.com/exercises/weighted-pull-ups",
+    "name": "Weighted pull-up",
+    "srno": 4,
+    "extra": {
+      "ext": [
+        "https://www.bodybuilding.com/images/2020/xdb/originals/xdb-96c-weighted-pull-up-m1-16x9.jpg",
+        "https://www.bodybuilding.com/images/2020/xdb/originals/xdb-96c-weighted-pull-up-m2-16x9.jpg"
+      ],
+      "muscle_img": "https://artifacts.bbcomcdn.com/@bbcom/exercises-app/2.1.2/img/guide-3.gif",
+      "video_src": "https://content.jwplatform.com/videos/7uCWfCqq-1zuboWt3.mp4",
+      "stats": [
+        "Strengthens the muscles of the lats (latissimus dorsi), biceps, upper back, core, and grip",
+        "Allows you to train pull-ups in lower strength-focused rep ranges (e.g., sets of 3-5 reps) if you can do many bodyweight reps",
+        "Can help boost your overall pull-up numbers",
+        "Heavy, low-rep sets activate different types of muscle fibers, potentially leading to muscle and strength gains"
+      ],
+      "instructions": [
+        "Attach a weight to a dip belt and secure it around your waist. Grab the pull-up bar with the palms of your hands facing forward. For a medium grip, your hands should be spaced at shoulder width. Both arms should be extended in front of you holding the bar at the chosen grip.",
+        "You'll want to bring your torso back about 30 degrees while creating a curvature in your lower back and sticking your chest out. This will be your starting position.",
+        "Now, exhale and pull your torso up until your head is above your hands. Concentrate on squeezing your shoulder blades back and down as you reach the top contracted position.",
+        "After a brief moment at the top contracted position, inhale and slowly lower your torso back to the starting position with your arms extended and your lats fully stretched."
+      ],
+      "related_excercises": [],
+      "short_desc": "The weighted pull-up is a more advanced variation of the pull-up exercise in which the lifter adds extra weight to their body. Options for adding weight include a dip belt, weighted vest, chains, a dumbbell placed between the feet or legs, or looping a kettlebell over the foot. Like other pull-up variations, the weighted pull-up builds strength and muscle in the upper back, biceps, and core.",
+      "benifits": [
+        [
+          "Type: Strength",
+          "https://www.bodybuilding.com/exercises/exercise-type/strength"
+        ],
+        [
+          "Main Muscle Worked: Lats",
+          "https://www.bodybuilding.com/exercises/muscle/lats"
+        ],
+        [
+          "Equipment: Other",
+          "https://www.bodybuilding.com/exercises/equipment/other"
+        ],
+        "Level: Intermediate"
+      ]
+    }
+  },
+  {
+    "src": "https://www.bodybuilding.com/exercises/t-bar-row-with-handle",
+    "name": "T-Bar Row with Handle",
+    "srno": 5,
+    "extra": {
+      "ext": [
+        "https://www.bodybuilding.com/exercises/exerciseImages/sequences/1931/Male/l/1931_1.jpg",
+        "https://www.bodybuilding.com/exercises/exerciseImages/sequences/1931/Male/l/1931_2.jpg"
+      ],
+      "muscle_img": "https://artifacts.bbcomcdn.com/@bbcom/exercises-app/2.1.2/img/guide-4.gif",
+      "video_src": "https://videos.bodybuilding.com/video/mp4/104000/105162l.mp4",
+      "stats": [
+        "Position a bar into a landmine or in a corner to keep it from moving. Load an appropriate weight onto your end.",
+        "Stand over the bar, and position a Double D row handle around the bar next to the collar. Using your hips and legs, rise to a standing position.",
+        "Assume a wide stance with your hips back and your chest up. Your arms should be extended. This will be your starting position.",
+        "Pull the weight to your upper abdomen by retracting the shoulder blades and flexing the elbows. Do not jerk the weight or cheat during the movement.",
+        "After a brief pause, return to the starting position."
+      ],
+      "related_excercises": [{ "name": "Seated Cable Rows" }],
+      "benifits": [
+        [
+          "Type: Strength",
+          "https://www.bodybuilding.com/exercises/exercise-type/strength"
+        ],
+        [
+          "Main Muscle Worked: Middle Back",
+          "https://www.bodybuilding.com/exercises/muscle/middle-back"
+        ],
+        [
+          "Equipment: Other",
+          "https://www.bodybuilding.com/exercises/equipment/other"
+        ],
+        "Level: Intermediate"
+      ]
+    }
+  }
+]

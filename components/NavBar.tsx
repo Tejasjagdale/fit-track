@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Box,
   Stack,
@@ -7,19 +7,23 @@ import {
   Button,
   useDisclosure,
   Image,
+  Drawer,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerHeader,
+  DrawerBody,
 } from "@chakra-ui/react";
 import { HamburgerIcon } from "@chakra-ui/icons";
 import Router from "next/router";
 import Link from "next/link";
 import Cookies from "universal-cookie";
-import { BiLogOut} from "react-icons/bi";
+import { BiLogOut } from "react-icons/bi";
 
-const NavBar = (props:any) => {
+const NavBar = (props: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const handleToggle = () => (isOpen ? onClose() : onOpen());
   const cookies = new Cookies();
 
-  const Logout = (event:any) => {
+  const Logout = (event: any) => {
     event.preventDefault();
     cookies.remove("id");
     Router.push("/");
@@ -57,48 +61,54 @@ const NavBar = (props:any) => {
         </Link>
       </Flex>
 
-      <Box display={{ base: "block", md: "none" }} onClick={handleToggle}>
+      <Button colorScheme="blue" onClick={onOpen}>
         <HamburgerIcon />
-      </Box>
+      </Button>
 
-      <Stack
-        direction={{ base: "column", md: "row" }}
-        display={{ base: isOpen ? "block" : "none", md: "flex" }}
-        width={{ base: "full", md: "auto" }}
-        alignItems="center"
-        flexGrow={1}
-        mt={{ base: 4, md: 0 }}
-      >
-        <Box>
-          <Link href="/Profile">
-            <a>Profile</a>
-          </Link>
-        </Box>
-        <Box>
-          <Link href="/bmiGraph">
-            <a>BMI_Graph</a>
-          </Link>
-        </Box>
-        <Box>
-          <Link href="/dailyUpdate">
-            <a>Daily_Update</a>
-          </Link>
-        </Box>
-      </Stack>
-
-      <Box
-        display={{ base: isOpen ? "block" : "none", md: "block" }}
-        mt={{ base: 4, md: 0 }}
-      >
-        <Button
-          variant="outline"
-          _hover={{ bg: "red.500", borderColor: "red.500", color: "white" }}
-          onClick={Logout}
-          rightIcon={<BiLogOut/>}
-        >
-          Logout
-        </Button>
-      </Box>
+      <Drawer placement="right" onClose={onClose} isOpen={isOpen}>
+        <DrawerOverlay />
+        <DrawerContent>
+          <DrawerHeader borderBottomWidth="1px">Basic Drawer</DrawerHeader>
+          <DrawerBody>
+            <Stack
+              direction={{ base: "column" }}
+              display={{ base: "block" }}
+              width={{ base: "full" }}
+              alignItems="center"
+              flexGrow={1}
+              mt={{ base: 4 }}
+            >
+              <Box>
+                <Link href="/Profile">
+                  <a>Profile</a>
+                </Link>
+              </Box>
+              <Box>
+                <Link href="/bmiGraph">
+                  <a>BMI_Graph</a>
+                </Link>
+              </Box>
+              <Box>
+                <Link href="/dailyUpdate">
+                  <a>Daily_Update</a>
+                </Link>
+              </Box>
+              <Button
+                variant="outline"
+                _hover={{
+                  bg: "red.500",
+                  borderColor: "red.500",
+                  color: "white",
+                }}
+                onClick={Logout}
+                rightIcon={<BiLogOut />}
+              >
+                Logout
+              </Button>
+            </Stack>
+          </DrawerBody>
+        </DrawerContent>
+      </Drawer>
     </Flex>
   );
 };

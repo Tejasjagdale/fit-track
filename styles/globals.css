@@ -2,7 +2,7 @@ html,
 body {
   padding: 0;
   margin: 0;
-  background: #1A202C;
+  background: #1a202c;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
@@ -16,13 +16,20 @@ a {
   box-sizing: border-box;
 }
 
+
+
+.read-more-button{
+  cursor: pointer;
+  color:#2DCEAA
+}
+
 /*======================
     404 page
 =======================*/
 
 .page_404 {
   padding: 40px 0;
-  background: #1A202C;
+  background: #1a202c;
   font-family: "Arvo", serif;
 }
 
@@ -30,7 +37,7 @@ a {
   width: 100%;
 }
 
-.text-center{
+.text-center {
   /* font-family: 'Signature of the Ancient', sans-serif; */
   text-align: center;
 }
