@@ -25,7 +25,7 @@ const BmiGraph = () => {
 
   const [userdata, setUserData] = useState<any>();
   interface userdata {
-    data_track: object
+    data_track: object;
   }
   const [bmi, setbmi] = useState<Array<any>>([]);
   const [max, setmax] = useState(29);
@@ -48,14 +48,18 @@ const BmiGraph = () => {
   }, []);
 
   useEffect(() => {
-    console.log(userdata)
+    console.log(userdata);
     if (userdata) {
-      if (userdata.data_track[`${tDate.getFullYear()}`][`${tDate.getMonth() + 1}`]) {
+      if (
+        userdata.data_track[`${tDate.getFullYear()}`][`${tDate.getMonth() + 1}`]
+      ) {
         setWeight(
-          userdata.data_track[`${tDate.getFullYear()}`][`${tDate.getMonth() + 1}`].weight
+          userdata.data_track[`${tDate.getFullYear()}`][
+            `${tDate.getMonth() + 1}`
+          ].weight
         );
       } else {
-        setWeight([])
+        setWeight([]);
       }
 
       setbmi(userdata.bmi_range);
@@ -107,7 +111,7 @@ const BmiGraph = () => {
     yScaleID: "y",
   };
 
-  const options:any = {
+  const options: any = {
     color: "white",
     background: "white",
     maintainAspectRatio: true,
@@ -171,7 +175,7 @@ const BmiGraph = () => {
     if (userdata) {
       if (
         userdata.data_track[`${startDate.getFullYear()}`][
-        `${startDate.getMonth() + 1}`
+          `${startDate.getMonth() + 1}`
         ]
       ) {
         daysInMonth(startDate.getMonth() + 1, startDate.getFullYear());
@@ -182,15 +186,30 @@ const BmiGraph = () => {
           i++;
         }
         setmax(daysInMonth(startDate.getMonth() + 1, startDate.getFullYear()));
-        setWeight(userdata.data_track[`${startDate.getFullYear()}`][`${startDate.getMonth() + 1}`].weight);
+        setWeight(
+          userdata.data_track[`${startDate.getFullYear()}`][
+            `${startDate.getMonth() + 1}`
+          ].weight
+        );
 
-        const max = Math.max.apply(null, userdata.data_track[`${startDate.getFullYear()}`][`${startDate.getMonth() + 1}`].weight);
+        const max = Math.max.apply(
+          null,
+          userdata.data_track[`${startDate.getFullYear()}`][
+            `${startDate.getMonth() + 1}`
+          ].weight
+        );
 
-        if(userdata.bmi_range[0] > max){
-          setbmi([userdata.bmi_range[0],(userdata.bmi_range[0]+1)]);
-        }else if(userdata.bmi_range[0] < max && (userdata.bmi_range[1]+userdata.bmi_range[0])/2 > max){
-          setbmi([userdata.bmi_range[0],(userdata.bmi_range[1]+userdata.bmi_range[0])/2]);
-        }else{
+        if (userdata.bmi_range[0] > max) {
+          setbmi([userdata.bmi_range[0], userdata.bmi_range[0] + 1]);
+        } else if (
+          userdata.bmi_range[0] < max &&
+          (userdata.bmi_range[1] + userdata.bmi_range[0]) / 2 > max
+        ) {
+          setbmi([
+            userdata.bmi_range[0],
+            (userdata.bmi_range[1] + userdata.bmi_range[0]) / 2,
+          ]);
+        } else {
           setbmi(userdata.bmi_range);
         }
       } else {
@@ -222,26 +241,30 @@ const BmiGraph = () => {
 
   return (
     <>
-      <NavBar />
-      <Wrap padding={{ lg: 20, md: 10, sm: 0 }} background="#1A202C">
-        <WrapItem width="100vw" justifyContent="center" >
-          <DatePicker
-            selected={startDate}
-            onChange={(date: Date) => setStartDate(date)}
-            dateFormat="MMMM yyyy"
-            showMonthYearPicker
-            inline
-          />
-        </WrapItem>
+      <NavBar
+        // eslint-disable-next-line react/no-children-prop
+        children={
+          <Wrap padding={{ lg: 20, md: 10, sm: 0 }} background="#1E2225">
+            <WrapItem width="100vw" justifyContent="center">
+              <DatePicker
+                selected={startDate}
+                onChange={(date: Date) => setStartDate(date)}
+                dateFormat="MMMM yyyy"
+                showMonthYearPicker
+                inline
+              />
+            </WrapItem>
 
-        <WrapItem width="100vw">
-          <Line
-            options={options}
-            data={data}
-            style={{ height: 500, width: "auto" }}
-          />
-        </WrapItem>
-      </Wrap>
+            <WrapItem width="100vw">
+              <Line
+                options={options}
+                data={data}
+                style={{ height: 500, width: "auto" }}
+              />
+            </WrapItem>
+          </Wrap>
+        }
+      />
     </>
   );
 };

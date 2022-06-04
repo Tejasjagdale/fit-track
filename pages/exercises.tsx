@@ -12,33 +12,42 @@ const List = () => {
 
   return (
     <>
-      <NavBar />
-        <Wrap justify='center' spacing="30px" background="#1A202C" padding="10">
-          <WrapItem>
-            <ProductSimple />
-          </WrapItem>
-          <WrapItem>
-            <ProductSimple />
-          </WrapItem>
-          <WrapItem>
-            <ProductSimple />
-          </WrapItem>
-          <WrapItem>
-            <ProductSimple />
-          </WrapItem>
-          <WrapItem>
-            <ProductSimple />
-          </WrapItem>
-          <WrapItem>
-            <ProductSimple />
-          </WrapItem>
-          <WrapItem>
-            <ProductSimple />
-          </WrapItem>
-          <WrapItem>
-            <ProductSimple />
-          </WrapItem>
-        </Wrap>
+      <NavBar
+        // eslint-disable-next-line react/no-children-prop
+        children={
+          <Wrap
+            justify="center"
+            spacing="30px"
+            background="#1A202C"
+            padding="10"
+          >
+            <WrapItem>
+              <ProductSimple />
+            </WrapItem>
+            <WrapItem>
+              <ProductSimple />
+            </WrapItem>
+            <WrapItem>
+              <ProductSimple />
+            </WrapItem>
+            <WrapItem>
+              <ProductSimple />
+            </WrapItem>
+            <WrapItem>
+              <ProductSimple />
+            </WrapItem>
+            <WrapItem>
+              <ProductSimple />
+            </WrapItem>
+            <WrapItem>
+              <ProductSimple />
+            </WrapItem>
+            <WrapItem>
+              <ProductSimple />
+            </WrapItem>
+          </Wrap>
+        }
+      />
     </>
   );
 };

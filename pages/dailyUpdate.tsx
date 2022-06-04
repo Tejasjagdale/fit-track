@@ -97,8 +97,8 @@ const DailyUpdate = () => {
 
   return (
     <>
-      <NavBar />
-      <Flex
+      {/* eslint-disable-next-line react/no-children-prop */}
+      <NavBar children={<Flex
         flexDirection="column"
         width="100wh"
         height="88vh"
@@ -165,7 +165,7 @@ const DailyUpdate = () => {
             </Stack>
           </Box>
         </Box>
-      </Flex>
+      </Flex>} />
     </>
   );
 };

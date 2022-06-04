@@ -7,11 +7,13 @@ import { Flex } from "@chakra-ui/react";
 
 const Profile = () => {
   const cookies = new Cookies();
-  const [userData,setUserData] = useState()
+  const [userData, setUserData] = useState();
 
   useEffect(() => {
     if (cookies.get("id")) {
-      fetch(`${process.env.NEXT_PUBLIC_URL}/api/userData?email=${cookies.get("id")}`)
+      fetch(
+        `${process.env.NEXT_PUBLIC_URL}/api/userData?email=${cookies.get("id")}`
+      )
         .then((response) => response.json())
         .then((data) => {
           setUserData(data[cookies.get("id")]);
@@ -20,28 +22,32 @@ const Profile = () => {
     } else {
       Router.push("/");
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <>
-      <NavBar />
-      <Flex
-        flexDirection="column"
-        width="100wh"
-        height="88vh"
-        bg="#1A202C"
-        justifyContent="center"
-        alignItems="center"
-        boxShadow="#1A202C"
-      >
-        <Card
-          key={1}
-          product="Long Product"
-          summary="Finalize them summary, hurry, we are close to deadline"
-          longLine="Wow, this is very descriptive! I wonder how long it is"
-        />
-      </Flex>
+      <NavBar
+        // eslint-disable-next-line react/no-children-prop
+        children={
+          <Flex
+            flexDirection="column"
+            width="100wh"
+            height="88vh"
+            bg="#1A202C"
+            justifyContent="center"
+            alignItems="center"
+            boxShadow="#1A202C"
+          >
+            <Card
+              key={1}
+              product="Long Product"
+              summary="Finalize them summary, hurry, we are close to deadline"
+              longLine="Wow, this is very descriptive! I wonder how long it is"
+            />
+          </Flex>
+        }
+      />
     </>
   );
 };
