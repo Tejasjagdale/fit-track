@@ -1,4 +1,6 @@
 import {
+  Box,
+  Center,
   Flex,
   Image,
   List,
@@ -29,14 +31,12 @@ const name = () => {
       <NavBar
         // eslint-disable-next-line react/no-children-prop
         children={
-          <Wrap p={15} bg="#1A202C" color="white">
-            <WrapItem>
-              <Text fontWeight={900} fontSize={"17"} fontFamily={"body"}>
+          <Wrap width="100%" p={15} bg="#1A202C" color="white" spacingY="10">
+            <WrapItem display={{ md: "block" }}>
+              <Text fontWeight={900} fontSize={"17"} fontFamily={"body"} mb={3}>
                 Rickshaw Carry
               </Text>
-            </WrapItem>
 
-            <WrapItem>
               <Text fontFamily={"body"}>
                 The decline dumbbell chest fly is an upper body isolation
                 exercise targeting the lower chest. It will require less weight
@@ -47,7 +47,7 @@ const name = () => {
 
             <WrapItem>
               <Wrap>
-                <WrapItem>
+                <WrapItem width="100%">
                   <Text fontWeight={900} fontSize={"17"} fontFamily={"body"}>
                     Benefits
                   </Text>
@@ -72,28 +72,38 @@ const name = () => {
               </Wrap>
             </WrapItem>
 
-            <WrapItem>
-              <Wrap>
-                <WrapItem>
-                  {/* <video
-                className="jw-video jw-reset"
-                tabIndex={-1}
-                disableRemotePlayback
-                webkit-playsinline=""
-                playsInline
-                title="Rickshaw Carry video"
-                controls
-                preload="metadata"
-                src="https://content.jwplatform.com/videos/Z0QJXHUJ-1zuboWt3.mp4"
-                style={{ objectFit: "fill" }}
-              /> */}
-                </WrapItem>
+            <WrapItem width="100%">
+              <Wrap width="100%">
+                <Center
+                  width={{ md: "48%", sm: "100%" }}
+                  padding={{ base: "10", md: "5", xs: "2" }}
+                >
+                  <video
+                    className="jw-video jw-reset"
+                    tabIndex={-1}
+                    disableRemotePlayback
+                    webkit-playsinline=""
+                    playsInline
+                    title="Rickshaw Carry video"
+                    controls
+                    preload="metadata"
+                    // src="https://content.jwplatform.com/videos/Z0QJXHUJ-1zuboWt3.mp4"
+                    style={{
+                      objectFit: "fill",
+                      border: "2px solid white",
+                      width: "400px",
+                      height: "auto",
+                    }}
+                  />
+                </Center>
 
-                <WrapItem>
-                  <Wrap>
-                    <Text mr={1}>Muscle Targeted :</Text>
+                <Box width={{ md: "48%", sm: "100%" }} padding="10">
+                  <Wrap mb="2">
+                    <Text fontSize={"17"} mr={1}>
+                      Muscle Targeted :
+                    </Text>
                     <Tag
-                      size={"md"}
+                      fontSize={"14"}
                       borderRadius="full"
                       variant="solid"
                       bg="#9933FF"
@@ -105,13 +115,16 @@ const name = () => {
                       </TagLabel>
                     </Tag>
                   </Wrap>
-                  <Wrap>
-                    <Text mr={1}>Equipment Type :</Text>
+
+                  <Wrap mb="2">
+                    <Text fontSize={"17"} mr={1}>
+                      Equipment Type :
+                    </Text>
                     <Tag
-                      size={"md"}
+                      fontSize={"14"}
                       borderRadius="full"
                       variant="solid"
-                      bg="#202124"
+                      bg="blue.500"
                     >
                       <TagLabel>
                         <Link href={"#"} passHref>
@@ -120,10 +133,31 @@ const name = () => {
                       </TagLabel>
                     </Tag>
                   </Wrap>
-                  <Wrap>
-                    <Text mr={1}>Level : </Text>
+
+                  <Wrap mb="2">
+                    <Text fontSize={"17"} mr={1}>
+                      Type:
+                    </Text>
                     <Tag
-                      size={"md"}
+                      fontSize={"14"}
+                      borderRadius="full"
+                      variant="solid"
+                      bg="yellow.500"
+                    >
+                      <TagLabel>
+                        <Link href={"#"} passHref>
+                          Strongman
+                        </Link>
+                      </TagLabel>
+                    </Tag>
+                  </Wrap>
+
+                  <Wrap mb="2">
+                    <Text fontSize={"17"} mr={1}>
+                      Level :{" "}
+                    </Text>
+                    <Tag
+                      fontSize={"14"}
                       borderRadius="full"
                       variant="solid"
                       colorScheme="green"
@@ -133,32 +167,41 @@ const name = () => {
                       </Link>
                     </Tag>
                   </Wrap>
-                </WrapItem>
+                </Box>
               </Wrap>
             </WrapItem>
 
-            <WrapItem>
-              <Text fontWeight={900} fontSize={"17"} fontFamily={"body"}>
+            <WrapItem width="100%" display={{ md: "block" }}>
+              <Text
+                fontWeight={900}
+                fontSize={"17"}
+                width="100%"
+                fontFamily={"body"}
+                mb="7"
+              >
                 Decline Dumbbell Flyes Images
               </Text>
-              {/* <ImageSlider slides={Slides} weight="200" height="auto"/> */}
+              <Center width={{ md: "48%", sm: "100%" }}  mb="5"  mt="5">
+                <ImageSlider slides={Slides} />
+              </Center>
             </WrapItem>
 
-            <WrapItem>
-              <Text fontWeight={900} fontSize={"17"} fontFamily={"body"}>
+            <WrapItem width="100%" display={{ md: "block" }}>
+              <Text fontWeight={900} fontSize={"17"} mb="8" fontFamily={"body"}>
                 Decline Dumbbell Flyes Instructions
               </Text>
 
-              <Wrap>
-                <WrapItem>
-                  <Image
-                    alt="image"
-                    src="https://artifacts.bbcomcdn.com/@bbcom/exercises-app/2.1.2/img/guide-1.gif"
-                  />
-                  ;
+              <Wrap width="100%">
+                <WrapItem width={{ md: "48%", sm: "100%" }}>
+                  <Center width="100%" mb="5" mt="5">
+                    <Image
+                      alt="image"
+                      src="https://artifacts.bbcomcdn.com/@bbcom/exercises-app/2.1.2/img/guide-1.gif"
+                    />
+                  </Center>
                 </WrapItem>
 
-                <WrapItem>
+                <WrapItem width={{ md: "48%", sm: "100%" }}>
                   <OrderedList>
                     <ListItem>
                       Secure your legs at the end of the decline bench and lie
@@ -191,19 +234,26 @@ const name = () => {
               </Wrap>
             </WrapItem>
 
-            <WrapItem>
-              <Text fontWeight={900} fontSize={"17"} fontFamily={"body"}>
+            <WrapItem width="100%" display={{ md: "block" }}>
+              <Text fontWeight={900} mb="6" fontSize={"17"} fontFamily={"body"}>
                 Alternative Exercises for Decline Dumbbell Flyes
               </Text>
-              <Wrap>
-                <WrapItem>
-                  <SocialProfileWithImageHorizontal />
+
+              <Wrap width="100%">
+                <WrapItem width="100%">
+                  <Center width={{ md:"auto",sm:"100%" }}>
+                    <SocialProfileWithImageHorizontal />
+                  </Center>
                 </WrapItem>
-                <WrapItem>
-                  <SocialProfileWithImageHorizontal />
-                </WrapItem>{" "}
-                <WrapItem>
-                  <SocialProfileWithImageHorizontal />
+                <WrapItem width="100%">
+                  <Center width={{ md:"auto",sm:"100%" }}>
+                    <SocialProfileWithImageHorizontal />
+                  </Center>
+                </WrapItem>
+                <WrapItem width="100%">
+                  <Center width={{ md:"auto",sm:"100%" }}>
+                    <SocialProfileWithImageHorizontal />
+                  </Center>
                 </WrapItem>
               </Wrap>
             </WrapItem>

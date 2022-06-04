@@ -56,78 +56,79 @@ export default function SocialProfileWithImageHorizontal() {
   ];
 
   return (
-    <Center w='50vw'>
+    <Center w={{ md: "600px", sm: "300px" }}>
       <Stack
         borderWidth="1px"
         borderRadius="lg"
-        w='100%'
-        height={{ sm: "476px", md: "20rem" }}
+        w="100%"
+        // height={{ sm: "476px", md: "20rem" }}
         direction={{ base: "column", md: "row" }}
         bg="white"
         boxShadow={"2xl"}
-        padding={4}
       >
-        <Flex width="80" >
+        <Center w={{ md: "50%", sm: "100%" }} height="fit-content">
           <ImageSlider slides={Slides} />
-        </Flex>
+        </Center>
 
-        <Stack color="black" >
-          <Text
-            color="#161B25"
-            fontWeight={900}
-            textColor="#161B25"
-            fontSize={"17"}
-            fontFamily={"body"}
-          >
-            Rickshaw Carry
-          </Text>
-          <Wrap>
-            <Text mr={1}>Muscle Targeted :</Text>
-            <Tag size={"md"} borderRadius="full" variant="solid" bg="#9933FF">
-              <TagLabel>
-                <Link href={"#"} passHref>
-                  Forearms
-                </Link>
-              </TagLabel>
-            </Tag>
-          </Wrap>
-          <Wrap>
-            <Text mr={1}>Equipment Type :</Text>
-            <Tag size={"md"} borderRadius="full" variant="solid" bg="#202124">
-              <TagLabel>
-                <Link href={"#"} passHref>
-                  Other
-                </Link>
-              </TagLabel>
-            </Tag>
-          </Wrap>
-          <Wrap>
-            <Text mr={1}>Level : </Text>
-            <Tag
-              size={"md"}
-              borderRadius="full"
-              variant="solid"
-              colorScheme="green"
+        <Center w={{ md: "50%", sm: "100%" }} height="fit-content">
+          <Stack color="black">
+            <Text
+              color="#161B25"
+              fontWeight={900}
+              textColor="#161B25"
+              fontSize={"17"}
+              fontFamily={"body"}
             >
-              <Link href={"#"} passHref>
-                <TagLabel>Beginner</TagLabel>
-              </Link>
-            </Tag>
-          </Wrap>
-          <Wrap>
-            <Rating rating={4} numReviews={94} />
-          </Wrap>
-          <Wrap>
-            <Button
-              bgColor="#2CCCA8"
-              color="white"
-              _hover={{ bg: "#2CCCA8" }}
-              size="sm"
-            >
-              View More...
-            </Button>
-          </Wrap>
-        </Stack>
+              Rickshaw Carry
+            </Text>
+            <Wrap>
+              <Text mr={1}>Muscle Targeted :</Text>
+              <Tag size={"md"} borderRadius="full" variant="solid" bg="#9933FF">
+                <TagLabel>
+                  <Link href={"#"} passHref>
+                    Forearms
+                  </Link>
+                </TagLabel>
+              </Tag>
+            </Wrap>
+            <Wrap>
+              <Text mr={1}>Equipment Type :</Text>
+              <Tag size={"md"} borderRadius="full" variant="solid" bg="#202124">
+                <TagLabel>
+                  <Link href={"#"} passHref>
+                    Other
+                  </Link>
+                </TagLabel>
+              </Tag>
+            </Wrap>
+            <Wrap>
+              <Text mr={1}>Level : </Text>
+              <Tag
+                size={"md"}
+                borderRadius="full"
+                variant="solid"
+                colorScheme="green"
+              >
+                <Link href={"#"} passHref>
+                  <TagLabel>Beginner</TagLabel>
+                </Link>
+              </Tag>
+            </Wrap>
+            <Wrap>
+              <Rating rating={4} numReviews={94} />
+            </Wrap>
+            <Wrap>
+              <Button
+                bgColor="#2CCCA8"
+                color="white"
+                _hover={{ bg: "#2CCCA8" }}
+                size="sm"
+              >
+                View More...
+              </Button>
+            </Wrap>
+          </Stack>
+        </Center>
       </Stack>
     </Center>
   );
