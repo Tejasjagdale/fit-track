@@ -38,13 +38,15 @@ import { IconType } from "react-icons";
 import { ReactText } from "react";
 import Link from "next/link";
 import Cookies from "universal-cookie";
-import { Router } from "next/router";
+import Router from "next/router";
+import { GiOpenedFoodCan } from "react-icons/gi";
 
 const cookies = new Cookies();
 
 const Logout = (event: any) => {
   event.preventDefault();
   cookies.remove("id");
+  Router.push("/")
 };
 
 interface LinkItemProps {
@@ -54,11 +56,11 @@ interface LinkItemProps {
 }
 const LinkItems: Array<LinkItemProps> = [
   { name: "Home", icon: FiHome, href: "/Profile" },
-  { name: "bmiGraph", icon: FiTrendingUp, href: "/bmiGraph" },
+  { name: "BmiGraph", icon: FiTrendingUp, href: "/bmiGraph" },
   { name: "Exercises", icon: FiCompass, href: "/exercises" },
-  { name: "Name", icon: FiStar, href: "/name" },
   { name: "DailyUpdate", icon: FiSettings, href: "/dailyUpdate" },
   { name: "AddWorkout", icon: FiSettings, href: "/addworkout" },
+  { name: "Food", icon: GiOpenedFoodCan, href: "/Food" },
 ];
 
 export default function SidebarWithHeader({

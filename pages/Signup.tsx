@@ -40,45 +40,56 @@ const Signup = () => {
 
   const handleShowClick = () => setShowPassword(!showPassword);
 
-  const SignUp = (event:any) => {
+  const SignUp = (event: any) => {
     event.preventDefault();
+    let Height:number =  parseInt(height)
+    let bmi_range = [19*(Height/100)*(Height/100),25*(Height/100)*(Height/100)]
+
+    let fdob:string = `${DOB.split("/")[2]}-${DOB.split("/")[1]}-${DOB.split("/")[0]}`;
+
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         email: email,
         password: pass,
-        details: {
-          name: name,
-          age: age,
-          height: height,
-          dob: DOB,
+        username: name,
+        age: age,
+        height: height,
+        dob: fdob,
+        weight_data: {
+          bmi_range: bmi_range,
+          data_track: {},
         },
       }),
     };
 
-    fetch(`${process.env.NEXT_PUBLIC_URL}/api/Register`, requestOptions).then(
-      (res) => {
-        if (res.status === 200) {
-          toast({
-            description: "Registration successfull",
-            status: "success",
-            duration: 3000,
-            isClosable: true,
-          });
-          cookies.set("id", email, { path: "/" });
-          console.log(cookies.get("id"));
-          Router.push("/dailyUpdate");
-        } else {
-          toast({
-            description: "Registration Failed",
-            status: "error",
-            duration: 5000,
-            isClosable: true,
-          });
-        }
+    fetch(
+      `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/auth/local/register`,
+      requestOptions
+    ).then(async (res:any) =>{ 
+      if (res.status === 200) {
+        toast({
+          description: "Registration successfull",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
+        let data = await res.json();
+        cookies.set("id", email, { path: "/" });
+        cookies.set("jwt", data.jwt , { path: "/" });
+        cookies.set("userid", data.user.id , { path: "/" });
+        console.log(cookies.get("id"));
+        Router.push("/dailyUpdate");
+      } else {
+        toast({
+          description: "Registration Failed",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
       }
-    );
+      })
   };
 
   return (

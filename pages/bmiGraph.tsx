@@ -34,11 +34,16 @@ const BmiGraph = () => {
   useEffect(() => {
     if (cookies.get("id")) {
       fetch(
-        `${process.env.NEXT_PUBLIC_URL}/api/userData?email=${cookies.get("id")}`
+        `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/users/${cookies.get("userid")}`,
+        {headers: {
+          Accept: "*/*",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${cookies.get("jwt")}`,
+        }}
       )
         .then((response) => response.json())
         .then((data) => {
-          setUserData(data[cookies.get("id")]);
+          setUserData(data.weight_data);
         })
         .catch((err) => console.log(err));
     } else {
@@ -48,16 +53,17 @@ const BmiGraph = () => {
   }, []);
 
   useEffect(() => {
-    console.log(userdata);
     if (userdata) {
+
       if (
         userdata.data_track[`${tDate.getFullYear()}`][`${tDate.getMonth() + 1}`]
       ) {
         setWeight(
           userdata.data_track[`${tDate.getFullYear()}`][
             `${tDate.getMonth() + 1}`
-          ].weight
+          ]
         );
+        // setmax( userdata.data_track[`${tDate.getFullYear()}`][`${tDate.getMonth() + 1}`].length)
       } else {
         setWeight([]);
       }
@@ -189,14 +195,14 @@ const BmiGraph = () => {
         setWeight(
           userdata.data_track[`${startDate.getFullYear()}`][
             `${startDate.getMonth() + 1}`
-          ].weight
+          ]
         );
 
         const max = Math.max.apply(
           null,
           userdata.data_track[`${startDate.getFullYear()}`][
             `${startDate.getMonth() + 1}`
-          ].weight
+          ]
         );
 
         if (userdata.bmi_range[0] > max) {

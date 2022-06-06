@@ -35,7 +35,7 @@ const Index = () => {
 
   useEffect(() => {
     if (cookies.get("id")) {
-      fetch(`${process.env.NEXT_PUBLIC_URL}/api/userData?email=${cookies.get("id")}`)
+      fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/auth/local?email=${cookies.get("id")}`)
         .then(() => Router.push("/bmiGraph"))
         .catch((err) => console.log(err));
     }
@@ -44,8 +44,14 @@ const Index = () => {
 
   const AuthUser = (event:any) => {
     event.preventDefault();
-    fetch(`${process.env.NEXT_PUBLIC_URL}/api/userAuth?email=${email}&password=${pass}`)
-      .then((res) => {
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({identifier:email,password:pass}),
+    };
+
+    fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/auth/local`,requestOptions)
+      .then(async (res:any) => {
         if(res.status === 200){
           toast({
             description: "Login successfull",
@@ -53,7 +59,10 @@ const Index = () => {
             duration: 3000,
             isClosable: true,
           });
+          let data = await res.json();
           cookies.set("id", email, { path: "/" });
+          cookies.set("jwt", data.jwt , { path: "/" });
+          cookies.set("userid", data.user.id , { path: "/" });
           console.log(cookies.get("id"));
           Router.push("/bmiGraph");
         }else{
