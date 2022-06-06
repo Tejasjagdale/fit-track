@@ -34,10 +34,9 @@ const Profile = () => {
             flexDirection="column"
             width="100wh"
             height="88vh"
-            bg="#1A202C"
+            bg="#1E2225"
             justifyContent="center"
             alignItems="center"
-            boxShadow="#1A202C"
           >
             <Card
               key={1}

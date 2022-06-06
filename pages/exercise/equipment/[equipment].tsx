@@ -19,11 +19,11 @@ import {
   WrapItem,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
-import NavBar from "../components/NavBar";
-import ProductSimple from "../components/Card1";
+import NavBar from "../../../components/NavBar";
+import ProductSimple from "../../../components/Card1";
 import { AiFillFilter } from "react-icons/ai";
 
-const List = () => {
+const List = ({ exercises }: any) => {
   let Muscles = [
     "Chest",
     "Forearms",
@@ -72,10 +72,9 @@ const List = () => {
   const [exercise, setExercise] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:1337/api/exercises")
-      .then((response) => response.json())
-      .then((data) => setExercise(data.data));
-  }, []);
+    setExercise(exercises);
+    console.log(exercises);
+  }, [exercises]);
 
   return (
     <>
@@ -233,7 +232,7 @@ const List = () => {
                     >
                       <TagLabel>Forearms</TagLabel>
                       <TagCloseButton />
-                    </Tag>{" "}
+                    </Tag>
                     <Tag
                       size="md"
                       borderRadius="full"
@@ -242,7 +241,7 @@ const List = () => {
                     >
                       <TagLabel>Forearms</TagLabel>
                       <TagCloseButton />
-                    </Tag>{" "}
+                    </Tag>
                     <Tag
                       size="md"
                       borderRadius="full"
@@ -269,3 +268,17 @@ const List = () => {
 };
 
 export default List;
+
+export async function getServerSideProps(context: {
+  query: { equipment: any };
+}) {
+  let req = await fetch(
+    `http://localhost:1337/api/exercises?filters[Equipment]=${context.query.equipment}`
+  );
+  let output: any = await req.json();
+  console.log(output.data);
+
+  return {
+    props: { exercises: output.data }, // will be passed to the page component as props
+  };
+}

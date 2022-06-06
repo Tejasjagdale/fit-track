@@ -58,6 +58,7 @@ const LinkItems: Array<LinkItemProps> = [
   { name: "Exercises", icon: FiCompass, href: "/exercises" },
   { name: "Name", icon: FiStar, href: "/name" },
   { name: "DailyUpdate", icon: FiSettings, href: "/dailyUpdate" },
+  { name: "AddWorkout", icon: FiSettings, href: "/addworkout" },
 ];
 
 export default function SidebarWithHeader({
