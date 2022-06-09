@@ -16,6 +16,7 @@ import Router from "next/router";
 import NavBar from "../components/NavBar";
 import {
   Button,
+  Flex,
   FormLabel,
   Switch,
   Table,
@@ -305,7 +306,16 @@ const BmiGraph = () => {
         // eslint-disable-next-line react/no-children-prop
         children={
           <>
-            <Button colorScheme={"teal"} onClick={(e)=>{setToggel(!toggel)}}>{toggel?"Table":"BMIgraph"}</Button>
+            <Flex width="100%"  m={5}>
+              <Button
+                colorScheme={"teal"}
+                onClick={(e) => {
+                  setToggel(!toggel);
+                }}
+              >
+                {toggel ? "Table" : "BMIgraph"}
+              </Button>
+            </Flex>
             <Wrap
               padding={{ lg: 20, md: 10, sm: 0 }}
               background="#1E2225"

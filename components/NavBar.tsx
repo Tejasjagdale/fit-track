@@ -101,7 +101,7 @@ export default function SidebarWithHeader({
       </Drawer>
       {/* mobilenav */}
       <MobileNav onOpen={onOpen} />
-      <Box ml={{ base: 0, md: 60 }} p="4">
+      <Box overflowX="hidden" ml={{ base: 0, md: 60 }} p="4">
         {children}
         <Tooltip hasArrow color="white" bg="green.500" fontSize="md" label="Scroll to top">
           <Button onClick={scrollUp}><StatUpArrow/></Button>

@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   Center,
+  Flex,
   Heading,
   HStack,
   Input,
@@ -15,43 +16,142 @@ import {
   SliderTrack,
   Stack,
   Text,
+  useToast,
   Wrap,
   WrapItem,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 const fitnessCalculatorFunctions = require("fitness-calculator");
 
 const Questions = () => {
+  const toast = useToast();
   const [page, setpage] = useState(1);
-  const [slide_val,setSlide_val] = useState(33.33)
+  const [slide_val, setSlide_val] = useState(25);
+  const [myCalorieNeeds, setCalorieNeeds] = useState(0);
+  const [myMacrosNeeds, setMacrosNeeds] = useState({});
+  const [activity, setActivity] = useState<any>(null);
+  const [wgoal, setWgoal] = useState<any>(null);
+  const [level, setLevel] = useState<any>(null);
+  const [ghw, setGHW] = useState<any>({
+    gender: null,
+    height: null,
+    weight: null,
+    gweight: null,
+    age: null,
+  });
 
   const nextpage = () => {
-    setpage(page + 1);
-    setSlide_val(slide_val + 33.33)
+    if (wgoal && page === 1) {
+      setpage(2);
+      setSlide_val(slide_val + 25);
+    } else {
+      if (
+        page === 2 &&
+        ghw.gender !== null &&
+        ghw.height !== null &&
+        ghw.weight !== null &&
+        ghw.gweight !== null &&
+        ghw.age !== null
+      ) {
+        setpage(3);
+        setSlide_val(slide_val + 25);
+      } else {
+        if (page === 3 && activity !== null) {
+          wgoal === "maintain" ? setpage(5) : setpage(4);
+          wgoal === "maintain"
+            ? setSlide_val(100)
+            : setSlide_val(slide_val + 25);
+        } else {
+          if (page === 4 && level !== null) {
+            setpage(5);
+            setSlide_val(100);
+          } else {
+            toast({
+              description: "Please Answer the Asked Questions! 🙏",
+              status: "error",
+              duration: 5000,
+              isClosable: true,
+              position: "top",
+            });
+          }
+        }
+      }
+    }
   };
+
+  useEffect(() => {
+    if (page === 5) {
+      try {
+        let cal = fitnessCalculatorFunctions.calorieNeeds(
+          ghw.gender,
+          parseInt(ghw.age),
+          parseInt(ghw.height),
+          parseInt(ghw.weight),
+          activity
+        );
+        if (wgoal === "maintain") {
+          setCalorieNeeds(cal.balance);
+        }
+        if (wgoal === "lose") {
+          level === 1
+            ? setCalorieNeeds(cal.mildWeightLoss)
+            : setCalorieNeeds(cal.heavyWeightLoss);
+        }
+        if (wgoal === "gain") {
+          level === 1
+            ? setCalorieNeeds(cal.mildWeightGain)
+            : setCalorieNeeds(cal.heavyWeightGain);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page]);
 
   const backpage = () => {
-    page !== 1 ? setpage(page - 1) : "";
-    page !== 1 ? setSlide_val(slide_val - 33.33):"";
+    page !== 1
+      ? page === 5 && wgoal === "maintain"
+        ? setpage(3)
+        : setpage(page - 1)
+      : "";
+    page !== 1
+      ? page === 5 && wgoal === "maintain"
+        ? setSlide_val(75)
+        : setSlide_val(slide_val - 25)
+      : "";
   };
-  const myCalorieNeeds = fitnessCalculatorFunctions.calorieNeeds(
-    "male",
-    22,
-    176,
-    73,
-    "active"
-  );
 
-  console.log(
-    `I will eat less than${myCalorieNeeds} to cut down my fat.`,
-    myCalorieNeeds
-  );
+  const Page1 = (goal: string) => {
+    setWgoal(goal);
+  };
+
+  const Page2 = (key: string, value: string) => {
+    ghw[key] = value;
+    setGHW(JSON.parse(JSON.stringify(ghw)));
+  };
+
+  useEffect(() => {
+    console.log(myCalorieNeeds);
+  }, [myCalorieNeeds]);
+
+  const Page3 = (active: string) => {
+    setActivity(active);
+  };
 
   return (
     <Center width="100%" margin={2}>
-      <Wrap width="450px" background="#191A1C" boxShadow="dark-lg">
+      <Wrap
+        width={{ md: "450px", sm: "100%" }}
+        background="#191A1C"
+        boxShadow="dark-lg"
+      >
         <WrapItem width="100%">
-          <Slider aria-label="slider-ex-1" value={slide_val} defaultValue={slide_val}>
+          <Slider
+            aria-label="slider-ex-1"
+            value={slide_val}
+            defaultValue={slide_val}
+          >
             <SliderTrack height="15px" background="white">
               <SliderFilledTrack backgroundColor="teal" />
             </SliderTrack>
@@ -66,21 +166,62 @@ const Questions = () => {
                   What is your weight goal?
                 </Heading>
               </Center>
-              <Stack p="5" width="100%" cursor="pointer">
-                <Stack width="100%" color="white">
-                  <Center p={5} bg="white" color="black">
+              <Stack p="10" width="100%">
+                <Stack
+                  cursor="pointer"
+                  width="100%"
+                  color="white"
+                  onClick={(e) => {
+                    Page1("lose");
+                  }}
+                >
+                  <Center
+                    p={5}
+                    borderColor="#2C7A7B"
+                    bg={wgoal === "lose" ? "#2C7A7B" : "white"}
+                    _hover={{ borderWidth: "5px" }}
+                    color={wgoal === "lose" ? "white" : "black"}
+                  >
                     <Heading fontSize={20}>Lose Weight</Heading>
                   </Center>
                 </Stack>
 
-                <Stack width="100%" color="white" cursor="pointer">
-                  <Center p={5} bg="white" color="black">
+                <Stack
+                  width="100%"
+                  color="white"
+                  m={5}
+                  cursor="pointer"
+                  onClick={(e) => {
+                    Page1("maintain");
+                  }}
+                >
+                  <Center
+                    p={5}
+                    borderColor="#2C7A7B"
+                    bg={wgoal === "maintain" ? "#2C7A7B" : "white"}
+                    _hover={{ borderWidth: "5px" }}
+                    color={wgoal === "maintain" ? "white" : "black"}
+                  >
                     <Heading fontSize={20}>Maintain Weight</Heading>
                   </Center>
                 </Stack>
 
-                <Stack width="100%" color="white">
-                  <Center p={5} bg="white" color="black">
+                <Stack
+                  width="100%"
+                  color="white"
+                  cursor="pointer"
+                  m={5}
+                  onClick={(e) => {
+                    Page1("gain");
+                  }}
+                >
+                  <Center
+                    p={5}
+                    borderColor="#2C7A7B"
+                    bg={wgoal === "gain" ? "#2C7A7B" : "white"}
+                    _hover={{ borderWidth: "5px" }}
+                    color={wgoal === "gain" ? "white" : "black"}
+                  >
                     <Heading fontSize={20}>Gain Weight</Heading>
                   </Center>
                 </Stack>
@@ -93,46 +234,60 @@ const Questions = () => {
                   Please select which sex we should use to calculate your
                   calorie needs.
                 </Heading>
-                <RadioGroup>
+                <RadioGroup
+                  onChange={(e) => {
+                    Page2("gender", e);
+                  }}
+                  value={ghw.gender}
+                >
                   <Stack direction="row">
-                    <Radio value="1">Male</Radio>
-                    <Radio value="2">Female</Radio>
+                    <Radio value="male">Male</Radio>
+                    <Radio value="female">Female</Radio>
                   </Stack>
                 </RadioGroup>
               </Stack>
 
               <Stack p={5} width="100%" spacing={2} color="white" m={2}>
-                <Heading fontSize={20}>How tall are you?</Heading>
+                <Heading fontSize={20}>What is your age?</Heading>
                 <HStack>
-                  <InputGroup>
+                  <InputGroup w={{ md: "60%", sm: "100%" }}>
                     <InputLeftElement pointerEvents="none" fontSize="1.2em" />
                     <Input
                       color="black"
                       bg="white"
-                      placeholder="Height (feet)"
+                      placeholder="Age (years)"
+                      onChange={(e) => {
+                        Page2("age", e.currentTarget.value);
+                      }}
+                      value={ghw.age}
                     />
                     <InputRightElement
                       // eslint-disable-next-line react/no-children-prop
-                      children="ft"
+                      children="yrs"
                       color="black"
                       bg="white"
                     />
                   </InputGroup>
+                </HStack>
+              </Stack>
 
-                  <InputGroup>
-                    <InputLeftElement
-                      pointerEvents="none"
-                      color="gray.300"
-                      fontSize="1.2em"
-                    />
+              <Stack p={5} width="100%" spacing={2} color="white" m={2}>
+                <Heading fontSize={20}>How tall are you?</Heading>
+                <HStack>
+                  <InputGroup w={{ md: "60%", sm: "100%" }}>
+                    <InputLeftElement pointerEvents="none" fontSize="1.2em" />
                     <Input
                       color="black"
                       bg="white"
-                      placeholder="Height (inches)"
+                      placeholder="Height (centimeters)"
+                      onChange={(e) => {
+                        Page2("height", e.currentTarget.value);
+                      }}
+                      value={ghw.height}
                     />
                     <InputRightElement
                       // eslint-disable-next-line react/no-children-prop
-                      children="in"
+                      children="cms"
                       color="black"
                       bg="white"
                     />
@@ -156,6 +311,10 @@ const Questions = () => {
                       color="black"
                       bg="white"
                       placeholder="Current Weight"
+                      onChange={(e) => {
+                        Page2("weight", e.currentTarget.value);
+                      }}
+                      value={ghw.weight}
                     />
                     <InputRightElement
                       // eslint-disable-next-line react/no-children-prop
@@ -180,7 +339,15 @@ const Questions = () => {
                       color="gray.300"
                       fontSize="1.2em"
                     />
-                    <Input color="black" bg="white" placeholder="Goal Weight" />
+                    <Input
+                      color="black"
+                      bg="white"
+                      onChange={(e) => {
+                        Page2("gweight", e.currentTarget.value);
+                      }}
+                      value={ghw.gweight}
+                      placeholder="Goal Weight"
+                    />
                     <InputRightElement
                       // eslint-disable-next-line react/no-children-prop
                       children="Kgs"
@@ -191,7 +358,7 @@ const Questions = () => {
                 </HStack>
               </Stack>
             </>
-          ) : (
+          ) : page === 3 ? (
             <>
               <WrapItem color="white">
                 <Heading width="100%" textAlign="center" p={5} fontSize={23}>
@@ -206,7 +373,13 @@ const Questions = () => {
                     m={5}
                     borderRadius={20}
                     spacing={2}
-                    bg="white"
+                    onClick={(e) => {
+                      Page3("sedentary");
+                    }}
+                    borderColor="#2C7A7B"
+                    bg={activity === "sedentary" ? "#2C7A7B" : "white"}
+                    _hover={{ borderWidth: "5px" }}
+                    color={activity === "sedentary" ? "white" : "black"}
                   >
                     <Heading fontSize={20}>Not Very Active</Heading>
                     <Text fontSize="md">
@@ -220,7 +393,13 @@ const Questions = () => {
                     m={5}
                     borderRadius={20}
                     spacing={2}
-                    bg="white"
+                    onClick={(e) => {
+                      Page3("light");
+                    }}
+                    borderColor="#2C7A7B"
+                    bg={activity === "light" ? "#2C7A7B" : "white"}
+                    _hover={{ borderWidth: "5px" }}
+                    color={activity === "light" ? "white" : "black"}
                   >
                     <Heading fontSize={20}>Lightly Active</Heading>
                     <Text fontSize="md">
@@ -235,7 +414,13 @@ const Questions = () => {
                     m={5}
                     borderRadius={20}
                     spacing={2}
-                    bg="white"
+                    onClick={(e) => {
+                      Page3("moderate");
+                    }}
+                    borderColor="#2C7A7B"
+                    bg={activity === "moderate" ? "#2C7A7B" : "white"}
+                    _hover={{ borderWidth: "5px" }}
+                    color={activity === "moderate" ? "white" : "black"}
                   >
                     <Heading fontSize={20}>Active</Heading>
                     <Text fontSize="md">
@@ -250,7 +435,13 @@ const Questions = () => {
                     m={5}
                     borderRadius={20}
                     spacing={2}
-                    bg="white"
+                    onClick={(e) => {
+                      Page3("active");
+                    }}
+                    borderColor="#2C7A7B"
+                    bg={activity === "active" ? "#2C7A7B" : "white"}
+                    _hover={{ borderWidth: "5px" }}
+                    color={activity === "active" ? "white" : "black"}
                   >
                     <Heading fontSize={20}>Very Active</Heading>
                     <Text fontSize="md">
@@ -265,7 +456,13 @@ const Questions = () => {
                     m={5}
                     borderRadius={20}
                     spacing={2}
-                    bg="white"
+                    onClick={(e) => {
+                      Page3("extreme");
+                    }}
+                    borderColor="#2C7A7B"
+                    bg={activity === "extreme" ? "#2C7A7B" : "white"}
+                    _hover={{ borderWidth: "5px" }}
+                    color={activity === "extreme" ? "white" : "black"}
                   >
                     <Heading fontSize={20}>Extreme Active</Heading>
                     <Text fontSize="md">
@@ -276,6 +473,119 @@ const Questions = () => {
                 </Box>
               </WrapItem>
             </>
+          ) : page === 4 ? (
+            <>
+              <Heading
+                p={4}
+                textAlign="center"
+                width="100%"
+                color="white"
+                fontSize={20}
+              >
+                What is your weekly goal?
+              </Heading>
+              <Text p={4} textAlign="center" width="100%" color="white">
+                {"Let's"} break down your overall health goal into a weekly one
+                you can maintain. Slow-and-steady is best!
+              </Text>
+              <Stack p="5" width="100%" cursor="pointer">
+                <Stack width="100%" color="white">
+                  <Center
+                    p={5}
+                    borderColor="#2C7A7B"
+                    bg={level === 1 ? "#2C7A7B" : "white"}
+                    _hover={{ borderWidth: "5px" }}
+                    color={level === 1 ? "white" : "black"}
+                    onClick={(e) => {
+                      setLevel(1);
+                    }}
+                  >
+                    <Heading textAlign="center" fontSize={20}>
+                      {wgoal === "lose"
+                        ? "Lose 0.5 Kilogram per week (Recommended)"
+                        : "Gain 0.25 Kilogram per week (Recommended)"}
+                    </Heading>
+                  </Center>
+                </Stack>
+
+                <Stack width="100%" color="white" cursor="pointer">
+                  <Center
+                    p={5}
+                    onClick={(e) => {
+                      setLevel(2);
+                    }}
+                    borderColor="#2C7A7B"
+                    bg={level === 2 ? "#2C7A7B" : "white"}
+                    _hover={{ borderWidth: "5px" }}
+                    color={level === 2 ? "white" : "black"}
+                  >
+                    <Heading textAlign="center" fontSize={20}>
+                      {wgoal === "lose"
+                        ? "Lose 1 Kilogram per week"
+                        : "Gain 0.5 Kilogram per week"}
+                    </Heading>
+                  </Center>
+                </Stack>
+              </Stack>
+            </>
+          ) : (
+            <>
+              <Heading p={4} textAlign="center" width="100%" color="white">
+                Congratulations!
+              </Heading>
+              <Text p={4} textAlign="center" width="100%" color="white">
+                Your daily net calorie goal is:
+              </Text>
+              <Heading
+                textAlign="center"
+                width="100%"
+                color="white"
+                fontSize={70}
+              >
+                {Math.round(myCalorieNeeds)}
+              </Heading>
+              <Text textAlign="center" width="100%" color="white">
+                calories
+              </Text>
+              <Text textAlign="center" width="100%" color="white">
+                With this plan, you should:
+              </Text>
+              <Heading
+                fontSize={20}
+                textAlign="center"
+                width="100%"
+                color="white"
+              >
+                {wgoal === "lose"
+                  ? `Lose weight by ${
+                      level === 1 ? "0.5" : "1"
+                    } kilogram pre week`
+                  : ""}
+                {wgoal === "gain"
+                  ? `Gain weight by ${
+                      level === 1 ? "0.25" : "0.5"
+                    } kilogram pre week`
+                  : ""}
+                {wgoal === "maintain" ? "Maintain your current weight" : ""}
+              </Heading>
+              <Flex p={4} justifyContent="center" width="100%">
+                <Button
+                  bg="#319795"
+                  _hover={{ bg: "#319795" }}
+                  onClick={(e) => {
+                    toast({
+                      description: "Sorry This Feature is not Avaliable for now 😢",
+                      status: "error",
+                      duration: 5000,
+                      isClosable: true,
+                      position: "top",
+                    });
+                  }}
+                >
+                  Start With Daily calories Tracking
+                </Button>
+              </Flex>
+            </>
           )}
         </Wrap>
 
@@ -284,12 +594,17 @@ const Questions = () => {
             colorScheme="teal"
             variant="outline"
             mr={5}
-            disabled={page === 1 ? true : false}
+            disabled={page <= 1 ? true : false}
             onClick={backpage}
           >
             Back
           </Button>
-          <Button colorScheme="teal" variant="solid" onClick={nextpage}>
+          <Button
+            colorScheme="teal"
+            disabled={page >= 5 ? true : false}
+            variant="solid"
+            onClick={nextpage}
+          >
             Next
           </Button>
         </WrapItem>

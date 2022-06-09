@@ -15,6 +15,7 @@ import {
   TagLabel,
   Text,
   useDisclosure,
+  useToast,
   Wrap,
   WrapItem,
 } from "@chakra-ui/react";
@@ -70,17 +71,39 @@ const List = () => {
   let Level = ["Beginner", "Intermediate", "Expert"];
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [exercise, setExercise] = useState([]);
+  const [curpage, setCurpage] = useState(1);
+  const [totalpage, setTotalpage] = useState(1);
+  const toast = useToast();
 
   useEffect(() => {
     fetch(
-      "http://localhost:1337/api/exercises?pagination[page]=1&pagination[pageSize]=50"
+      "http://localhost:1337/api/exercises?pagination[page]=1&pagination[pageSize]=10"
     )
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
+        console.log(data.meta)
+        setTotalpage(data.meta.pagination.pageCount);
         setExercise(data.data);
       });
   }, []);
+
+  const nextpage = () => {
+    curpage !== totalpage ? setCurpage(curpage + 1) : "";
+  };
+
+  const prevpage = () => {
+    curpage !== 1 ? setCurpage(curpage - 1) : "";
+  };
+
+  useEffect(() => {
+    fetch(
+      `http://localhost:1337/api/exercises?pagination[page]=${curpage}&pagination[pageSize]=10`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        setExercise(data.data);
+      });
+  }, [curpage]);
 
   return (
     <>
@@ -239,6 +262,34 @@ const List = () => {
                 <ProductSimple data={exc.attributes} />
               </WrapItem>
             ))}
+            <Wrap width="100%">
+              <WrapItem>
+                <Button
+                  colorScheme="teal"
+                  variant="outline"
+                  mr={5}
+                  disabled={curpage <= 1 ? true : false}
+                  onClick={prevpage}
+                >
+                  Previous
+                </Button>
+              </WrapItem>
+              <WrapItem mr={5}>
+                <Button
+                  colorScheme="teal"
+                  disabled={curpage >= totalpage ? true : false}
+                  variant="solid"
+                  onClick={nextpage}
+                >
+                  Next
+                </Button>
+              </WrapItem>
+              <WrapItem>
+                <Text ml={5} verticalAlign="center" color="white" fontSize="xl">
+                  {curpage} of {totalpage} pages
+                </Text>
+              </WrapItem>
+            </Wrap>
           </Wrap>
         }
       />
