@@ -14,7 +14,23 @@ import Cookies from "universal-cookie";
 import { useEffect } from "react";
 import Router from "next/router";
 import NavBar from "../components/NavBar";
-import { Wrap, WrapItem } from "@chakra-ui/react";
+import {
+  Button,
+  FormLabel,
+  Switch,
+  Table,
+  TableCaption,
+  TableContainer,
+  Tbody,
+  Td,
+  Tfoot,
+  Th,
+  Thead,
+  Tr,
+  useToast,
+  Wrap,
+  WrapItem,
+} from "@chakra-ui/react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Annotation from "chartjs-plugin-annotation";
@@ -22,6 +38,8 @@ import Annotation from "chartjs-plugin-annotation";
 const BmiGraph = () => {
   const cookies = new Cookies();
   let tDate = new Date();
+  const toast = useToast();
+  const [toggel, setToggel] = useState<boolean>(true);
 
   const [userdata, setUserData] = useState<any>();
   interface userdata {
@@ -30,16 +48,47 @@ const BmiGraph = () => {
   const [bmi, setbmi] = useState<Array<any>>([]);
   const [max, setmax] = useState(29);
   const [weight, setWeight] = useState([]);
+  const [startDate, setStartDate] = useState(new Date());
+
+  const Weight_Table = (weight: any) => {
+    return (
+      <TableContainer color="white">
+        <Table variant="simple">
+          <TableCaption bg="white">Your montly weight table</TableCaption>
+          <Thead bg="white">
+            <Tr color="white">
+              <Th>DATE</Th>
+              <Th>Weight</Th>
+            </Tr>
+          </Thead>
+          <Tbody>
+            {weight.weight.map((w: number, index: number) => (
+              <Tr key={index}>
+                <Td padding={5}>{`${index + 1}/${
+                  startDate.getMonth() + 1
+                }/${startDate.getFullYear()}`}</Td>
+                <Td padding={5}>{w ? `${w} kg` : "not entered"} </Td>
+              </Tr>
+            ))}
+          </Tbody>
+        </Table>
+      </TableContainer>
+    );
+  };
 
   useEffect(() => {
     if (cookies.get("id")) {
       fetch(
-        `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/users/${cookies.get("userid")}`,
-        {headers: {
-          Accept: "*/*",
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${cookies.get("jwt")}`,
-        }}
+        `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/users/${cookies.get(
+          "userid"
+        )}`,
+        {
+          headers: {
+            Accept: "*/*",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${cookies.get("jwt")}`,
+          },
+        }
       )
         .then((response) => response.json())
         .then((data) => {
@@ -54,7 +103,6 @@ const BmiGraph = () => {
 
   useEffect(() => {
     if (userdata) {
-
       if (
         userdata.data_track[`${tDate.getFullYear()}`][`${tDate.getMonth() + 1}`]
       ) {
@@ -106,7 +154,15 @@ const BmiGraph = () => {
     borderColor: "rgb(101, 33, 171)",
     borderWidth: 1,
     click: function () {
-      console.log("Box annotation clicked");
+      toast({
+        description: `Your BMI Weight range is between ${Math.floor(
+          bmi[0]
+        )} to ${Math.floor(bmi[1])}`,
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+        position: "top",
+      });
     },
     drawTime: "beforeDatasetsDraw",
     xMax: [max],
@@ -170,8 +226,6 @@ const BmiGraph = () => {
     labels.push(i);
     i++;
   }
-
-  const [startDate, setStartDate] = useState(new Date());
 
   function daysInMonth(month: any, year: any) {
     return new Date(year, month, 0).getDate();
@@ -250,25 +304,38 @@ const BmiGraph = () => {
       <NavBar
         // eslint-disable-next-line react/no-children-prop
         children={
-          <Wrap padding={{ lg: 20, md: 10, sm: 0 }} background="#1E2225">
-            <WrapItem width="100vw" justifyContent="center">
-              <DatePicker
-                selected={startDate}
-                onChange={(date: Date) => setStartDate(date)}
-                dateFormat="MMMM yyyy"
-                showMonthYearPicker
-                inline
-              />
-            </WrapItem>
-
-            <WrapItem width="100vw">
-              <Line
-                options={options}
-                data={data}
-                style={{ height: 500, width: "auto" }}
-              />
-            </WrapItem>
-          </Wrap>
+          <>
+            <Button colorScheme={"teal"} onClick={(e)=>{setToggel(!toggel)}}>{toggel?"Table":"BMIgraph"}</Button>
+            <Wrap
+              padding={{ lg: 20, md: 10, sm: 0 }}
+              background="#1E2225"
+              align="center"
+              justify="center"
+            >
+              <WrapItem width="100vw" justifyContent="center">
+                <DatePicker
+                  selected={startDate}
+                  onChange={(date: Date) => setStartDate(date)}
+                  dateFormat="MMMM yyyy"
+                  showMonthYearPicker
+                  inline
+                />
+              </WrapItem>
+              {toggel ? (
+                <WrapItem width="100vw">
+                  <Line
+                    options={options}
+                    data={data}
+                    style={{ height: 500, width: "auto" }}
+                  />
+                </WrapItem>
+              ) : (
+                <WrapItem width="100vw" justifyContent="center">
+                  <Weight_Table weight={weight} />
+                </WrapItem>
+              )}
+            </Wrap>
+          </>
         }
       />
     </>

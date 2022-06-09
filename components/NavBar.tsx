@@ -22,16 +22,17 @@ import {
   MenuList,
   Image,
   Heading,
+  Button,
+  Tooltip,
+  StatUpArrow,
 } from "@chakra-ui/react";
 
 import {
   FiHome,
   FiTrendingUp,
   FiCompass,
-  FiStar,
   FiSettings,
   FiMenu,
-  FiBell,
   FiChevronDown,
 } from "react-icons/fi";
 import { IconType } from "react-icons";
@@ -43,10 +44,20 @@ import { GiOpenedFoodCan } from "react-icons/gi";
 
 const cookies = new Cookies();
 
+const scrollUp = () => {
+  const doc = document.documentElement;
+  const top = (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
+
+  if (top > 0) {
+    window.scrollTo(0, top - 80);
+    setTimeout(scrollUp, 10);
+  }
+};
+
 const Logout = (event: any) => {
   event.preventDefault();
   cookies.remove("id");
-  Router.push("/")
+  Router.push("/");
 };
 
 interface LinkItemProps {
@@ -60,7 +71,7 @@ const LinkItems: Array<LinkItemProps> = [
   { name: "Exercises", icon: FiCompass, href: "/exercises" },
   { name: "DailyUpdate", icon: FiSettings, href: "/dailyUpdate" },
   { name: "AddWorkout", icon: FiSettings, href: "/addworkout" },
-  { name: "Food", icon: GiOpenedFoodCan, href: "/Food" },
+  { name: "Food", icon: GiOpenedFoodCan, href: "/food" },
 ];
 
 export default function SidebarWithHeader({
@@ -92,6 +103,9 @@ export default function SidebarWithHeader({
       <MobileNav onOpen={onOpen} />
       <Box ml={{ base: 0, md: 60 }} p="4">
         {children}
+        <Tooltip hasArrow color="white" bg="green.500" fontSize="md" label="Scroll to top">
+          <Button onClick={scrollUp}><StatUpArrow/></Button>
+        </Tooltip>
       </Box>
     </Box>
   );
@@ -268,12 +282,8 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
                   Profile
                 </MenuItem>
               </Link>
-
               <MenuItem _hover={{ bg: "white", color: "black" }}>
                 Settings
-              </MenuItem>
-              <MenuItem _hover={{ bg: "white", color: "black" }}>
-                Billing
               </MenuItem>
               <MenuDivider />
               <MenuItem

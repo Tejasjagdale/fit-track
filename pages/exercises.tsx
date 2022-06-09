@@ -72,9 +72,14 @@ const List = () => {
   const [exercise, setExercise] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:1337/api/exercises")
+    fetch(
+      "http://localhost:1337/api/exercises?pagination[page]=1&pagination[pageSize]=50"
+    )
       .then((response) => response.json())
-      .then((data) => setExercise(data.data));
+      .then((data) => {
+        console.log(data);
+        setExercise(data.data);
+      });
   }, []);
 
   return (
@@ -216,33 +221,6 @@ const List = () => {
                 </WrapItem>
                 <WrapItem width="100%">
                   <HStack maxWidth="100%" spacing={4}>
-                    <Tag
-                      size="md"
-                      borderRadius="full"
-                      variant="solid"
-                      colorScheme="green"
-                    >
-                      <TagLabel>Forearms</TagLabel>
-                      <TagCloseButton />
-                    </Tag>
-                    <Tag
-                      size="md"
-                      borderRadius="full"
-                      variant="solid"
-                      colorScheme="green"
-                    >
-                      <TagLabel>Forearms</TagLabel>
-                      <TagCloseButton />
-                    </Tag>{" "}
-                    <Tag
-                      size="md"
-                      borderRadius="full"
-                      variant="solid"
-                      colorScheme="green"
-                    >
-                      <TagLabel>Forearms</TagLabel>
-                      <TagCloseButton />
-                    </Tag>{" "}
                     <Tag
                       size="md"
                       borderRadius="full"

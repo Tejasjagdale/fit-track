@@ -14,7 +14,7 @@ import {
   FormControl,
   FormHelperText,
   InputRightElement,
-  useToast
+  useToast,
 } from "@chakra-ui/react";
 import { FaUserAlt, FaLock } from "react-icons/fa";
 import Header from "../components/Header";
@@ -25,7 +25,7 @@ const CFaUserAlt = chakra(FaUserAlt);
 const CFaLock = chakra(FaLock);
 
 const Index = () => {
-  const toast = useToast()
+  const toast = useToast();
   const [showPassword, setShowPassword] = useState(false);
   const [email, setemail] = useState("");
   const [pass, setpass] = useState("");
@@ -35,46 +35,62 @@ const Index = () => {
 
   useEffect(() => {
     if (cookies.get("id")) {
-      fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/auth/local?email=${cookies.get("id")}`)
+      fetch(
+        `${
+          process.env.NEXT_PUBLIC_STRAPI_URL
+        }/api/auth/local?email=${cookies.get("id")}`
+      )
         .then(() => Router.push("/bmiGraph"))
         .catch((err) => console.log(err));
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const AuthUser = (event:any) => {
+  const AuthUser = (event: any) => {
     event.preventDefault();
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({identifier:email,password:pass}),
+      body: JSON.stringify({ identifier: email, password: pass }),
     };
 
-    fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/auth/local`,requestOptions)
-      .then(async (res:any) => {
-        if(res.status === 200){
+    fetch(
+      `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/auth/local`,
+      requestOptions
+    )
+      .then(async (res: any) => {
+        if (res.status === 200) {
           toast({
             description: "Login successfull",
             status: "success",
             duration: 3000,
             isClosable: true,
+            position: "top",
           });
           let data = await res.json();
           cookies.set("id", email, { path: "/" });
-          cookies.set("jwt", data.jwt , { path: "/" });
-          cookies.set("userid", data.user.id , { path: "/" });
-          console.log(cookies.get("id"));
+          cookies.set("jwt", data.jwt, { path: "/" });
+          cookies.set("userid", data.user.id, { path: "/" });
           Router.push("/bmiGraph");
-        }else{
+        } else {
           toast({
-            description: 'User Details Were not Found',
+            description: "User Details Were not Found",
             status: "error",
             duration: 5000,
             isClosable: true,
+            position: "top",
           });
         }
-      }).catch((err) => {
-        console.log(err)
+      })
+      .catch((err) => {
+        console.log(err);
+        toast({
+          description: "Something went wrong",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+          position: "top",
+        });
       });
   };
 
@@ -107,11 +123,8 @@ const Index = () => {
               >
                 <FormControl>
                   <InputGroup>
-                    <InputLeftElement
-                      pointerEvents="none"
-                      color="black"
-                    >
-                    <CFaUserAlt color="black" />
+                    <InputLeftElement pointerEvents="none" color="black">
+                      <CFaUserAlt color="black" />
                     </InputLeftElement>
 
                     <Input
@@ -128,11 +141,8 @@ const Index = () => {
                 </FormControl>
                 <FormControl>
                   <InputGroup>
-                    <InputLeftElement
-                      pointerEvents="none"
-                      color="black"
-                    >
-                    <CFaLock color="black" />
+                    <InputLeftElement pointerEvents="none" color="black">
+                      <CFaLock color="black" />
                     </InputLeftElement>
                     <Input
                       type={showPassword ? "text" : "password"}

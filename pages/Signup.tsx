@@ -74,6 +74,7 @@ const Signup = () => {
           status: "success",
           duration: 3000,
           isClosable: true,
+          position:'top'
         });
         let data = await res.json();
         cookies.set("id", email, { path: "/" });
@@ -87,6 +88,7 @@ const Signup = () => {
           status: "error",
           duration: 5000,
           isClosable: true,
+          position:'top'
         });
       }
       })

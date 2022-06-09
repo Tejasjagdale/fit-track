@@ -117,6 +117,7 @@ const DailyUpdate = () => {
           status: "success",
           duration: 3000,
           isClosable: true,
+          position:'top'
         });
         setchange(!change);
       } else {
@@ -125,6 +126,7 @@ const DailyUpdate = () => {
           status: "error",
           duration: 3000,
           isClosable: true,
+          position:'top'
         });
       }
     });
@@ -139,12 +141,11 @@ const DailyUpdate = () => {
             flexDirection="column"
             width="100wh"
             height="88vh"
-            bg="#1A202C"
             justifyContent="center"
             alignItems="center"
-            boxShadow="#1A202C"
+            background="#1E2225" 
           >
-            <Box w="300px" bg="#E7EEF1" mt={10}>
+            <Box w="300px" bg="#E7EEF1" mt={10} boxShadow='dark-lg'>
               <Image
                 src="https://images-platform.99static.com/3CzoydPCp5pXI83EODhEOibNLmk=/100x100:900x900/500x500/top/smart/99designs-contests-attachments/93/93858/attachment_93858260"
                 alt="Card Image"
