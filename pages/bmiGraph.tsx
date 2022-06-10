@@ -64,7 +64,16 @@ const BmiGraph = () => {
           </Thead>
           <Tbody>
             {weight.weight.map((w: number, index: number) => (
-              <Tr key={index}>
+              <Tr
+                key={index}
+                bgColor={
+                  w
+                    ? w <= bmi[1] && bmi[0] <= w
+                      ? "green.500"
+                      : "red.500"
+                    : "grey"
+                }
+              >
                 <Td padding={5}>{`${index + 1}/${
                   startDate.getMonth() + 1
                 }/${startDate.getFullYear()}`}</Td>
@@ -306,7 +315,7 @@ const BmiGraph = () => {
         // eslint-disable-next-line react/no-children-prop
         children={
           <>
-            <Flex width="100%"  m={5}>
+            <Flex width="100%" m={5}>
               <Button
                 colorScheme={"teal"}
                 onClick={(e) => {

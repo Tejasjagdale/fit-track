@@ -31,16 +31,18 @@ import {
   FiHome,
   FiTrendingUp,
   FiCompass,
-  FiSettings,
   FiMenu,
   FiChevronDown,
 } from "react-icons/fi";
+import { IoIosFitness } from "react-icons/io";
 import { IconType } from "react-icons";
 import { ReactText } from "react";
 import Link from "next/link";
 import Cookies from "universal-cookie";
 import Router from "next/router";
 import { GiOpenedFoodCan } from "react-icons/gi";
+import { FaEdit } from "react-icons/fa";
+import { MdAddCircleOutline } from "react-icons/md";
 
 const cookies = new Cookies();
 
@@ -68,9 +70,9 @@ interface LinkItemProps {
 const LinkItems: Array<LinkItemProps> = [
   { name: "Home", icon: FiHome, href: "/Profile" },
   { name: "BmiGraph", icon: FiTrendingUp, href: "/bmiGraph" },
-  { name: "Exercises", icon: FiCompass, href: "/exercises" },
-  { name: "DailyUpdate", icon: FiSettings, href: "/dailyUpdate" },
-  { name: "AddWorkout", icon: FiSettings, href: "/addworkout" },
+  { name: "Exercises", icon: IoIosFitness, href: "/exercises" },
+  { name: "DailyUpdate", icon: FaEdit, href: "/dailyUpdate" },
+  { name: "AddWorkout", icon: MdAddCircleOutline, href: "/addworkout" },
   { name: "Food", icon: GiOpenedFoodCan, href: "/food" },
 ];
 
@@ -103,8 +105,16 @@ export default function SidebarWithHeader({
       <MobileNav onOpen={onOpen} />
       <Box overflowX="hidden" ml={{ base: 0, md: 60 }} p="4">
         {children}
-        <Tooltip hasArrow color="white" bg="green.500" fontSize="md" label="Scroll to top">
-          <Button onClick={scrollUp}><StatUpArrow/></Button>
+        <Tooltip
+          hasArrow
+          color="white"
+          bg="green.500"
+          fontSize="md"
+          label="Scroll to top"
+        >
+          <Button onClick={scrollUp}>
+            <StatUpArrow />
+          </Button>
         </Tooltip>
       </Box>
     </Box>

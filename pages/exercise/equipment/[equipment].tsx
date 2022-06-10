@@ -20,10 +20,11 @@ import {
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import NavBar from "../../../components/NavBar";
-import ProductSimple from "../../../components/Card1";
+import ProductSimple from "../../../components/ExerciseCard";
 import { AiFillFilter } from "react-icons/ai";
+import { useRouter } from "next/router";
 
-const List = ({ exercises }: any) => {
+const List = ({ totalPage, exercises }: any) => {
   let Muscles = [
     "Chest",
     "Forearms",
@@ -70,11 +71,34 @@ const List = ({ exercises }: any) => {
   let Level = ["Beginner", "Intermediate", "Expert"];
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [exercise, setExercise] = useState([]);
+  const [curpage, setCurpage] = useState(1);
+  const [totalpage, setTotalpage] = useState(1);
+  const router = useRouter();
+  const equipment =  router.query.equipment;
+
 
   useEffect(() => {
+    setTotalpage(totalPage);
     setExercise(exercises);
-    console.log(exercises);
-  }, [exercises]);
+  }, [exercises, totalPage]);
+
+  const nextpage = () => {
+    curpage !== totalpage ? setCurpage(curpage + 1) : "";
+  };
+
+  const prevpage = () => {
+    curpage !== 1 ? setCurpage(curpage - 1) : "";
+  };
+
+  useEffect(() => {
+    fetch(
+      `http://localhost:1337/api/exercises?filters[Equipment]=${equipment}&&pagination[page]=${curpage}&pagination[pageSize]=10`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        setExercise(data.data);
+      });
+  }, [curpage, equipment]);
 
   return (
     <>
@@ -260,6 +284,34 @@ const List = ({ exercises }: any) => {
                 <ProductSimple data={exc.attributes} />
               </WrapItem>
             ))}
+            <Wrap width="100%">
+              <WrapItem>
+                <Button
+                  colorScheme="teal"
+                  variant="outline"
+                  mr={5}
+                  disabled={curpage <= 1 ? true : false}
+                  onClick={prevpage}
+                >
+                  Previous
+                </Button>
+              </WrapItem>
+              <WrapItem mr={5}>
+                <Button
+                  colorScheme="teal"
+                  disabled={curpage >= totalpage ? true : false}
+                  variant="solid"
+                  onClick={nextpage}
+                >
+                  Next
+                </Button>
+              </WrapItem>
+              <WrapItem>
+                <Text ml={5} verticalAlign="center" color="white" fontSize="xl">
+                  page {curpage} of {totalpage} pages
+                </Text>
+              </WrapItem>
+            </Wrap>
           </Wrap>
         }
       />
@@ -273,12 +325,14 @@ export async function getServerSideProps(context: {
   query: { equipment: any };
 }) {
   let req = await fetch(
-    `http://localhost:1337/api/exercises?filters[Equipment]=${context.query.equipment}`
+    `http://localhost:1337/api/exercises?filters[Equipment]=${context.query.equipment}&&pagination[page]=1&pagination[pageSize]=10`
   );
   let output: any = await req.json();
-  console.log(output.data);
 
   return {
-    props: { exercises: output.data }, // will be passed to the page component as props
+    props: {
+      totalPage: output.meta.pagination.pageCount,
+      exercises: output.data,
+    }, // will be passed to the page component as props
   };
 }

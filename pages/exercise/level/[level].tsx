@@ -20,7 +20,7 @@ import {
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import NavBar from "../../../components/NavBar";
-import ProductSimple from "../../../components/Card1";
+import ProductSimple from "../../../components/ExerciseCard";
 import { AiFillFilter } from "react-icons/ai";
 
 const List = ({ exercises }: any) => {

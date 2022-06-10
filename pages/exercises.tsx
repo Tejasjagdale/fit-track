@@ -21,7 +21,7 @@ import {
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import NavBar from "../components/NavBar";
-import ProductSimple from "../components/Card1";
+import ProductSimple from "../components/ExerciseCard";
 import { AiFillFilter } from "react-icons/ai";
 
 const List = () => {
@@ -81,7 +81,6 @@ const List = () => {
     )
       .then((response) => response.json())
       .then((data) => {
-        console.log(data.meta)
         setTotalpage(data.meta.pagination.pageCount);
         setExercise(data.data);
       });
@@ -286,7 +285,7 @@ const List = () => {
               </WrapItem>
               <WrapItem>
                 <Text ml={5} verticalAlign="center" color="white" fontSize="xl">
-                  {curpage} of {totalpage} pages
+                  page {curpage} of {totalpage} pages
                 </Text>
               </WrapItem>
             </Wrap>

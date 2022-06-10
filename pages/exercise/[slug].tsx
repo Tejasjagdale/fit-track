@@ -21,8 +21,7 @@ import ImageSlider from "../../components/ImageSlider";
 import SocialProfileWithImageHorizontal from "../../components/Card2";
 import Router from "next/router";
 
-const name = ({exercise}:any) => {
-
+const name = ({ exercise }: any) => {
   return (
     <>
       <NavBar
@@ -207,7 +206,7 @@ const name = ({exercise}:any) => {
                   Decline Dumbbell Flyes Images
                 </Text>
                 <Center width={{ md: "48%", sm: "100%" }} mb="5" mt="5">
-                  <ImageSlider slides={exercise.ext_img} />
+                  <ImageSlider hprop={"auto"} slides={exercise.ext_img} />
                 </Center>
               </WrapItem>
 
@@ -234,7 +233,13 @@ const name = ({exercise}:any) => {
 
                     <WrapItem width={{ md: "48%", sm: "100%" }}>
                       <OrderedList>
-                        {exercise.instructions.map((intro: string, index: number) => <ListItem key={index} mb={5}>{intro}</ListItem> )}
+                        {exercise.instructions.map(
+                          (intro: string, index: number) => (
+                            <ListItem key={index} mb={5}>
+                              {intro}
+                            </ListItem>
+                          )
+                        )}
                       </OrderedList>
                     </WrapItem>
                   </Wrap>
@@ -287,11 +292,13 @@ const name = ({exercise}:any) => {
 
 export default name;
 
-export async function getServerSideProps(context: { query: { slug: any; }; }) {
-    let req = await fetch(`http://localhost:1337/api/exercises?filters[slug]=${context.query.slug}`)
-    let output:any =  await req.json()
-    
-    return {
-      props: {exercise:output.data[0].attributes}, // will be passed to the page component as props
-    }
-  }
+export async function getServerSideProps(context: { query: { slug: any } }) {
+  let req = await fetch(
+    `http://localhost:1337/api/exercises?filters[slug]=${context.query.slug}`
+  );
+  let output: any = await req.json();
+
+  return {
+    props: { exercise: output.data[0].attributes }, // will be passed to the page component as props
+  };
+}

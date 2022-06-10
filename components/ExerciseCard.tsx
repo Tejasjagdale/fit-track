@@ -51,28 +51,30 @@ export default function blogPostWithImage({ data }: any) {
   return (
     <Center>
       <Box
-        maxW={"300px"}
+        maxW={"325px"}
+        minH={"450px"}
         w={"full"}
-        bg="whiteAlpha.900"
+        bg="#191A1C"
+        color="white"
         rounded={"xl"}
         p={6}
         overflow={"hidden"}
+        boxShadow="dark-lg"
       >
         <Box
-          h={"160px"}
+          maxH={"160px"}
           bg={"gray.100"}
           mt={-6}
           mx={-6}
           mb={6}
           pos={"relative"}
         >
-          <ImageSlider slides={data.ext_img ? data.ext_img : []} />
+          <ImageSlider hprop={"170px"}  slides={data.ext_img ? data.ext_img : []} />
         </Box>
-        <Stack mt={16}>
+        <Stack >
           <Text
-            color="#161B25"
+            color="white"
             fontWeight={900}
-            textColor="#161B25"
             fontSize={"17"}
             fontFamily={"body"}
           >

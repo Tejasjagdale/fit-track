@@ -32,6 +32,8 @@ const Questions = () => {
   const [activity, setActivity] = useState<any>(null);
   const [wgoal, setWgoal] = useState<any>(null);
   const [level, setLevel] = useState<any>(null);
+  const [date,setDate] = useState(new Date())
+
   const [ghw, setGHW] = useState<any>({
     gender: null,
     height: null,
@@ -82,6 +84,25 @@ const Questions = () => {
   useEffect(() => {
     if (page === 5) {
       try {
+        let wdiff = Math.abs(ghw.gweight - ghw.weight);
+
+        if (wgoal === "lose") {
+          let val = level === 1 ? wdiff / 0.25 : wdiff / 0.5;
+          console.log(val * 7);
+        }
+        if (wgoal === "gain") {
+          let val = level === 1 ? wdiff / 0.5 : wdiff / 1;
+          console.log(val * 7);
+        }
+
+        let addDays = (days: number) => {
+          var futureDate = new Date();
+          futureDate.setDate(futureDate.getDate() + days);
+          return futureDate;
+        };
+
+        console.log(addDays(10));
+
         let cal = fitnessCalculatorFunctions.calorieNeeds(
           ghw.gender,
           parseInt(ghw.age),
@@ -571,10 +592,12 @@ const Questions = () => {
               <Flex p={4} justifyContent="center" width="100%">
                 <Button
                   bg="#319795"
+                  color="white"
                   _hover={{ bg: "#319795" }}
                   onClick={(e) => {
                     toast({
-                      description: "Sorry This Feature is not Avaliable for now 😢",
+                      description:
+                        "Sorry This Feature is not Avaliable for now 😢",
                       status: "error",
                       duration: 5000,
                       isClosable: true,

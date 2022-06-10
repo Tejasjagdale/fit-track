@@ -143,7 +143,8 @@ const DailyUpdate = () => {
             height="88vh"
             justifyContent="center"
             alignItems="center"
-            background="#1E2225" 
+            background="#1E2225"
+            overflowY="hidden"
           >
             <Box w="300px" bg="#E7EEF1" mt={10} boxShadow='dark-lg'>
               <Image
