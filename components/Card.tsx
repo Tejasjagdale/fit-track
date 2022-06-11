@@ -9,23 +9,22 @@ import {
   Editable,
   EditablePreview,
   EditableInput,
+  HStack,
 } from "@chakra-ui/react";
 import { AiFillSave } from "react-icons/ai";
 
-function Card(props:any) {
-  const { product, summary, longLine } = props;
-
+function Card(props: any) {
   return (
     <Box
       p={4}
-      display={{ md: "flex" }}
-      maxWidth="32rem"
+      display={{ md: "flex", sm: "block" }}
+      width={{ md: "500px", sm: "350px" }}
       borderWidth={1}
-      margin={2}
+      margin={5}
       background="white"
     >
       <Image
-        maxWidth="200px"
+        width="200px"
         margin="auto"
         minWidth="10rem"
         src="https://cdn-icons-png.flaticon.com/512/387/387564.png"
@@ -38,25 +37,27 @@ function Card(props:any) {
         ml={{ md: 6 }}
       >
         <FormControl>
-          <FormLabel
-            fontWeight="bold"
-            textTransform="uppercase"
-            fontSize="md"
-            color="black"
-          >
-            Name:-
-          </FormLabel>
-          <Editable
-            fontWeight="bold"
-            fontSize="lg"
-            letterSpacing="wide"
-            color="teal.600"
-            width="250px"
-            defaultValue="Tejas Jagdale"
-          >
-            <EditablePreview />
-            <EditableInput />
-          </Editable>
+          <Stack>
+            <FormLabel
+              fontWeight="bold"
+              textTransform="uppercase"
+              fontSize="md"
+              color="black"
+            >
+              Name:-
+            </FormLabel>
+            <Editable
+              fontWeight="bold"
+              fontSize="lg"
+              letterSpacing="wide"
+              color="teal.600"
+              width="250px"
+              value={props.data.name}
+            >
+              <EditablePreview />
+              <EditableInput />
+            </Editable>
+          </Stack>
 
           <FormLabel
             fontWeight="bold"
@@ -71,10 +72,10 @@ function Card(props:any) {
             fontSize="lg"
             letterSpacing="wide"
             color="teal.600"
-            defaultValue="173 cm"
+            value={`${props.data.height} cm`}
           >
-            <EditablePreview  />
-            <EditableInput  />
+            <EditablePreview />
+            <EditableInput />
           </Editable>
 
           <FormLabel
@@ -90,7 +91,7 @@ function Card(props:any) {
             fontSize="lg"
             letterSpacing="wide"
             color="teal.600"
-            defaultValue="20 years"
+            value={`${props.data.age} years`}
           >
             <EditablePreview />
             <EditableInput />
@@ -102,26 +103,49 @@ function Card(props:any) {
             fontSize="md"
             color="black"
           >
-            Current Weight:-
+            Email:-
           </FormLabel>
           <Editable
             fontWeight="bold"
             fontSize="lg"
             letterSpacing="wide"
             color="teal.600"
-            defaultValue="50 kgs"
+            value={props.data.email}
+          >
+            <EditablePreview />
+            <EditableInput />
+          </Editable>
+
+          <FormLabel
+            fontWeight="bold"
+            textTransform="uppercase"
+            fontSize="md"
+            color="black"
+          >
+            Date of Birth:-
+          </FormLabel>
+          <Editable
+            fontWeight="bold"
+            fontSize="lg"
+            letterSpacing="wide"
+            color="teal.600"
+            value={props.data.dob}
           >
             <EditablePreview />
             <EditableInput />
           </Editable>
         </FormControl>
+
         <Button
           maxWidth="135px"
           _hover={{ bg: "teal", color: "white" }}
           bg="teal.400"
           color="white"
           my={2}
-          rightIcon={<AiFillSave/>}
+          rightIcon={<AiFillSave />}
+          onClick={(e) => {
+            alert("sorry for now you cant edit your profile!");
+          }}
         >
           Save Changes
         </Button>

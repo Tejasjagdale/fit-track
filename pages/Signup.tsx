@@ -42,10 +42,15 @@ const Signup = () => {
 
   const SignUp = (event: any) => {
     event.preventDefault();
-    let Height:number =  parseInt(height)
-    let bmi_range = [19*(Height/100)*(Height/100),25*(Height/100)*(Height/100)]
+    let Height: number = parseInt(height);
+    let bmi_range = [
+      19 * (Height / 100) * (Height / 100),
+      25 * (Height / 100) * (Height / 100),
+    ];
 
-    let fdob:string = `${DOB.split("/")[2]}-${DOB.split("/")[1]}-${DOB.split("/")[0]}`;
+    let fdob: string = `${DOB.split("/")[2]}-${DOB.split("/")[1]}-${
+      DOB.split("/")[0]
+    }`;
 
     const requestOptions = {
       method: "POST",
@@ -61,25 +66,35 @@ const Signup = () => {
           bmi_range: bmi_range,
           data_track: {},
         },
+        playlist: [],
+        schedule: {
+          monday: [],
+          tuesday: [],
+          wednesday: [],
+          thursday: [],
+          friday: [],
+          saturday: [],
+          sunday: [],
+        },
       }),
     };
 
     fetch(
       `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/auth/local/register`,
       requestOptions
-    ).then(async (res:any) =>{ 
+    ).then(async (res: any) => {
       if (res.status === 200) {
         toast({
           description: "Registration successfull",
           status: "success",
           duration: 3000,
           isClosable: true,
-          position:'top'
+          position: "top",
         });
         let data = await res.json();
         cookies.set("id", email, { path: "/" });
-        cookies.set("jwt", data.jwt , { path: "/" });
-        cookies.set("userid", data.user.id , { path: "/" });
+        cookies.set("jwt", data.jwt, { path: "/" });
+        cookies.set("userid", data.user.id, { path: "/" });
         console.log(cookies.get("id"));
         Router.push("/dailyUpdate");
       } else {
@@ -88,10 +103,10 @@ const Signup = () => {
           status: "error",
           duration: 5000,
           isClosable: true,
-          position:'top'
+          position: "top",
         });
       }
-      })
+    });
   };
 
   return (

@@ -1,3 +1,4 @@
+/* eslint-disable react/no-children-prop */
 import {
   Box,
   Button,
@@ -32,7 +33,7 @@ const Questions = () => {
   const [activity, setActivity] = useState<any>(null);
   const [wgoal, setWgoal] = useState<any>(null);
   const [level, setLevel] = useState<any>(null);
-  const [date,setDate] = useState(new Date())
+  const [fdate, setFdate] = useState(new Date());
 
   const [ghw, setGHW] = useState<any>({
     gender: null,
@@ -86,22 +87,20 @@ const Questions = () => {
       try {
         let wdiff = Math.abs(ghw.gweight - ghw.weight);
 
-        if (wgoal === "lose") {
-          let val = level === 1 ? wdiff / 0.25 : wdiff / 0.5;
-          console.log(val * 7);
-        }
-        if (wgoal === "gain") {
-          let val = level === 1 ? wdiff / 0.5 : wdiff / 1;
-          console.log(val * 7);
-        }
-
         let addDays = (days: number) => {
           var futureDate = new Date();
           futureDate.setDate(futureDate.getDate() + days);
           return futureDate;
         };
 
-        console.log(addDays(10));
+        if (wgoal === "lose") {
+          let val = level === 1 ? wdiff / 0.25 : wdiff / 0.5;
+          setFdate(addDays(val * 7));
+        }
+        if (wgoal === "gain") {
+          let val = level === 1 ? wdiff / 0.5 : wdiff / 1;
+          setFdate(addDays(val * 7));
+        }
 
         let cal = fitnessCalculatorFunctions.calorieNeeds(
           ghw.gender,
@@ -283,7 +282,6 @@ const Questions = () => {
                       value={ghw.age}
                     />
                     <InputRightElement
-                      // eslint-disable-next-line react/no-children-prop
                       children="yrs"
                       color="black"
                       bg="white"
@@ -307,7 +305,6 @@ const Questions = () => {
                       value={ghw.height}
                     />
                     <InputRightElement
-                      // eslint-disable-next-line react/no-children-prop
                       children="cms"
                       color="black"
                       bg="white"
@@ -338,7 +335,6 @@ const Questions = () => {
                       value={ghw.weight}
                     />
                     <InputRightElement
-                      // eslint-disable-next-line react/no-children-prop
                       children="Kgs"
                       color="black"
                       bg="white"
@@ -370,7 +366,6 @@ const Questions = () => {
                       placeholder="Goal Weight"
                     />
                     <InputRightElement
-                      // eslint-disable-next-line react/no-children-prop
                       children="Kgs"
                       color="black"
                       bg="white"
@@ -576,16 +571,30 @@ const Questions = () => {
                 textAlign="center"
                 width="100%"
                 color="white"
+                pl="30"
+                pr="30"
               >
                 {wgoal === "lose"
                   ? `Lose weight by ${
                       level === 1 ? "0.5" : "1"
-                    } kilogram pre week`
+                    } KG pre week and reach ${ghw.gweight} Kg by ${
+                      String(fdate.getDate()).padStart(2, "0") +
+                      "/" +
+                      String(fdate.getMonth() + 1).padStart(2, "0") +
+                      "/" +
+                      fdate.getFullYear()
+                    }`
                   : ""}
                 {wgoal === "gain"
                   ? `Gain weight by ${
                       level === 1 ? "0.25" : "0.5"
-                    } kilogram pre week`
+                    } Kg pre week and reach ${ghw.gweight} Kg by ${
+                      String(fdate.getDate()).padStart(2, "0") +
+                      "/" +
+                      String(fdate.getMonth() + 1).padStart(2, "0") +
+                      "/" +
+                      fdate.getFullYear()
+                    }`
                   : ""}
                 {wgoal === "maintain" ? "Maintain your current weight" : ""}
               </Heading>

@@ -1,8 +1,10 @@
 import {
   Box,
+  Button,
   Center,
   Flex,
   Image,
+  Input,
   List,
   ListIcon,
   ListItem,
@@ -10,6 +12,7 @@ import {
   Tag,
   TagLabel,
   Text,
+  useClipboard,
   Wrap,
   WrapItem,
 } from "@chakra-ui/react";
@@ -19,9 +22,15 @@ import { MdCheckCircle } from "react-icons/md";
 import NavBar from "../../components/NavBar";
 import ImageSlider from "../../components/ImageSlider";
 import SocialProfileWithImageHorizontal from "../../components/Card2";
-import Router from "next/router";
+import Router, { useRouter } from "next/router";
 
 const name = ({ exercise }: any) => {
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const router = useRouter();
+  const Slug: any = router.query.slug;
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const { hasCopied, onCopy } = useClipboard(Slug);
+
   return (
     <>
       <NavBar
@@ -173,21 +182,44 @@ const name = ({ exercise }: any) => {
                     )}
 
                     {exercise.Level ? (
-                      <Wrap mb="2">
-                        <Text fontSize={"17"} mr={1}>
-                          Level :
-                        </Text>
-                        <Tag
-                          fontSize={"14"}
-                          borderRadius="full"
-                          variant="solid"
-                          colorScheme="green"
-                        >
-                          <Link href={"#"} passHref>
-                            <TagLabel>{exercise.Level}</TagLabel>
-                          </Link>
-                        </Tag>
-                      </Wrap>
+                      <>
+                        <Wrap mb="2">
+                          <Text fontSize={"17"} mr={1}>
+                            Level :
+                          </Text>
+                          <Tag
+                            fontSize={"14"}
+                            borderRadius="full"
+                            variant="solid"
+                            colorScheme="green"
+                          >
+                            <Link href={"#"} passHref>
+                              <TagLabel>{exercise.Level}</TagLabel>
+                            </Link>
+                          </Tag>
+                        </Wrap>
+
+                        <Wrap>
+                          <WrapItem w="100%">
+                            <Text>Exercise code:</Text>
+                          </WrapItem>
+
+                          <Flex w="100%" mb={2}>
+                            <Input isReadOnly color="white" value={Slug} />
+                            <Button
+                              bg={hasCopied ? "green.700" : "green.500"}
+                              color="white"
+                              _hover={{
+                                bg: `${hasCopied ? "green.700" : "green.500"}`,
+                              }}
+                              onClick={onCopy}
+                              ml={2}
+                            >
+                              {hasCopied ? "✔️ Copied" : "Copy"}
+                            </Button>
+                          </Flex>
+                        </Wrap>
+                      </>
                     ) : (
                       ""
                     )}

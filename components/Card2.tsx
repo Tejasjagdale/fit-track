@@ -91,6 +91,7 @@ export default function SocialProfileWithImageHorizontal() {
                 </TagLabel>
               </Tag>
             </Wrap>
+
             <Wrap>
               <Text mr={1}>Equipment Type :</Text>
               <Tag size={"md"} borderRadius="full" variant="solid" bg="#202124">
@@ -101,19 +102,7 @@ export default function SocialProfileWithImageHorizontal() {
                 </TagLabel>
               </Tag>
             </Wrap>
-            <Wrap>
-              <Text mr={1}>Level : </Text>
-              <Tag
-                size={"md"}
-                borderRadius="full"
-                variant="solid"
-                colorScheme="green"
-              >
-                <Link href={"#"} passHref>
-                  <TagLabel>Beginner</TagLabel>
-                </Link>
-              </Tag>
-            </Wrap>
+
             <Wrap>
               <Rating rating={4} numReviews={94} />
             </Wrap>

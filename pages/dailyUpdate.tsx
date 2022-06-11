@@ -1,3 +1,5 @@
+/* eslint-disable react/no-children-prop */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import NavBar from "../components/NavBar";
 import Cookies from "universal-cookie";
@@ -18,7 +20,6 @@ import {
 import { DatePicker } from "chakra-ui-date-input";
 
 const DailyUpdate = () => {
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const cookies = new Cookies();
   const toast = useToast();
 
@@ -32,8 +33,12 @@ const DailyUpdate = () => {
   );
 
   useEffect(() => {
-    if (cookies.get("id")||cookies.get("userid")||cookies.get("jwt")) {
-      fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/users/${cookies.get("userid")}`)
+    if (cookies.get("id") || cookies.get("userid") || cookies.get("jwt")) {
+      fetch(
+        `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/users/${cookies.get(
+          "userid"
+        )}`
+      )
         .then((response) => response.json())
         .then((data) => {
           console.log("");
@@ -42,7 +47,6 @@ const DailyUpdate = () => {
     } else {
       Router.push("/");
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -54,51 +58,57 @@ const DailyUpdate = () => {
       return new Date(year, month, 0).getDate();
     }
 
-    cookies.get("id")?fetch(
-      `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/users/${cookies.get(
-        "userid"
-      )}`,
-      {
-        headers: {
-          Accept: "*/*",
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + process.env.NEXT_PUBLIC_TOKEN,
-        },
-      }
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        let weights = data.weight_data.data_track;
-        console.log(weights)
-        if (!weights[year]) {
-          data.weight_data.data_track[year] = {};
-          data.weight_data.data_track[year][month] = new Array(daysInMonth(month, year)).fill(null);
-        } else {
-          if (!weights[year][month]) {
-            data.weight_data.data_track[year][month] = new Array(daysInMonth(month, year)).fill(null);
+    cookies.get("id")
+      ? fetch(
+          `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/users/${cookies.get(
+            "userid"
+          )}`,
+          {
+            headers: {
+              Accept: "*/*",
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + cookies.get("jwt"),
+            },
           }
-        }
-        weights = data.weight_data.data_track;
+        )
+          .then((response) => response.json())
+          .then((data) => {
+            let weights = data.weight_data.data_track;
+            console.log(weights);
+            if (!weights[year]) {
+              data.weight_data.data_track[year] = {};
+              data.weight_data.data_track[year][month] = new Array(
+                daysInMonth(month, year)
+              ).fill(null);
+            } else {
+              if (!weights[year][month]) {
+                data.weight_data.data_track[year][month] = new Array(
+                  daysInMonth(month, year)
+                ).fill(null);
+              }
+            }
+            weights = data.weight_data.data_track;
 
-        let cur_weight = weights[year][month][day - 1];
-        setWdata(data.weight_data);
-        if (cur_weight) {
-          setWeight(cur_weight);
-          setstatus(true);
-        } else {
-          setWeight(0);
-          setstatus(false);
-        }
-      })
-      .catch((err) => console.log(err)):""
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+            let cur_weight = weights[year][month][day - 1];
+            setWdata(data.weight_data);
+            if (cur_weight) {
+              setWeight(cur_weight);
+              setstatus(true);
+            } else {
+              setWeight(0);
+              setstatus(false);
+            }
+          })
+          .catch((err) => console.log(err))
+      : "";
   }, [wdate, change]);
 
   const addWeight = (event: any) => {
     event.preventDefault();
-    let updated_data:any = wdata;
-    console.log(updated_data)
-    updated_data.data_track[parseInt(wdate.split("/")[2])][parseInt(wdate.split("/")[1])][parseInt(wdate.split("/")[0]) - 1] = weight;
+    let updated_data: any = wdata;
+    updated_data.data_track[parseInt(wdate.split("/")[2])][
+      parseInt(wdate.split("/")[1])
+    ][parseInt(wdate.split("/")[0]) - 1] = weight;
 
     const requestOptions = {
       method: "PUT",
@@ -117,7 +127,7 @@ const DailyUpdate = () => {
           status: "success",
           duration: 3000,
           isClosable: true,
-          position:'top'
+          position: "top",
         });
         setchange(!change);
       } else {
@@ -126,7 +136,7 @@ const DailyUpdate = () => {
           status: "error",
           duration: 3000,
           isClosable: true,
-          position:'top'
+          position: "top",
         });
       }
     });
@@ -135,7 +145,6 @@ const DailyUpdate = () => {
   return (
     <>
       <NavBar
-        // eslint-disable-next-line react/no-children-prop
         children={
           <Flex
             flexDirection="column"
@@ -146,7 +155,7 @@ const DailyUpdate = () => {
             background="#1E2225"
             overflowY="hidden"
           >
-            <Box w="300px" bg="#E7EEF1" mt={10} boxShadow='dark-lg'>
+            <Box w="300px" bg="#E7EEF1" mt={10} boxShadow="dark-lg">
               <Image
                 src="https://images-platform.99static.com/3CzoydPCp5pXI83EODhEOibNLmk=/100x100:900x900/500x500/top/smart/99designs-contests-attachments/93/93858/attachment_93858260"
                 alt="Card Image"

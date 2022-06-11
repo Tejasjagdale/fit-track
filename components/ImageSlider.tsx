@@ -1,4 +1,4 @@
-import { border, Image } from "@chakra-ui/react";
+import { Image } from "@chakra-ui/react";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 
