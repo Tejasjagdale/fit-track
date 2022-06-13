@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState } from "react";
 import {
   Chart as ChartJS,
@@ -108,12 +109,12 @@ const BmiGraph = () => {
     } else {
       Router.push("/");
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     if (userdata) {
       if (
+        userdata.data_track[`${tDate.getFullYear()}`] &&
         userdata.data_track[`${tDate.getFullYear()}`][`${tDate.getMonth() + 1}`]
       ) {
         setWeight(
@@ -128,7 +129,6 @@ const BmiGraph = () => {
 
       setbmi(userdata.bmi_range);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userdata]);
 
   ChartJS.register(

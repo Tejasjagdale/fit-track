@@ -3,10 +3,8 @@ import {
   Center,
   Text,
   Stack,
-  Avatar,
   Tag,
   TagLabel,
-  Flex,
   Wrap,
   Button,
 } from "@chakra-ui/react";
@@ -69,9 +67,12 @@ export default function blogPostWithImage({ data }: any) {
           mb={6}
           pos={"relative"}
         >
-          <ImageSlider hprop={"170px"}  slides={data.ext_img ? data.ext_img : []} />
+          <ImageSlider
+            hprop={"170px"}
+            slides={data.ext_img ? data.ext_img : []}
+          />
         </Box>
-        <Stack >
+        <Stack>
           <Text
             color="white"
             fontWeight={900}
@@ -92,7 +93,7 @@ export default function blogPostWithImage({ data }: any) {
               >
                 <TagLabel>
                   <Link
-                    href={`http://localhost:3000/exercise/muscle/${data.Main_Muscle_Worked}`}
+                    href={`${process.env.NEXT_PUBLIC_URL}/exercise/muscle/${data.Main_Muscle_Worked}`}
                     passHref
                   >
                     {data.Main_Muscle_Worked}
@@ -115,7 +116,7 @@ export default function blogPostWithImage({ data }: any) {
               >
                 <TagLabel>
                   <Link
-                    href={`http://localhost:3000/exercise/equipment/${data.Equipment}`}
+                    href={`${process.env.NEXT_PUBLIC_URL}/exercise/equipment/${data.Equipment}`}
                     passHref
                   >
                     {data.Equipment}
@@ -138,7 +139,7 @@ export default function blogPostWithImage({ data }: any) {
               >
                 <TagLabel>
                   <Link
-                    href={`http://localhost:3000/exercise/type/${data.Type}`}
+                    href={`${process.env.NEXT_PUBLIC_URL}/exercise/type/${data.Type}`}
                     passHref
                   >
                     {data.Type}
@@ -161,7 +162,7 @@ export default function blogPostWithImage({ data }: any) {
               >
                 <TagLabel>
                   <Link
-                    href={`http://localhost:3000/exercise/level/${data.Level}`}
+                    href={`${process.env.NEXT_PUBLIC_URL}/exercise/level/${data.Level}`}
                     passHref
                   >
                     {data.Level}
@@ -178,7 +179,10 @@ export default function blogPostWithImage({ data }: any) {
           </Wrap>
 
           <Wrap>
-            <Link href={`http://localhost:3000/exercise/${data.slug}`} passHref>
+            <Link
+              href={`${process.env.NEXT_PUBLIC_URL}/exercise/${data.slug}`}
+              passHref
+            >
               <Button
                 bgColor="#2CCCA8"
                 color="white"

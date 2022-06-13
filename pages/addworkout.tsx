@@ -184,7 +184,9 @@ const addworkout = () => {
 
   const update_exc = (type: any) => {
     if (data.tag !== "" && data.code !== "") {
-      fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/exercises?filters[slug]=${data.code}`)
+      fetch(
+        `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/exercises?filters[slug]=${data.code}`
+      )
         .then((res) => res.json())
         .then((data2) => {
           if (data2.meta.pagination.pageCount !== 0) {
@@ -425,7 +427,7 @@ const addworkout = () => {
                                             >
                                               <TagLabel>
                                                 <Link
-                                                  href={`http://localhost:3000/exercise/muscle/${exc.Main_Muscle_Worked}`}
+                                                  href={`${process.env.NEXT_PUBLIC_URL}/exercise/muscle/${exc.Main_Muscle_Worked}`}
                                                   passHref
                                                 >
                                                   {exc.Main_Muscle_Worked}
@@ -444,7 +446,7 @@ const addworkout = () => {
                                             >
                                               <TagLabel>
                                                 <Link
-                                                  href={`http://localhost:3000/exercise/equipment/${exc.Equipment}`}
+                                                  href={`${process.env.NEXT_PUBLIC_URL}/exercise/equipment/${exc.Equipment}`}
                                                   passHref
                                                 >
                                                   {exc.Equipment}
@@ -606,7 +608,7 @@ const addworkout = () => {
                     >
                       <TagLabel>
                         <Link
-                          href={`http://localhost:3000/exercise/muscle/${exc.Main_Muscle_Worked}`}
+                          href={`${process.env.NEXT_PUBLIC_URL}/exercise/muscle/${exc.Main_Muscle_Worked}`}
                           passHref
                         >
                           {exc.Main_Muscle_Worked}
@@ -625,7 +627,7 @@ const addworkout = () => {
                     >
                       <TagLabel>
                         <Link
-                          href={`http://localhost:3000/exercise/equipment/${exc.Equipment}`}
+                          href={`${process.env.NEXT_PUBLIC_URL}/exercise/equipment/${exc.Equipment}`}
                           passHref
                         >
                           {exc.Equipment}
