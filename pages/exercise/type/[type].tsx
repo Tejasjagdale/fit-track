@@ -22,8 +22,9 @@ import React, { useEffect, useState } from "react";
 import NavBar from "../../../components/NavBar";
 import ProductSimple from "../../../components/ExerciseCard";
 import { AiFillFilter } from "react-icons/ai";
+import { useRouter } from "next/router";
 
-const List = ({ exercises }: any) => {
+const List = ({ totalPage, exercises }: any) => {
   let Muscles = [
     "Chest",
     "Forearms",
@@ -70,11 +71,33 @@ const List = ({ exercises }: any) => {
   let Level = ["Beginner", "Intermediate", "Expert"];
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [exercise, setExercise] = useState([]);
+  const [curpage, setCurpage] = useState(1);
+  const [totalpage, setTotalpage] = useState(1);
+  const router = useRouter();
+  const type = router.query.type;
 
   useEffect(() => {
+    setTotalpage(totalPage);
     setExercise(exercises);
-    console.log(exercises)
-  }, [exercises]);
+  }, [exercises, totalPage]);
+
+  const nextpage = () => {
+    curpage !== totalpage ? setCurpage(curpage + 1) : "";
+  };
+
+  const prevpage = () => {
+    curpage !== 1 ? setCurpage(curpage - 1) : "";
+  };
+
+  useEffect(() => {
+    fetch(
+      `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/exercises?filters[Type]=${type}&&pagination[page]=${curpage}&pagination[pageSize]=10`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        setExercise(data.data);
+      });
+  }, [curpage, type]);
 
   return (
     <>
@@ -271,12 +294,14 @@ export default List;
 
 export async function getServerSideProps(context: { query: { type: any } }) {
   let req = await fetch(
-    `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/exercises?filters[Type]=${context.query.type}`
+    `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/exercises?filters[Type]=${context.query.type}&&pagination[page]=1&pagination[pageSize]=10`
   );
   let output: any = await req.json();
-  console.log(output.data);
 
   return {
-    props: { exercises: output.data }, // will be passed to the page component as props
+    props: {
+      totalPage: output.meta.pagination.pageCount,
+      exercises: output.data,
+    }, // will be passed to the page component as props
   };
 }

@@ -74,8 +74,7 @@ const List = ({ totalPage, exercises }: any) => {
   const [curpage, setCurpage] = useState(1);
   const [totalpage, setTotalpage] = useState(1);
   const router = useRouter();
-  const equipment =  router.query.equipment;
-
+  const equipment = router.query.equipment;
 
   useEffect(() => {
     setTotalpage(totalPage);

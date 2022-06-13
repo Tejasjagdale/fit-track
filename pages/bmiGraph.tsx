@@ -1,3 +1,4 @@
+/* eslint-disable react/no-children-prop */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState } from "react";
 import {
@@ -48,9 +49,21 @@ const BmiGraph = () => {
     data_track: object;
   }
   const [bmi, setbmi] = useState<Array<any>>([]);
-  const [max, setmax] = useState(29);
+  const [max, setmax] = useState(30);
   const [weight, setWeight] = useState([]);
   const [startDate, setStartDate] = useState(new Date());
+
+  const empty_mon = (max: any) => {
+    let table_empty = new Array(max).fill(0);
+    return table_empty.map((day, ind) => (
+      <Tr key={ind} bgColor="grey">
+        <Td padding={5}>{`${ind + 1}/${
+          startDate.getMonth() + 1
+        }/${startDate.getFullYear()}`}</Td>
+        <Td padding={5}>not entered</Td>
+      </Tr>
+    ));
+  };
 
   const Weight_Table = (weight: any) => {
     return (
@@ -64,23 +77,25 @@ const BmiGraph = () => {
             </Tr>
           </Thead>
           <Tbody>
-            {weight.weight.map((w: number, index: number) => (
-              <Tr
-                key={index}
-                bgColor={
-                  w
-                    ? w <= bmi[1] && bmi[0] <= w
-                      ? "green.500"
-                      : "red.500"
-                    : "grey"
-                }
-              >
-                <Td padding={5}>{`${index + 1}/${
-                  startDate.getMonth() + 1
-                }/${startDate.getFullYear()}`}</Td>
-                <Td padding={5}>{w ? `${w} kg` : "not entered"} </Td>
-              </Tr>
-            ))}
+            {weight.weight.length !== 0
+              ? weight.weight.map((w: number, index: number) => (
+                  <Tr
+                    key={index}
+                    bgColor={
+                      w
+                        ? w <= bmi[1] && bmi[0] <= w
+                          ? "green.500"
+                          : "red.500"
+                        : "grey"
+                    }
+                  >
+                    <Td padding={5}>{`${index + 1}/${
+                      startDate.getMonth() + 1
+                    }/${startDate.getFullYear()}`}</Td>
+                    <Td padding={5}>{w ? `${w} kg` : "not entered"} </Td>
+                  </Tr>
+                ))
+              : empty_mon(max)}
           </Tbody>
         </Table>
       </TableContainer>
@@ -122,7 +137,6 @@ const BmiGraph = () => {
             `${tDate.getMonth() + 1}`
           ]
         );
-        // setmax( userdata.data_track[`${tDate.getFullYear()}`][`${tDate.getMonth() + 1}`].length)
       } else {
         setWeight([]);
       }
@@ -244,6 +258,7 @@ const BmiGraph = () => {
   useEffect(() => {
     if (userdata) {
       if (
+        userdata.data_track[`${startDate.getFullYear()}`] &&
         userdata.data_track[`${startDate.getFullYear()}`][
           `${startDate.getMonth() + 1}`
         ]
@@ -294,7 +309,6 @@ const BmiGraph = () => {
         setWeight([]);
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [startDate]);
 
   const data = {
@@ -312,7 +326,6 @@ const BmiGraph = () => {
   return (
     <>
       <NavBar
-        // eslint-disable-next-line react/no-children-prop
         children={
           <>
             <Flex width="100%" m={5}>
