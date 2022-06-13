@@ -92,7 +92,7 @@ const List = ({ totalPage, exercises }: any) => {
 
   useEffect(() => {
     fetch(
-      `http://localhost:1337/api/exercises?filters[Equipment]=${equipment}&&pagination[page]=${curpage}&pagination[pageSize]=10`
+      `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/exercises?filters[Equipment]=${equipment}&&pagination[page]=${curpage}&pagination[pageSize]=10`
     )
       .then((response) => response.json())
       .then((data) => {
@@ -325,7 +325,7 @@ export async function getServerSideProps(context: {
   query: { equipment: any };
 }) {
   let req = await fetch(
-    `http://localhost:1337/api/exercises?filters[Equipment]=${context.query.equipment}&&pagination[page]=1&pagination[pageSize]=10`
+    `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/exercises?filters[Equipment]=${context.query.equipment}&&pagination[page]=1&pagination[pageSize]=10`
   );
   let output: any = await req.json();
 

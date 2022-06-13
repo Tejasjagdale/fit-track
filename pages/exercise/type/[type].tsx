@@ -271,7 +271,7 @@ export default List;
 
 export async function getServerSideProps(context: { query: { type: any } }) {
   let req = await fetch(
-    `http://localhost:1337/api/exercises?filters[Type]=${context.query.type}`
+    `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/exercises?filters[Type]=${context.query.type}`
   );
   let output: any = await req.json();
   console.log(output.data);

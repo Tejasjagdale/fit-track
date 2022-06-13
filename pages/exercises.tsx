@@ -77,7 +77,7 @@ const List = () => {
 
   useEffect(() => {
     fetch(
-      "http://localhost:1337/api/exercises?pagination[page]=1&pagination[pageSize]=10"
+      `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/exercises?pagination[page]=1&pagination[pageSize]=10`
     )
       .then((response) => response.json())
       .then((data) => {
@@ -96,7 +96,7 @@ const List = () => {
 
   useEffect(() => {
     fetch(
-      `http://localhost:1337/api/exercises?pagination[page]=${curpage}&pagination[pageSize]=10`
+      `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/exercises?pagination[page]=${curpage}&pagination[pageSize]=10`
     )
       .then((response) => response.json())
       .then((data) => {

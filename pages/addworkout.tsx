@@ -184,7 +184,7 @@ const addworkout = () => {
 
   const update_exc = (type: any) => {
     if (data.tag !== "" && data.code !== "") {
-      fetch(`http://localhost:1337/api/exercises?filters[slug]=${data.code}`)
+      fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/exercises?filters[slug]=${data.code}`)
         .then((res) => res.json())
         .then((data2) => {
           if (data2.meta.pagination.pageCount !== 0) {

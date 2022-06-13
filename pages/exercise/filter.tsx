@@ -295,7 +295,7 @@ export async function getServerSideProps(context: any) {
   );
 
   let req = await fetch(
-    `http://localhost:1337/api/exercises?${query}&&pagination[page]=1&pagination[pageSize]=10`
+    `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/exercises?${query}&&pagination[page]=1&pagination[pageSize]=10`
   );
   let output: any = await req.json();
 

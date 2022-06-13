@@ -326,7 +326,7 @@ export default name;
 
 export async function getServerSideProps(context: { query: { slug: any } }) {
   let req = await fetch(
-    `http://localhost:1337/api/exercises?filters[slug]=${context.query.slug}`
+    `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/exercises?filters[slug]=${context.query.slug}`
   );
   let output: any = await req.json();
 

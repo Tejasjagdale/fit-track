@@ -271,7 +271,7 @@ export default List;
 
 export async function getServerSideProps(context: { query: { muscle: any } }) {
   let req = await fetch(
-    `http://localhost:1337/api/exercises?filters[Main_Muscle_Worked]=${context.query.muscle}`
+    `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/exercises?filters[Main_Muscle_Worked]=${context.query.muscle}`
   );
   let output: any = await req.json();
   console.log(output.data);
