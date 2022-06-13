@@ -23,6 +23,8 @@ import React, { useEffect, useState } from "react";
 import NavBar from "../components/NavBar";
 import ProductSimple from "../components/ExerciseCard";
 import { AiFillFilter } from "react-icons/ai";
+import { useRouter } from "next/router";
+import Router from "next/router";
 
 const List = () => {
   let Muscles = [
@@ -74,6 +76,14 @@ const List = () => {
   const [curpage, setCurpage] = useState(1);
   const [totalpage, setTotalpage] = useState(1);
   const toast = useToast();
+  const router = useRouter();
+  const temp_query: any = router.query;
+  const [filters, setFilters] = useState<any>({
+    level: temp_query.level ? temp_query.level.split(",") : [],
+    type: temp_query.type ? temp_query.type.split(",") : [],
+    equipment: temp_query.equipment ? temp_query.equipment.split(",") : [],
+    muscle: temp_query.muscle ? temp_query.muscle.split(",") : [],
+  });
 
   useEffect(() => {
     fetch(
@@ -103,6 +113,33 @@ const List = () => {
         setExercise(data.data);
       });
   }, [curpage]);
+
+  useEffect(() => {
+    console.log(filters);
+    let level = filters.level.length !== 0 ? filters.level.join(",") : false;
+    let type = filters.type.length !== 0 ? filters.type.join(",") : false;
+    let equipment =
+      filters.equipment.length !== 0 ? filters.equipment.join(",") : false;
+    let muscle = filters.muscle.length !== 0 ? filters.muscle.join(",") : false;
+
+    Router.push(
+      `${process.env.NEXT_PUBLIC_URL}/exercise/filter?${
+        level ? `level=${level}&` : ""
+      } ${type ? `type=${type}&` : ""} ${
+        equipment ? `equipment=${equipment}&` : ""
+      } ${muscle ? `muscle=${muscle}` : ""}`
+    );
+  }, [filters]);
+
+  const setFilter = (key: any, value: any, tag: any) => {
+    if (key) {
+      filters[tag].push(value);
+      setFilters(JSON.parse(JSON.stringify(filters)));
+    } else {
+      filters[tag] = filters[tag].filter((temp: any) => temp !== value);
+      setFilters(JSON.parse(JSON.stringify(filters)));
+    }
+  };
 
   return (
     <>
@@ -149,7 +186,23 @@ const List = () => {
                         >
                           {Muscles.map((type) => (
                             <GridItem key={type} w="100%" h="10">
-                              <Checkbox colorScheme="red">{type}</Checkbox>
+                              <Checkbox
+                                colorScheme="red"
+                                defaultChecked={
+                                  filters.muscle
+                                    ? filters.muscle.includes(type)
+                                    : false
+                                }
+                                onChange={(e) => {
+                                  setFilter(
+                                    e.currentTarget.checked,
+                                    type,
+                                    "type"
+                                  );
+                                }}
+                              >
+                                {type}
+                              </Checkbox>
                             </GridItem>
                           ))}
                         </Grid>
@@ -173,7 +226,23 @@ const List = () => {
                         >
                           {Exercise_Type.map((type) => (
                             <GridItem key={type} w="100%" h="10">
-                              <Checkbox colorScheme="red">{type}</Checkbox>
+                              <Checkbox
+                                colorScheme="red"
+                                defaultChecked={
+                                  filters.type
+                                    ? filters.type.includes(type)
+                                    : false
+                                }
+                                onChange={(e) => {
+                                  setFilter(
+                                    e.currentTarget.checked,
+                                    type,
+                                    "type"
+                                  );
+                                }}
+                              >
+                                {type}
+                              </Checkbox>
                             </GridItem>
                           ))}
                         </Grid>
@@ -197,7 +266,23 @@ const List = () => {
                         >
                           {Level.map((type) => (
                             <GridItem key={type} w="100%" h="10">
-                              <Checkbox colorScheme="red">{type}</Checkbox>
+                              <Checkbox
+                                colorScheme="red"
+                                defaultChecked={
+                                  filters.level
+                                    ? filters.level.includes(type)
+                                    : false
+                                }
+                                onChange={(e) => {
+                                  setFilter(
+                                    e.currentTarget.checked,
+                                    type,
+                                    "level"
+                                  );
+                                }}
+                              >
+                                {type}
+                              </Checkbox>
                             </GridItem>
                           ))}
                         </Grid>
@@ -221,7 +306,23 @@ const List = () => {
                         >
                           {Equipment.map((type) => (
                             <GridItem key={type} w="100%" h="10">
-                              <Checkbox colorScheme="red">{type}</Checkbox>
+                              <Checkbox
+                                colorScheme="red"
+                                defaultChecked={
+                                  filters.equipment
+                                    ? filters.equipment.includes(type)
+                                    : false
+                                }
+                                onChange={(e) => {
+                                  setFilter(
+                                    e.currentTarget.checked,
+                                    type,
+                                    "equipment"
+                                  );
+                                }}
+                              >
+                                {type}
+                              </Checkbox>
                             </GridItem>
                           ))}
                         </Grid>
@@ -243,15 +344,6 @@ const List = () => {
                 </WrapItem>
                 <WrapItem width="100%">
                   <HStack maxWidth="100%" spacing={4}>
-                    <Tag
-                      size="md"
-                      borderRadius="full"
-                      variant="solid"
-                      colorScheme="green"
-                    >
-                      <TagLabel>Forearms</TagLabel>
-                      <TagCloseButton />
-                    </Tag>
                   </HStack>
                 </WrapItem>
               </Wrap>
