@@ -115,20 +115,33 @@ const List = () => {
   }, [curpage]);
 
   useEffect(() => {
-    console.log(filters);
-    let level = filters.level.length !== 0 ? filters.level.join(",") : false;
-    let type = filters.type.length !== 0 ? filters.type.join(",") : false;
+    let level =
+      filters.level.length !== 0 ? `level=${filters.level.join(",")}` : "";
+    let type =
+      filters.type.length !== 0 ? `type=${filters.type.join(",")}` : "";
     let equipment =
-      filters.equipment.length !== 0 ? filters.equipment.join(",") : false;
-    let muscle = filters.muscle.length !== 0 ? filters.muscle.join(",") : false;
+      filters.equipment.length !== 0
+        ? `equipment=${filters.equipment.join(",")}`
+        : "";
+    let muscle =
+      filters.muscle.length !== 0 ? `muscle=${filters.muscle.join(",")}` : "";
 
-    Router.push(
-      `${process.env.NEXT_PUBLIC_URL}/exercise/filter?${
-        level ? `level=${level}&` : ""
-      } ${type ? `type=${type}&` : ""} ${
-        equipment ? `equipment=${equipment}&` : ""
-      } ${muscle ? `muscle=${muscle}` : ""}`
-    );
+    let query =
+      level +
+      (level !== ""
+        ? type !== "" || equipment !== "" || muscle !== ""
+          ? "&"
+          : ""
+        : "") +
+      type +
+      (type !== "" ? (equipment !== "" || muscle !== "" ? "&" : "") : "") +
+      equipment +
+      (equipment !== "" ? (muscle !== "" ? "&" : "") : "") +
+      muscle;
+
+      if(type !== "" || equipment !== "" || muscle !== "" || level !== ""){
+        Router.push(`${process.env.NEXT_PUBLIC_URL}/exercise/filter?${query}`);
+      }
   }, [filters]);
 
   const setFilter = (key: any, value: any, tag: any) => {
@@ -197,7 +210,7 @@ const List = () => {
                                   setFilter(
                                     e.currentTarget.checked,
                                     type,
-                                    "type"
+                                    "muscle"
                                   );
                                 }}
                               >
@@ -343,8 +356,7 @@ const List = () => {
                   </Button>
                 </WrapItem>
                 <WrapItem width="100%">
-                  <HStack maxWidth="100%" spacing={4}>
-                  </HStack>
+                  <HStack maxWidth="100%" spacing={4}></HStack>
                 </WrapItem>
               </Wrap>
             </WrapItem>

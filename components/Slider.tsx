@@ -723,15 +723,22 @@ const Questions = () => {
               <ModalHeader>Modal Title</ModalHeader>
               <ModalCloseButton />
               <ModalBody>
-                <Wrap height="400px" overflow="scroll" w="100%">
+                <Wrap
+                  height="400px"
+                  overflowX="hidden"
+                  overflowY="scroll"
+                  w="100%"
+                >
                   {Object.keys(myMacrosNeeds).map((key) => (
-                    <WrapItem w="100%" key={key}>
-                      <Heading w="100%">{key}</Heading>
+                    <WrapItem w="100%" mt={3} display="block" key={key}>
+                      <Heading mt={3} mb={1} w="100%" fontSize={20}>
+                        {key}
+                      </Heading>
                       <VStack w="100%">
                         {Object.keys(myMacrosNeeds[key]).map((key1) => (
                           <Flex w="100%" key={key1}>
-                            <Text>{key1}</Text>
-                            <Text>{myMacrosNeeds[key][key1]}</Text>
+                            <Text>{key1} :</Text>
+                            <Text> {myMacrosNeeds[key][key1]}</Text>
                           </Flex>
                         ))}
                       </VStack>
