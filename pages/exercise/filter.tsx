@@ -22,7 +22,7 @@ import React, { useEffect, useState } from "react";
 import NavBar from "../../components/NavBar";
 import ProductSimple from "../../components/ExerciseCard";
 import { AiFillFilter } from "react-icons/ai";
-import qs from 'qs';
+import qs from "qs";
 
 const List = ({ exercises }: any) => {
   let Muscles = [
@@ -74,7 +74,7 @@ const List = ({ exercises }: any) => {
 
   useEffect(() => {
     setExercise(exercises);
-    console.log(exercises)
+    console.log(exercises);
   }, [exercises]);
 
   return (
@@ -270,16 +270,33 @@ const List = ({ exercises }: any) => {
 
 export default List;
 
-export async function getServerSideProps(context:any) {
-  let params = context.query
-  const query:any = qs.stringify({
-    _where: [{ Level :params.level }, { Type: params.type }],
-  });
+export async function getServerSideProps(context: any) {
+  let params = context.query;
+  const query: any = qs.stringify(
+    {
+      filters: {
+        Level: {
+          $in: [],
+        },
+        Type: {
+          $in: [],
+        },
+        Equipment: {
+          $in: [],
+        },
+        Main_Muscle_Worked: {
+          $in: [],
+        },
+      },
+    },
+    {
+      encodeValuesOnly: true,
+    }
+  );
 
   let req = await fetch(
-    `http://localhost:1337/api/exercises?${query}`
+    `http://localhost:1337/api/exercises?${query}&&pagination[page]=1&pagination[pageSize]=10`
   );
-  console.log(`http://localhost:1337/api/exercises?${query}`)
   let output: any = await req.json();
 
   return {

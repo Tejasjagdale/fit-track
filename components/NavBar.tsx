@@ -272,18 +272,18 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
                   spacing="1px"
                   ml="2"
                 >
-                  <Text fontSize="sm">Justina Clark</Text>
+                  {/* <Text fontSize="sm">Justina Clark</Text> */}
                   {/* <Text fontSize="xs" color="gray.600">
                     Admin
                   </Text> */}
                 </VStack>
-                <Box display={{ base: "none", md: "flex" }}>
+                {/* <Box display={{ base: "none", md: "flex" }}>
                   <FiChevronDown />
-                </Box>
+                </Box> */}
               </HStack>
             </MenuButton>
             <MenuList
-              bg={useColorModeValue("#191A1C", "gray.900")}
+              bg={useColorModeValue("#191A1C", "#191A1C")}
               borderColor={useColorModeValue("gray.200", "gray.700")}
               color="white"
             >

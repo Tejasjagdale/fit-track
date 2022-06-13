@@ -10,6 +10,13 @@ import {
   InputGroup,
   InputLeftElement,
   InputRightElement,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
   Radio,
   RadioGroup,
   Slider,
@@ -17,7 +24,9 @@ import {
   SliderTrack,
   Stack,
   Text,
+  useDisclosure,
   useToast,
+  VStack,
   Wrap,
   WrapItem,
 } from "@chakra-ui/react";
@@ -29,11 +38,12 @@ const Questions = () => {
   const [page, setpage] = useState(1);
   const [slide_val, setSlide_val] = useState(25);
   const [myCalorieNeeds, setCalorieNeeds] = useState(0);
-  const [myMacrosNeeds, setMacrosNeeds] = useState({});
+  const [myMacrosNeeds, setMacrosNeeds] = useState<any>({});
   const [activity, setActivity] = useState<any>(null);
   const [wgoal, setWgoal] = useState<any>(null);
   const [level, setLevel] = useState<any>(null);
   const [fdate, setFdate] = useState(new Date());
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [ghw, setGHW] = useState<any>({
     gender: null,
@@ -109,18 +119,73 @@ const Questions = () => {
           parseInt(ghw.weight),
           activity
         );
+
         if (wgoal === "maintain") {
           setCalorieNeeds(cal.balance);
+          setMacrosNeeds(
+            fitnessCalculatorFunctions.macros(
+              ghw.gender,
+              parseInt(ghw.age),
+              parseInt(ghw.height),
+              parseInt(ghw.weight),
+              activity,
+              "balance"
+            )
+          );
         }
         if (wgoal === "lose") {
           level === 1
             ? setCalorieNeeds(cal.mildWeightLoss)
             : setCalorieNeeds(cal.heavyWeightLoss);
+
+          level === 1
+            ? setMacrosNeeds(
+                fitnessCalculatorFunctions.macros(
+                  ghw.gender,
+                  parseInt(ghw.age),
+                  parseInt(ghw.height),
+                  parseInt(ghw.weight),
+                  activity,
+                  "mildWeightLoss"
+                )
+              )
+            : setMacrosNeeds(
+                fitnessCalculatorFunctions.macros(
+                  ghw.gender,
+                  parseInt(ghw.age),
+                  parseInt(ghw.height),
+                  parseInt(ghw.weight),
+                  activity,
+                  "heavyWeightLoss"
+                )
+              );
         }
         if (wgoal === "gain") {
           level === 1
             ? setCalorieNeeds(cal.mildWeightGain)
             : setCalorieNeeds(cal.heavyWeightGain);
+
+          level === 1
+            ? setMacrosNeeds(
+                fitnessCalculatorFunctions.macros(
+                  ghw.gender,
+                  parseInt(ghw.age),
+                  parseInt(ghw.height),
+                  parseInt(ghw.weight),
+                  activity,
+                  "mildWeightGain"
+                )
+              )
+            : setMacrosNeeds(
+                fitnessCalculatorFunctions.macros(
+                  ghw.gender,
+                  parseInt(ghw.age),
+                  parseInt(ghw.height),
+                  parseInt(ghw.weight),
+                  activity,
+                  "heavyWeightGain"
+                )
+              );
         }
       } catch (error) {
         console.log(error);
@@ -191,7 +256,7 @@ const Questions = () => {
                   cursor="pointer"
                   width="100%"
                   color="white"
-                  onClick={(e) => {
+                  onClick={(_e) => {
                     Page1("lose");
                   }}
                 >
@@ -211,7 +276,7 @@ const Questions = () => {
                   color="white"
                   m={5}
                   cursor="pointer"
-                  onClick={(e) => {
+                  onClick={(_e) => {
                     Page1("maintain");
                   }}
                 >
@@ -231,7 +296,7 @@ const Questions = () => {
                   color="white"
                   cursor="pointer"
                   m={5}
-                  onClick={(e) => {
+                  onClick={(_e) => {
                     Page1("gain");
                   }}
                 >
@@ -389,7 +454,7 @@ const Questions = () => {
                     m={5}
                     borderRadius={20}
                     spacing={2}
-                    onClick={(e) => {
+                    onClick={(_e) => {
                       Page3("sedentary");
                     }}
                     borderColor="#2C7A7B"
@@ -409,7 +474,7 @@ const Questions = () => {
                     m={5}
                     borderRadius={20}
                     spacing={2}
-                    onClick={(e) => {
+                    onClick={(_e) => {
                       Page3("light");
                     }}
                     borderColor="#2C7A7B"
@@ -430,7 +495,7 @@ const Questions = () => {
                     m={5}
                     borderRadius={20}
                     spacing={2}
-                    onClick={(e) => {
+                    onClick={(_e) => {
                       Page3("moderate");
                     }}
                     borderColor="#2C7A7B"
@@ -451,7 +516,7 @@ const Questions = () => {
                     m={5}
                     borderRadius={20}
                     spacing={2}
-                    onClick={(e) => {
+                    onClick={(_e) => {
                       Page3("active");
                     }}
                     borderColor="#2C7A7B"
@@ -472,7 +537,7 @@ const Questions = () => {
                     m={5}
                     borderRadius={20}
                     spacing={2}
-                    onClick={(e) => {
+                    onClick={(_e) => {
                       Page3("extreme");
                     }}
                     borderColor="#2C7A7B"
@@ -512,7 +577,7 @@ const Questions = () => {
                     bg={level === 1 ? "#2C7A7B" : "white"}
                     _hover={{ borderWidth: "5px" }}
                     color={level === 1 ? "white" : "black"}
-                    onClick={(e) => {
+                    onClick={(_e) => {
                       setLevel(1);
                     }}
                   >
@@ -527,7 +592,7 @@ const Questions = () => {
                 <Stack width="100%" color="white" cursor="pointer">
                   <Center
                     p={5}
-                    onClick={(e) => {
+                    onClick={(_e) => {
                       setLevel(2);
                     }}
                     borderColor="#2C7A7B"
@@ -603,7 +668,7 @@ const Questions = () => {
                   bg="#319795"
                   color="white"
                   _hover={{ bg: "#319795" }}
-                  onClick={(e) => {
+                  onClick={(_e) => {
                     toast({
                       description:
                         "Sorry This Feature is not Avaliable for now 😢",
@@ -615,6 +680,16 @@ const Questions = () => {
                   }}
                 >
                   Start With Daily calories Tracking
+                </Button>
+              </Flex>
+              <Flex justifyContent="center" width="100%">
+                <Button
+                  bg="red.500"
+                  color="white"
+                  _hover={{ bg: "red.500" }}
+                  onClick={onOpen}
+                >
+                  Macros!
                 </Button>
               </Flex>
             </>
@@ -640,6 +715,33 @@ const Questions = () => {
             Next
           </Button>
         </WrapItem>
+
+        <>
+          <Modal isOpen={isOpen} onClose={onClose}>
+            <ModalOverlay />
+            <ModalContent>
+              <ModalHeader>Modal Title</ModalHeader>
+              <ModalCloseButton />
+              <ModalBody>
+                <Wrap height="400px" overflow="scroll" w="100%">
+                  {Object.keys(myMacrosNeeds).map((key) => (
+                    <WrapItem w="100%" key={key}>
+                      <Heading w="100%">{key}</Heading>
+                      <VStack w="100%">
+                        {Object.keys(myMacrosNeeds[key]).map((key1) => (
+                          <Flex w="100%" key={key1}>
+                            <Text>{key1}</Text>
+                            <Text>{myMacrosNeeds[key][key1]}</Text>
+                          </Flex>
+                        ))}
+                      </VStack>
+                    </WrapItem>
+                  ))}
+                </Wrap>
+              </ModalBody>
+            </ModalContent>
+          </Modal>
+        </>
       </Wrap>
     </Center>
   );

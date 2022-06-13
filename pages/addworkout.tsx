@@ -46,9 +46,13 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 const addworkout = () => {
   const cookies = new Cookies();
   let [playlist, setPlaylist] = useState<any>([]);
+  let [fplaylist, setFplaylist] = useState<any>([]);
   const [tab2, settab2] = useState<boolean>(true);
   const [tab1, settab1] = useState<boolean>(true);
+  const [update, setUpdate] = useState<any>([]);
   const [schedule, setSchedule] = useState<any>({});
+  const [tags, setTags] = useState([]);
+  const [ftags, setFtags] = useState(["all"]);
   const [day, setDay] = useState("");
   const [data, setData] = useState<any>({
     tag: "",
@@ -59,7 +63,7 @@ const addworkout = () => {
   });
   const toast = useToast();
 
-  const delete_pcard = ({ pcard_index }: any) => {
+  const delete_pcard = (pcard_index: any) => {
     playlist.splice(pcard_index, 1);
 
     const requestOptions = {
@@ -94,10 +98,54 @@ const addworkout = () => {
     });
   };
 
-  const edit_pcard = ({ pcard_index }: any) => {
-    console.log(playlist, pcard_index);
-    // setData(playlist[pcard_index]);
+  const delete_scard = (day: any, scard_index: any) => {
+    if (schedule[day].length !== 1) {
+      schedule[day].splice(scard_index, 1);
+    } else {
+      schedule[day] = [];
+    }
+    const requestOptions = {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ schedule: schedule, playlist: playlist }),
+    };
+    fetch(
+      `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/users/${cookies.get(
+        "userid"
+      )}`,
+      requestOptions
+    ).then((res) => {
+      if (res.status === 200) {
+        toast({
+          description: "Your PlayList was updated successfully!",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+          position: "top",
+        });
+        fetch_data();
+      } else {
+        toast({
+          description: "Something went wrong",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+          position: "top",
+        });
+      }
+    });
+  };
+
+  const edit_pcard = (pcard_index: any) => {
+    setData(playlist[pcard_index]);
+    setUpdate([parseInt(pcard_index)]);
     settab2(false);
+  };
+
+  const edit_scard = (day: any, scard_index: any) => {
+    setData(schedule[day][scard_index]);
+    setUpdate([day, parseInt(scard_index)]);
+    settab1(false);
   };
 
   const start_exc = () => {};
@@ -117,8 +165,16 @@ const addworkout = () => {
     )
       .then((response) => response.json())
       .then((data) => {
+        let stags: any = new Set(["all"]);
         setSchedule(data.schedule);
         setPlaylist(data.playlist);
+        setFplaylist(data.playlist);
+        setUpdate([]);
+        data.playlist.map((exc: any) => {
+          stags.add(exc.tag);
+        });
+        stags = Array.from(stags);
+        setTags(stags);
       });
   };
 
@@ -137,8 +193,12 @@ const addworkout = () => {
               data2.data[0].attributes.Main_Muscle_Worked;
             data.Equipment = data2.data[0].attributes.Equipment;
 
-            if (type === "playlist") {
-              playlist = [...playlist, data];
+            if (type.type === "playlist") {
+              if (update.length === 0) {
+                playlist = [...playlist, data];
+              } else {
+                playlist[update[0]] = data;
+              }
               const requestOptions = {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
@@ -187,10 +247,15 @@ const addworkout = () => {
                 }
               });
             } else {
-              schedule[day.toLowerCase()] = [
-                ...schedule[day.toLowerCase()],
-                data,
-              ];
+              if (update.length === 0) {
+                schedule[day.toLowerCase()] = [
+                  ...schedule[day.toLowerCase()],
+                  data,
+                ];
+              } else {
+                schedule[update[0]][parseInt(update[1])] = data;
+              }
+
               const requestOptions = {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
@@ -320,7 +385,7 @@ const addworkout = () => {
                         </Heading>
 
                         <WrapItem
-                          w="300px"
+                          w="280px"
                           h="250px"
                           mt={-6}
                           mx={-6}
@@ -328,7 +393,7 @@ const addworkout = () => {
                           pos={"relative"}
                         >
                           <Carousel
-                            width="300px"
+                            width="280px"
                             infiniteLoop
                             showThumbs={false}
                           >
@@ -338,13 +403,13 @@ const addworkout = () => {
                                     <>
                                       <Wrap
                                         display={{ md: "flex", sm: "block" }}
-                                        w={{ md: "300px", sm: "300px" }}
-                                        bg="black"
+                                        w={{ md: "300px", sm: "280px" }}
+                                        bg="#191A1C"
                                         color="white"
                                         p={4}
                                         h="250px"
                                       >
-                                        <Stack w="300px">
+                                        <Stack w="280px">
                                           <Heading fontSize={20}>
                                             {exc.exc_name}
                                           </Heading>
@@ -418,7 +483,10 @@ const addworkout = () => {
                                             <Button
                                               colorScheme="teal"
                                               onClick={(e) => {
-                                                edit_pcard(index);
+                                                edit_scard(
+                                                  data[1].toLowerCase(),
+                                                  index
+                                                );
                                               }}
                                             >
                                               Edit
@@ -426,7 +494,10 @@ const addworkout = () => {
                                             <Button
                                               colorScheme="red"
                                               onClick={(e) => {
-                                                delete_pcard(index);
+                                                delete_scard(
+                                                  data[1].toLowerCase(),
+                                                  index
+                                                );
                                               }}
                                             >
                                               Delete
@@ -439,7 +510,7 @@ const addworkout = () => {
                                 )
                               : ""}
                             <Flex
-                              w="300px"
+                              w={{ md: "300px", sm: "280px" }}
                               h="250px"
                               bg="#191A1C"
                               color="white"
@@ -481,17 +552,36 @@ const addworkout = () => {
     );
   };
 
+  const filter_playlist = (value: any) => {
+    let temp_tags = playlist.filter(
+      (exc: any) => exc.tag === value || value === "all"
+    );
+    let temp_tag = tags.filter((tag) => tag === value);
+    setFtags(temp_tag);
+    setFplaylist(temp_tags);
+  };
+
   const exc_playlist = () => {
     return (
       <>
         <Wrap spacing={5}>
           <HStack width="100%" color="white" fontSize={20}>
-            <Button bg="#191A1C" _hover={{ bg: "white", color: "#191A1C" }}>
-              All
-            </Button>
+            {tags.map((tag) => (
+              <Button
+                bg={ftags[0] === tag ? "white" : "#191A1C"}
+                color={ftags[0] === tag ? "#191A1C" : "white"}
+                key={tag}
+                _hover={{ bg: "grey", color: "#191A1C" }}
+                onClick={() => {
+                  filter_playlist(tag);
+                }}
+              >
+                {tag}
+              </Button>
+            ))}
           </HStack>
 
-          {playlist.map((exc: any, index: number) => (
+          {fplaylist.map((exc: any, index: number) => (
             <>
               <Wrap
                 display={{ md: "flex", sm: "block" }}
@@ -626,7 +716,7 @@ const addworkout = () => {
     );
   };
 
-  const Header = ({ type }: any) => {
+  const Header = (type: any) => {
     return (
       <Flex
         as="nav"
@@ -668,14 +758,14 @@ const addworkout = () => {
               update_exc(type);
             }}
           >
-            Add Workout
+            {update.length === 0 ? "Add Workout" : "Update Exercise"}
           </Button>
         </Box>
       </Flex>
     );
   };
 
-  const Body = ({ type }: any) => {
+  const Body = (type: any) => {
     return (
       <>
         <Header type={type} />
@@ -852,3 +942,8 @@ const addworkout = () => {
 };
 
 export default addworkout;
+function key(
+  key: any
+): (value: string, index: number, array: string[]) => void {
+  throw new Error("Function not implemented.");
+}
