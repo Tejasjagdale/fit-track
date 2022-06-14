@@ -14,6 +14,7 @@ import {
   FormControl,
   InputRightElement,
   useToast,
+  FormHelperText,
 } from "@chakra-ui/react";
 import { FaUserAlt, FaLock } from "react-icons/fa";
 import Header from "../components/Header";
@@ -172,6 +173,7 @@ const Signup = () => {
                       </Button>
                     </InputRightElement>
                   </InputGroup>
+                  <FormHelperText>the password should be of min length 8.</FormHelperText>
                 </FormControl>
                 <FormControl>
                   <DatePicker

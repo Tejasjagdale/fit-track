@@ -170,9 +170,9 @@ const addworkout = () => {
         setPlaylist(data.playlist);
         setFplaylist(data.playlist);
         setUpdate([]);
-        data.playlist.map((exc: any) => {
+        data.playlist ? data.playlist.map((exc: any) => {
           stags.add(exc.tag);
-        });
+        }):""
         stags = Array.from(stags);
         setTags(stags);
       });
@@ -399,7 +399,7 @@ const addworkout = () => {
                             infiniteLoop
                             showThumbs={false}
                           >
-                            {schedule[data[1].toLowerCase()]
+                            {schedule && schedule[data[1].toLowerCase()]
                               ? schedule[data[1].toLowerCase()].map(
                                   (exc: any, index: any) => (
                                     <>
@@ -583,7 +583,7 @@ const addworkout = () => {
             ))}
           </HStack>
 
-          {fplaylist.map((exc: any, index: number) => (
+          {fplaylist ?fplaylist.map((exc: any, index: number) => (
             <>
               <Wrap
                 display={{ md: "flex", sm: "block" }}
@@ -683,7 +683,7 @@ const addworkout = () => {
                 </Stack>
               </Wrap>
             </>
-          ))}
+          )):""}
 
           <Flex
             w="300px"
