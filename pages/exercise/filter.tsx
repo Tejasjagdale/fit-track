@@ -1,6 +1,7 @@
 /* eslint-disable react/no-children-prop */
 /* eslint-disable react-hooks/exhaustive-deps */
 import {
+  Box,
   Button,
   Checkbox,
   Drawer,
@@ -12,6 +13,7 @@ import {
   Grid,
   GridItem,
   HStack,
+  Image,
   Tag,
   TagCloseButton,
   TagLabel,
@@ -79,6 +81,7 @@ const List = ({ totalPage, exercises }: any) => {
   const [exercise, setExercise] = useState([]);
   const [curpage, setCurpage] = useState(1);
   const [totalpage, setTotalpage] = useState(1);
+  const [isloading, setIsloading] = useState(false);
   const router = useRouter();
   const temp_query: any = router.query;
   const [filters, setFilters] = useState<any>({
@@ -91,6 +94,7 @@ const List = ({ totalPage, exercises }: any) => {
   useEffect(() => {
     setTotalpage(totalPage);
     setExercise(exercises);
+    setIsloading(true);
   }, [exercises, totalPage]);
 
   const nextpage = () => {
@@ -102,6 +106,7 @@ const List = ({ totalPage, exercises }: any) => {
   };
 
   useEffect(() => {
+    setIsloading(false);
     let level = temp_query.level ? temp_query.level.split(",") : [];
     let type = temp_query.type ? temp_query.type.split(",") : [];
     let equipment = temp_query.equipment ? temp_query.equipment.split(",") : [];
@@ -137,10 +142,12 @@ const List = ({ totalPage, exercises }: any) => {
       .then((response) => response.json())
       .then((data) => {
         setExercise(data.data);
+        setIsloading(true);
       });
   }, [curpage]);
 
   useEffect(() => {
+    setIsloading(false);
     let level =
       filters.level.length !== 0 ? `level=${filters.level.join(",")}` : "";
     let type =
@@ -182,262 +189,284 @@ const List = ({ totalPage, exercises }: any) => {
     <>
       <NavBar
         children={
-          <Wrap
-            justify="center"
-            spacing="30px"
-            background="#1E2225"
-            padding="10"
-          >
-            <WrapItem width="100%" color="white">
-              <Drawer
-                size="md"
-                placement="right"
-                onClose={onClose}
-                isOpen={isOpen}
-              >
-                <DrawerOverlay />
-                <DrawerContent bg="#191A1C" color="white">
-                  <DrawerHeader borderBottomWidth="1px">
-                    Exercise Filters
-                    <DrawerCloseButton />
-                  </DrawerHeader>
-                  <DrawerBody>
-                    <Wrap>
-                      <WrapItem>
-                        <Text
-                          fontWeight={900}
-                          fontSize={"17"}
-                          width="100%"
-                          fontFamily={"body"}
-                          mb="1"
-                        >
-                          Muscles
-                        </Text>
-                      </WrapItem>
-                      <WrapItem width="100%">
-                        <Grid
-                          templateColumns="repeat(3, 1fr)"
-                          gap={5}
-                          rowGap={0}
-                        >
-                          {Muscles.map((type) => (
-                            <GridItem key={"muscle" + type} w="100%" h="10">
-                              <Checkbox
-                                colorScheme="red"
-                                defaultChecked={
-                                  filters.muscle
-                                    ? filters.muscle.includes(type)
-                                    : false
-                                }
-                                onChange={(e) => {
-                                  setFilter(
-                                    e.currentTarget.checked,
-                                    type,
-                                    "muscle"
-                                  );
-                                }}
-                              >
-                                {type}
-                              </Checkbox>
-                            </GridItem>
-                          ))}
-                        </Grid>
-                      </WrapItem>
-                      <WrapItem>
-                        <Text
-                          fontWeight={900}
-                          fontSize={"17"}
-                          width="100%"
-                          fontFamily={"body"}
-                          mb="1"
-                        >
-                          Exercise_Type
-                        </Text>
-                      </WrapItem>
-                      <WrapItem width="100%">
-                        <Grid
-                          templateColumns="repeat(3, 1fr)"
-                          gap={5}
-                          rowGap={0}
-                        >
-                          {Exercise_Type.map((type) => (
-                            <GridItem key={"exc" + type} w="100%" h="10">
-                              <Checkbox
-                                colorScheme="red"
-                                defaultChecked={
-                                  filters.type
-                                    ? filters.type.includes(type)
-                                    : false
-                                }
-                                onChange={(e) => {
-                                  setFilter(
-                                    e.currentTarget.checked,
-                                    type,
-                                    "type"
-                                  );
-                                }}
-                              >
-                                {type}
-                              </Checkbox>
-                            </GridItem>
-                          ))}
-                        </Grid>
-                      </WrapItem>
-                      <WrapItem>
-                        <Text
-                          fontWeight={900}
-                          fontSize={"17"}
-                          width="100%"
-                          fontFamily={"body"}
-                          mb="1"
-                        >
-                          Level
-                        </Text>
-                      </WrapItem>
-                      <WrapItem width="100%">
-                        <Grid
-                          templateColumns="repeat(3, 1fr)"
-                          gap={5}
-                          rowGap={0}
-                        >
-                          {Level.map((type) => (
-                            <GridItem key={"level" + type} w="100%" h="10">
-                              <Checkbox
-                                colorScheme="red"
-                                defaultChecked={
-                                  filters.level
-                                    ? filters.level.includes(type)
-                                    : false
-                                }
-                                onChange={(e) => {
-                                  setFilter(
-                                    e.currentTarget.checked,
-                                    type,
-                                    "level"
-                                  );
-                                }}
-                              >
-                                {type}
-                              </Checkbox>
-                            </GridItem>
-                          ))}
-                        </Grid>
-                      </WrapItem>
-                      <WrapItem>
-                        <Text
-                          fontWeight={900}
-                          fontSize={"17"}
-                          width="100%"
-                          fontFamily={"body"}
-                          mb="1"
-                        >
-                          Equipment
-                        </Text>
-                      </WrapItem>
-                      <WrapItem width="100%">
-                        <Grid
-                          templateColumns="repeat(3, 1fr)"
-                          gap={5}
-                          rowGap={0}
-                        >
-                          {Equipment.map((type) => (
-                            <GridItem key={"equ" + type} w="100%" h="10">
-                              <Checkbox
-                                colorScheme="red"
-                                defaultChecked={
-                                  filters.equipment
-                                    ? filters.equipment.includes(type)
-                                    : false
-                                }
-                                onChange={(e) => {
-                                  setFilter(
-                                    e.currentTarget.checked,
-                                    type,
-                                    "equipment"
-                                  );
-                                }}
-                              >
-                                {type}
-                              </Checkbox>
-                            </GridItem>
-                          ))}
-                        </Grid>
-                      </WrapItem>
-                    </Wrap>
-                  </DrawerBody>
-                </DrawerContent>
-              </Drawer>
-              <Wrap spacingY="5">
-                <WrapItem width="100%">
+          isloading ? (
+            <Wrap
+              justify="center"
+              spacing="30px"
+              background="#1E2225"
+              padding="10"
+            >
+              <WrapItem width="100%" color="white">
+                <Drawer
+                  size="md"
+                  placement="right"
+                  onClose={onClose}
+                  isOpen={isOpen}
+                >
+                  <DrawerOverlay />
+                  <DrawerContent bg="#191A1C" color="white">
+                    <DrawerHeader borderBottomWidth="1px">
+                      Exercise Filters
+                      <DrawerCloseButton />
+                    </DrawerHeader>
+                    <DrawerBody>
+                      <Wrap>
+                        <WrapItem>
+                          <Text
+                            fontWeight={900}
+                            fontSize={"17"}
+                            width="100%"
+                            fontFamily={"body"}
+                            mb="1"
+                          >
+                            Muscles
+                          </Text>
+                        </WrapItem>
+                        <WrapItem width="100%">
+                          <Grid
+                            templateColumns="repeat(3, 1fr)"
+                            gap={5}
+                            rowGap={0}
+                          >
+                            {Muscles.map((type) => (
+                              <GridItem key={"muscle" + type} w="100%" h="10">
+                                <Checkbox
+                                  colorScheme="red"
+                                  defaultChecked={
+                                    filters.muscle
+                                      ? filters.muscle.includes(type)
+                                      : false
+                                  }
+                                  onChange={(e) => {
+                                    setFilter(
+                                      e.currentTarget.checked,
+                                      type,
+                                      "muscle"
+                                    );
+                                  }}
+                                >
+                                  {type}
+                                </Checkbox>
+                              </GridItem>
+                            ))}
+                          </Grid>
+                        </WrapItem>
+                        <WrapItem>
+                          <Text
+                            fontWeight={900}
+                            fontSize={"17"}
+                            width="100%"
+                            fontFamily={"body"}
+                            mb="1"
+                          >
+                            Exercise_Type
+                          </Text>
+                        </WrapItem>
+                        <WrapItem width="100%">
+                          <Grid
+                            templateColumns="repeat(3, 1fr)"
+                            gap={5}
+                            rowGap={0}
+                          >
+                            {Exercise_Type.map((type) => (
+                              <GridItem key={"exc" + type} w="100%" h="10">
+                                <Checkbox
+                                  colorScheme="red"
+                                  defaultChecked={
+                                    filters.type
+                                      ? filters.type.includes(type)
+                                      : false
+                                  }
+                                  onChange={(e) => {
+                                    setFilter(
+                                      e.currentTarget.checked,
+                                      type,
+                                      "type"
+                                    );
+                                  }}
+                                >
+                                  {type}
+                                </Checkbox>
+                              </GridItem>
+                            ))}
+                          </Grid>
+                        </WrapItem>
+                        <WrapItem>
+                          <Text
+                            fontWeight={900}
+                            fontSize={"17"}
+                            width="100%"
+                            fontFamily={"body"}
+                            mb="1"
+                          >
+                            Level
+                          </Text>
+                        </WrapItem>
+                        <WrapItem width="100%">
+                          <Grid
+                            templateColumns="repeat(3, 1fr)"
+                            gap={5}
+                            rowGap={0}
+                          >
+                            {Level.map((type) => (
+                              <GridItem key={"level" + type} w="100%" h="10">
+                                <Checkbox
+                                  colorScheme="red"
+                                  defaultChecked={
+                                    filters.level
+                                      ? filters.level.includes(type)
+                                      : false
+                                  }
+                                  onChange={(e) => {
+                                    setFilter(
+                                      e.currentTarget.checked,
+                                      type,
+                                      "level"
+                                    );
+                                  }}
+                                >
+                                  {type}
+                                </Checkbox>
+                              </GridItem>
+                            ))}
+                          </Grid>
+                        </WrapItem>
+                        <WrapItem>
+                          <Text
+                            fontWeight={900}
+                            fontSize={"17"}
+                            width="100%"
+                            fontFamily={"body"}
+                            mb="1"
+                          >
+                            Equipment
+                          </Text>
+                        </WrapItem>
+                        <WrapItem width="100%">
+                          <Grid
+                            templateColumns="repeat(3, 1fr)"
+                            gap={5}
+                            rowGap={0}
+                          >
+                            {Equipment.map((type) => (
+                              <GridItem key={"equ" + type} w="100%" h="10">
+                                <Checkbox
+                                  colorScheme="red"
+                                  defaultChecked={
+                                    filters.equipment
+                                      ? filters.equipment.includes(type)
+                                      : false
+                                  }
+                                  onChange={(e) => {
+                                    setFilter(
+                                      e.currentTarget.checked,
+                                      type,
+                                      "equipment"
+                                    );
+                                  }}
+                                >
+                                  {type}
+                                </Checkbox>
+                              </GridItem>
+                            ))}
+                          </Grid>
+                        </WrapItem>
+                      </Wrap>
+                    </DrawerBody>
+                  </DrawerContent>
+                </Drawer>
+                <Wrap spacingY="5">
+                  <WrapItem width="100%">
+                    <Button
+                      colorScheme="blue"
+                      size="sm"
+                      leftIcon={<AiFillFilter />}
+                      onClick={onOpen}
+                    >
+                      Filter
+                    </Button>
+                  </WrapItem>
+                  <WrapItem width="100%">
+                    <HStack maxWidth="100%" spacing={4}>
+                      {Object.keys(filters).map(function (key) {
+                        return (
+                          <Tag
+                            size="md"
+                            borderRadius="full"
+                            variant="solid"
+                            colorScheme="green"
+                            key={key}
+                            p={2}
+                            hidden={filters[key].length === 0}
+                          >
+                            <TagLabel>
+                              {filters[key].length !== 0
+                                ? `${key}:${filters[key].join(",")}`
+                                : ""}
+                            </TagLabel>
+                            {/* <TagCloseButton /> */}
+                          </Tag>
+                        );
+                      })}
+                    </HStack>
+                  </WrapItem>
+                </Wrap>
+              </WrapItem>
+              {exercise.map((exc: any, index: number) => (
+                <WrapItem key={index}>
+                  <ProductSimple data={exc.attributes} />
+                </WrapItem>
+              ))}
+              <Wrap width="100%">
+                <WrapItem>
                   <Button
-                    colorScheme="blue"
-                    size="sm"
-                    leftIcon={<AiFillFilter />}
-                    onClick={onOpen}
+                    colorScheme="teal"
+                    variant="outline"
+                    mr={5}
+                    disabled={curpage <= 1 ? true : false}
+                    onClick={prevpage}
                   >
-                    Filter
+                    Previous
                   </Button>
                 </WrapItem>
-                <WrapItem width="100%">
-                  <HStack maxWidth="100%" spacing={4}>
-                    {Object.keys(filters).map(function (key) {
-                      return (
-                        <Tag
-                          size="md"
-                          borderRadius="full"
-                          variant="solid"
-                          colorScheme="green"
-                          key={key}
-                          p={2}
-                          hidden={filters[key].length === 0}
-                        >
-                          <TagLabel>
-                            {filters[key].length !== 0
-                              ? `${key}:${filters[key].join(",")}`
-                              : ""}
-                          </TagLabel>
-                          {/* <TagCloseButton /> */}
-                        </Tag>
-                      );
-                    })}
-                  </HStack>
+                <WrapItem mr={5}>
+                  <Button
+                    colorScheme="teal"
+                    disabled={curpage >= totalpage ? true : false}
+                    variant="solid"
+                    onClick={nextpage}
+                  >
+                    Next
+                  </Button>
+                </WrapItem>
+                <WrapItem>
+                  <Text
+                    ml={5}
+                    verticalAlign="center"
+                    color="white"
+                    fontSize="xl"
+                  >
+                    page {curpage} of {totalpage} pages
+                  </Text>
                 </WrapItem>
               </Wrap>
-            </WrapItem>
-            {exercise.map((exc: any, index: number) => (
-              <WrapItem key={index}>
-                <ProductSimple data={exc.attributes} />
-              </WrapItem>
-            ))}
-            <Wrap width="100%">
-              <WrapItem>
-                <Button
-                  colorScheme="teal"
-                  variant="outline"
-                  mr={5}
-                  disabled={curpage <= 1 ? true : false}
-                  onClick={prevpage}
-                >
-                  Previous
-                </Button>
-              </WrapItem>
-              <WrapItem mr={5}>
-                <Button
-                  colorScheme="teal"
-                  disabled={curpage >= totalpage ? true : false}
-                  variant="solid"
-                  onClick={nextpage}
-                >
-                  Next
-                </Button>
-              </WrapItem>
-              <WrapItem>
-                <Text ml={5} verticalAlign="center" color="white" fontSize="xl">
-                  page {curpage} of {totalpage} pages
-                </Text>
-              </WrapItem>
             </Wrap>
-          </Wrap>
+          ) : (
+            <Wrap
+              justify="center"
+              align="center"
+              background="#1E2225"
+              width="100%"
+              height="100%"
+            >
+              <Box width="25%" height="25%">
+                <Image
+                  src={`${process.env.NEXT_PUBLIC_URL}/loader3.gif`}
+                  alt={"Dan Abramov"}
+                />
+              </Box>
+            </Wrap>
+          )
         }
       />
     </>

@@ -17,9 +17,11 @@ import { useEffect } from "react";
 import Router from "next/router";
 import NavBar from "../components/NavBar";
 import {
+  Box,
   Button,
   Flex,
   FormLabel,
+  Image,
   Switch,
   Table,
   TableCaption,
@@ -43,6 +45,7 @@ const BmiGraph = () => {
   let tDate = new Date();
   const toast = useToast();
   const [toggel, setToggel] = useState<boolean>(true);
+  const [isloading, setIsloading] = useState(false);
 
   const [userdata, setUserData] = useState<any>();
   interface userdata {
@@ -119,6 +122,7 @@ const BmiGraph = () => {
         .then((response) => response.json())
         .then((data) => {
           setUserData(data.weight_data);
+          setIsloading(true)
         })
         .catch((err) => console.log(err));
     } else {
@@ -327,47 +331,64 @@ const BmiGraph = () => {
     <>
       <NavBar
         children={
-          <>
-            <Flex width="100%" m={5}>
-              <Button
-                colorScheme={"teal"}
-                onClick={(e) => {
-                  setToggel(!toggel);
-                }}
+          isloading ? (
+            <>
+              <Flex width="100%" m={5}>
+                <Button
+                  colorScheme={"teal"}
+                  onClick={(e) => {
+                    setToggel(!toggel);
+                  }}
+                >
+                  {toggel ? "Table" : "BMIgraph"}
+                </Button>
+              </Flex>
+              <Wrap
+                padding={{ lg: 20, md: 10, sm: 0 }}
+                background="#1E2225"
+                align="center"
+                justify="center"
               >
-                {toggel ? "Table" : "BMIgraph"}
-              </Button>
-            </Flex>
-            <Wrap
-              padding={{ lg: 20, md: 10, sm: 0 }}
-              background="#1E2225"
-              align="center"
-              justify="center"
-            >
-              <WrapItem width="100vw" justifyContent="center">
-                <DatePicker
-                  selected={startDate}
-                  onChange={(date: Date) => setStartDate(date)}
-                  dateFormat="MMMM yyyy"
-                  showMonthYearPicker
-                  inline
-                />
-              </WrapItem>
-              {toggel ? (
-                <WrapItem width="100vw">
-                  <Line
-                    options={options}
-                    data={data}
-                    style={{ height: 500, width: "auto" }}
+                <WrapItem width="100vw" justifyContent="center">
+                  <DatePicker
+                    selected={startDate}
+                    onChange={(date: Date) => setStartDate(date)}
+                    dateFormat="MMMM yyyy"
+                    showMonthYearPicker
+                    inline
                   />
                 </WrapItem>
-              ) : (
-                <WrapItem width="100vw" justifyContent="center">
-                  <Weight_Table weight={weight} />
-                </WrapItem>
-              )}
+                {toggel ? (
+                  <WrapItem width="100vw">
+                    <Line
+                      options={options}
+                      data={data}
+                      style={{ height: 500, width: "auto" }}
+                    />
+                  </WrapItem>
+                ) : (
+                  <WrapItem width="100vw" justifyContent="center">
+                    <Weight_Table weight={weight} />
+                  </WrapItem>
+                )}
+              </Wrap>
+            </>
+          ) : (
+            <Wrap
+              justify="center"
+              align="center"
+              background="#1E2225"
+              width="100%"
+              height="100%"
+            >
+              <Box width="25%" height="25%">
+                <Image
+                  src={`${process.env.NEXT_PUBLIC_URL}/loader3.gif`}
+                  alt={"Dan Abramov"}
+                />
+              </Box>
             </Wrap>
-          </>
+          )
         }
       />
     </>

@@ -203,22 +203,6 @@ const Signup = () => {
                 <FormControl>
                   <InputGroup>
                     <InputLeftElement pointerEvents="none">
-                      <CFaUserAlt color="black" />
-                    </InputLeftElement>
-                    <Input
-                      type="number"
-                      onChange={(e) => {
-                        setage(e.target.value);
-                      }}
-                      value={age}
-                      required
-                      placeholder="Enter Age"
-                    />
-                  </InputGroup>
-                </FormControl>
-                <FormControl>
-                  <InputGroup>
-                    <InputLeftElement pointerEvents="none">
                       <GiBodyHeight color="black" />
                     </InputLeftElement>
                     <Input

@@ -84,25 +84,6 @@ function Card(props: any) {
             fontSize="md"
             color="black"
           >
-            Age:-
-          </FormLabel>
-          <Editable
-            fontWeight="bold"
-            fontSize="lg"
-            letterSpacing="wide"
-            color="teal.600"
-            value={`${props.data.age} years`}
-          >
-            <EditablePreview />
-            <EditableInput />
-          </Editable>
-
-          <FormLabel
-            fontWeight="bold"
-            textTransform="uppercase"
-            fontSize="md"
-            color="black"
-          >
             Email:-
           </FormLabel>
           <Editable

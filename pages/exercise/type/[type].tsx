@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Checkbox,
   Drawer,
@@ -10,6 +11,7 @@ import {
   Grid,
   GridItem,
   HStack,
+  Image,
   Tag,
   TagCloseButton,
   TagLabel,
@@ -73,12 +75,14 @@ const List = ({ totalPage, exercises }: any) => {
   const [exercise, setExercise] = useState([]);
   const [curpage, setCurpage] = useState(1);
   const [totalpage, setTotalpage] = useState(1);
+  const [isloading, setIsloading] = useState(false);
   const router = useRouter();
   const type = router.query.type;
 
   useEffect(() => {
     setTotalpage(totalPage);
     setExercise(exercises);
+    setIsloading(true);
   }, [exercises, totalPage]);
 
   const nextpage = () => {
@@ -90,12 +94,14 @@ const List = ({ totalPage, exercises }: any) => {
   };
 
   useEffect(() => {
+    setIsloading(false);
     fetch(
       `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/exercises?filters[Type]=${type}&&pagination[page]=${curpage}&pagination[pageSize]=10`
     )
       .then((response) => response.json())
       .then((data) => {
         setExercise(data.data);
+        setIsloading(true);
       });
   }, [curpage, type]);
 
@@ -104,186 +110,203 @@ const List = ({ totalPage, exercises }: any) => {
       <NavBar
         // eslint-disable-next-line react/no-children-prop
         children={
-          <Wrap
-            justify="center"
-            spacing="30px"
-            background="#1E2225"
-            padding="10"
-          >
-            <WrapItem width="100%" color="white">
-              <Drawer
-                size="md"
-                placement="right"
-                onClose={onClose}
-                isOpen={isOpen}
-              >
-                <DrawerOverlay />
-                <DrawerContent bg="#191A1C" color="white">
-                  <DrawerHeader borderBottomWidth="1px">
-                    Exercise Filters
-                    <DrawerCloseButton />
-                  </DrawerHeader>
-                  <DrawerBody>
-                    <Wrap>
-                      <WrapItem>
-                        <Text
-                          fontWeight={900}
-                          fontSize={"17"}
-                          width="100%"
-                          fontFamily={"body"}
-                          mb="1"
-                        >
-                          Muscles
-                        </Text>
-                      </WrapItem>
-                      <WrapItem width="100%">
-                        <Grid
-                          templateColumns="repeat(3, 1fr)"
-                          gap={5}
-                          rowGap={0}
-                        >
-                          {Muscles.map((type) => (
-                            <GridItem key={type} w="100%" h="10">
-                              <Checkbox colorScheme="red">{type}</Checkbox>
-                            </GridItem>
-                          ))}
-                        </Grid>
-                      </WrapItem>
-                      <WrapItem>
-                        <Text
-                          fontWeight={900}
-                          fontSize={"17"}
-                          width="100%"
-                          fontFamily={"body"}
-                          mb="1"
-                        >
-                          Exercise_Type
-                        </Text>
-                      </WrapItem>
-                      <WrapItem width="100%">
-                        <Grid
-                          templateColumns="repeat(3, 1fr)"
-                          gap={5}
-                          rowGap={0}
-                        >
-                          {Exercise_Type.map((type) => (
-                            <GridItem key={type} w="100%" h="10">
-                              <Checkbox colorScheme="red">{type}</Checkbox>
-                            </GridItem>
-                          ))}
-                        </Grid>
-                      </WrapItem>
-                      <WrapItem>
-                        <Text
-                          fontWeight={900}
-                          fontSize={"17"}
-                          width="100%"
-                          fontFamily={"body"}
-                          mb="1"
-                        >
-                          Level
-                        </Text>
-                      </WrapItem>
-                      <WrapItem width="100%">
-                        <Grid
-                          templateColumns="repeat(3, 1fr)"
-                          gap={5}
-                          rowGap={0}
-                        >
-                          {Level.map((type) => (
-                            <GridItem key={type} w="100%" h="10">
-                              <Checkbox colorScheme="red">{type}</Checkbox>
-                            </GridItem>
-                          ))}
-                        </Grid>
-                      </WrapItem>
-                      <WrapItem>
-                        <Text
-                          fontWeight={900}
-                          fontSize={"17"}
-                          width="100%"
-                          fontFamily={"body"}
-                          mb="1"
-                        >
-                          Equipment
-                        </Text>
-                      </WrapItem>
-                      <WrapItem width="100%">
-                        <Grid
-                          templateColumns="repeat(3, 1fr)"
-                          gap={5}
-                          rowGap={0}
-                        >
-                          {Equipment.map((type) => (
-                            <GridItem key={type} w="100%" h="10">
-                              <Checkbox colorScheme="red">{type}</Checkbox>
-                            </GridItem>
-                          ))}
-                        </Grid>
-                      </WrapItem>
-                    </Wrap>
-                  </DrawerBody>
-                </DrawerContent>
-              </Drawer>
-              <Wrap spacingY="5">
-                <WrapItem width="100%">
-                  <Button
-                    colorScheme="blue"
-                    size="sm"
-                    leftIcon={<AiFillFilter />}
-                    onClick={onOpen}
-                  >
-                    Filter
-                  </Button>
-                </WrapItem>
-                <WrapItem width="100%">
-                  <HStack maxWidth="100%" spacing={4}>
-                    <Tag
-                      size="md"
-                      borderRadius="full"
-                      variant="solid"
-                      colorScheme="green"
+          isloading ? (
+            <Wrap
+              justify="center"
+              spacing="30px"
+              background="#1E2225"
+              padding="10"
+            >
+              <WrapItem width="100%" color="white">
+                <Drawer
+                  size="md"
+                  placement="right"
+                  onClose={onClose}
+                  isOpen={isOpen}
+                >
+                  <DrawerOverlay />
+                  <DrawerContent bg="#191A1C" color="white">
+                    <DrawerHeader borderBottomWidth="1px">
+                      Exercise Filters
+                      <DrawerCloseButton />
+                    </DrawerHeader>
+                    <DrawerBody>
+                      <Wrap>
+                        <WrapItem>
+                          <Text
+                            fontWeight={900}
+                            fontSize={"17"}
+                            width="100%"
+                            fontFamily={"body"}
+                            mb="1"
+                          >
+                            Muscles
+                          </Text>
+                        </WrapItem>
+                        <WrapItem width="100%">
+                          <Grid
+                            templateColumns="repeat(3, 1fr)"
+                            gap={5}
+                            rowGap={0}
+                          >
+                            {Muscles.map((type) => (
+                              <GridItem key={type} w="100%" h="10">
+                                <Checkbox colorScheme="red">{type}</Checkbox>
+                              </GridItem>
+                            ))}
+                          </Grid>
+                        </WrapItem>
+                        <WrapItem>
+                          <Text
+                            fontWeight={900}
+                            fontSize={"17"}
+                            width="100%"
+                            fontFamily={"body"}
+                            mb="1"
+                          >
+                            Exercise_Type
+                          </Text>
+                        </WrapItem>
+                        <WrapItem width="100%">
+                          <Grid
+                            templateColumns="repeat(3, 1fr)"
+                            gap={5}
+                            rowGap={0}
+                          >
+                            {Exercise_Type.map((type) => (
+                              <GridItem key={type} w="100%" h="10">
+                                <Checkbox colorScheme="red">{type}</Checkbox>
+                              </GridItem>
+                            ))}
+                          </Grid>
+                        </WrapItem>
+                        <WrapItem>
+                          <Text
+                            fontWeight={900}
+                            fontSize={"17"}
+                            width="100%"
+                            fontFamily={"body"}
+                            mb="1"
+                          >
+                            Level
+                          </Text>
+                        </WrapItem>
+                        <WrapItem width="100%">
+                          <Grid
+                            templateColumns="repeat(3, 1fr)"
+                            gap={5}
+                            rowGap={0}
+                          >
+                            {Level.map((type) => (
+                              <GridItem key={type} w="100%" h="10">
+                                <Checkbox colorScheme="red">{type}</Checkbox>
+                              </GridItem>
+                            ))}
+                          </Grid>
+                        </WrapItem>
+                        <WrapItem>
+                          <Text
+                            fontWeight={900}
+                            fontSize={"17"}
+                            width="100%"
+                            fontFamily={"body"}
+                            mb="1"
+                          >
+                            Equipment
+                          </Text>
+                        </WrapItem>
+                        <WrapItem width="100%">
+                          <Grid
+                            templateColumns="repeat(3, 1fr)"
+                            gap={5}
+                            rowGap={0}
+                          >
+                            {Equipment.map((type) => (
+                              <GridItem key={type} w="100%" h="10">
+                                <Checkbox colorScheme="red">{type}</Checkbox>
+                              </GridItem>
+                            ))}
+                          </Grid>
+                        </WrapItem>
+                      </Wrap>
+                    </DrawerBody>
+                  </DrawerContent>
+                </Drawer>
+                <Wrap spacingY="5">
+                  <WrapItem width="100%">
+                    <Button
+                      colorScheme="blue"
+                      size="sm"
+                      leftIcon={<AiFillFilter />}
+                      onClick={onOpen}
                     >
-                      <TagLabel>Forearms</TagLabel>
-                      <TagCloseButton />
-                    </Tag>
-                    <Tag
-                      size="md"
-                      borderRadius="full"
-                      variant="solid"
-                      colorScheme="green"
-                    >
-                      <TagLabel>Forearms</TagLabel>
-                      <TagCloseButton />
-                    </Tag>{" "}
-                    <Tag
-                      size="md"
-                      borderRadius="full"
-                      variant="solid"
-                      colorScheme="green"
-                    >
-                      <TagLabel>Forearms</TagLabel>
-                      <TagCloseButton />
-                    </Tag>{" "}
-                    <Tag
-                      size="md"
-                      borderRadius="full"
-                      variant="solid"
-                      colorScheme="green"
-                    >
-                      <TagLabel>Forearms</TagLabel>
-                      <TagCloseButton />
-                    </Tag>
-                  </HStack>
-                </WrapItem>
-              </Wrap>
-            </WrapItem>
-            {exercise.map((exc: any, index: number) => (
-              <WrapItem key={index}>
-                <ProductSimple data={exc.attributes} />
+                      Filter
+                    </Button>
+                  </WrapItem>
+                  <WrapItem width="100%">
+                    <HStack maxWidth="100%" spacing={4}>
+                      <Tag
+                        size="md"
+                        borderRadius="full"
+                        variant="solid"
+                        colorScheme="green"
+                      >
+                        <TagLabel>Forearms</TagLabel>
+                        <TagCloseButton />
+                      </Tag>
+                      <Tag
+                        size="md"
+                        borderRadius="full"
+                        variant="solid"
+                        colorScheme="green"
+                      >
+                        <TagLabel>Forearms</TagLabel>
+                        <TagCloseButton />
+                      </Tag>{" "}
+                      <Tag
+                        size="md"
+                        borderRadius="full"
+                        variant="solid"
+                        colorScheme="green"
+                      >
+                        <TagLabel>Forearms</TagLabel>
+                        <TagCloseButton />
+                      </Tag>{" "}
+                      <Tag
+                        size="md"
+                        borderRadius="full"
+                        variant="solid"
+                        colorScheme="green"
+                      >
+                        <TagLabel>Forearms</TagLabel>
+                        <TagCloseButton />
+                      </Tag>
+                    </HStack>
+                  </WrapItem>
+                </Wrap>
               </WrapItem>
-            ))}
-          </Wrap>
+              {exercise.map((exc: any, index: number) => (
+                <WrapItem key={index}>
+                  <ProductSimple data={exc.attributes} />
+                </WrapItem>
+              ))}
+            </Wrap>
+          ) : (
+            <Wrap
+              justify="center"
+              align="center"
+              background="#1E2225"
+              width="100%"
+              height="100%"
+            >
+              <Box width="25%" height="25%">
+                <Image
+                  src={`${process.env.NEXT_PUBLIC_URL}/loader3.gif`}
+                  alt={"Dan Abramov"}
+                />
+              </Box>
+            </Wrap>
+          )
         }
       />
     </>

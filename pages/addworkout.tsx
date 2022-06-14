@@ -32,6 +32,7 @@ import {
   Tooltip,
   useToast,
   Center,
+  Image,
 } from "@chakra-ui/react";
 import NavBar from "../components/NavBar";
 import { AddIcon, ArrowBackIcon } from "@chakra-ui/icons";
@@ -50,6 +51,7 @@ const addworkout = () => {
   const [tab1, settab1] = useState<boolean>(true);
   const [update, setUpdate] = useState<any>([]);
   const [schedule, setSchedule] = useState<any>({});
+  const [isloading, setIsloading] = useState(false);
   const [tags, setTags] = useState([]);
   const [ftags, setFtags] = useState(["all"]);
   const [day, setDay] = useState("");
@@ -180,6 +182,7 @@ const addworkout = () => {
 
   useEffect(() => {
     fetch_data();
+    setIsloading(true)
   }, []);
 
   const update_exc = (type: any) => {
@@ -911,6 +914,7 @@ const addworkout = () => {
   return (
     <NavBar
       children={
+        isloading ?
         <>
           <title>Fit-track(AddWorkout)</title>
           <Tabs isFitted variant="enclosed">
@@ -937,7 +941,22 @@ const addworkout = () => {
               </TabPanel>
             </TabPanels>
           </Tabs>
-        </>
+        </>: (
+            <Wrap
+              justify="center"
+              align="center"
+              background="#1E2225"
+              width="100%"
+              height="100%"
+            >
+              <Box width="25%" height="25%">
+                <Image
+                  src={`${process.env.NEXT_PUBLIC_URL}/loader3.gif`}
+                  alt={"Dan Abramov"}
+                />
+              </Box>
+            </Wrap>
+          )
       }
     />
   );

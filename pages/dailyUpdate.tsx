@@ -21,6 +21,7 @@ import {
   NumberInputStepper,
   NumberIncrementStepper,
   NumberDecrementStepper,
+  Wrap,
 } from "@chakra-ui/react";
 import { DatePicker } from "chakra-ui-date-input";
 
@@ -30,8 +31,9 @@ const DailyUpdate = () => {
 
   let tDate = new Date();
   const [change, setchange] = useState(false);
-  const [weight, setWeight] = useState('0.00');
+  const [weight, setWeight] = useState("0.00");
   const [status, setstatus] = useState(false);
+  const [isloading, setIsloading] = useState(false);
   const [wdata, setWdata] = useState({});
   const [wdate, setWdate] = useState(
     `${tDate.getDate()}/${tDate.getMonth() + 1}/${tDate.getFullYear()}`
@@ -100,9 +102,10 @@ const DailyUpdate = () => {
               setWeight(`${cur_weight}`);
               setstatus(true);
             } else {
-              setWeight('0');
+              setWeight("0");
               setstatus(false);
             }
+            setIsloading(true)
           })
           .catch((err) => console.log(err))
       : "";
@@ -151,79 +154,96 @@ const DailyUpdate = () => {
     <>
       <NavBar
         children={
-          <Flex
-            flexDirection="column"
-            width="100wh"
-            height="88vh"
-            justifyContent="center"
-            alignItems="center"
-            background="#1E2225"
-            overflowY="hidden"
-            overflowX="hidden"
-          >
-            <Box w="300px" bg="#E7EEF1" mt={10} boxShadow="dark-lg">
-              <Image
-                src="https://images-platform.99static.com/3CzoydPCp5pXI83EODhEOibNLmk=/100x100:900x900/500x500/top/smart/99designs-contests-attachments/93/93858/attachment_93858260"
-                alt="Card Image"
-                boxSize="250px"
-                width="300px"
-              ></Image>
-              <Box p={5}>
-                <Stack align="center" mb={5}>
-                  <Badge
-                    variant="solid"
-                    colorScheme={status ? "green" : "red"}
-                    rounded="full"
-                    px={2}
-                  >
-                    {status ? "Weight Entered" : "Weight Not Entered"}
-                  </Badge>
-                </Stack>
-
-                <Stack align="center">
-                  <FormControl>
-                    <FormLabel>Enter your todays weight in KGs</FormLabel>
-                    <NumberInput
-                      id="number"
-                      bg="white"
-                      defaultValue={"0"}
-                      step={0.01}
-                      onChange={(e) => setWeight(e)}
-                      value={weight}
+          isloading ? (
+            <Flex
+              flexDirection="column"
+              width="100wh"
+              height="88vh"
+              justifyContent="center"
+              alignItems="center"
+              background="#1E2225"
+              overflowY="hidden"
+              overflowX="hidden"
+            >
+              <Box w="300px" bg="#E7EEF1" mt={10} boxShadow="dark-lg">
+                <Image
+                  src="https://images-platform.99static.com/3CzoydPCp5pXI83EODhEOibNLmk=/100x100:900x900/500x500/top/smart/99designs-contests-attachments/93/93858/attachment_93858260"
+                  alt="Card Image"
+                  boxSize="250px"
+                  width="300px"
+                ></Image>
+                <Box p={5}>
+                  <Stack align="center" mb={5}>
+                    <Badge
+                      variant="solid"
+                      colorScheme={status ? "green" : "red"}
+                      rounded="full"
+                      px={2}
                     >
-                      <NumberInputField />
-                      <NumberInputStepper>
-                        <NumberIncrementStepper />
-                        <NumberDecrementStepper />
-                      </NumberInputStepper>
-                    </NumberInput>
-                  </FormControl>
-                  <FormControl>
-                    <FormLabel>
-                      Choose the date of which Weight you want to enter
-                    </FormLabel>
-                    <DatePicker
-                      placeholder="Choose Date"
-                      name="date"
-                      value={wdate}
-                      isRequired={true}
-                      onChange={(date) => setWdate(date)}
-                    />
-                  </FormControl>
-                  <Button
-                    onClick={addWeight}
-                    variant="solid"
-                    colorScheme={status ? "blue" : "green"}
-                    size="md"
-                    mt={10}
-                    width="full"
-                  >
-                    {status ? "Update Weight" : "Enter Weight"}
-                  </Button>
-                </Stack>
+                      {status ? "Weight Entered" : "Weight Not Entered"}
+                    </Badge>
+                  </Stack>
+
+                  <Stack align="center">
+                    <FormControl>
+                      <FormLabel>Enter your todays weight in KGs</FormLabel>
+                      <NumberInput
+                        id="number"
+                        bg="white"
+                        defaultValue={"0"}
+                        step={0.01}
+                        onChange={(e) => setWeight(e)}
+                        value={weight}
+                      >
+                        <NumberInputField />
+                        <NumberInputStepper>
+                          <NumberIncrementStepper />
+                          <NumberDecrementStepper />
+                        </NumberInputStepper>
+                      </NumberInput>
+                    </FormControl>
+                    <FormControl>
+                      <FormLabel>
+                        Choose the date of which Weight you want to enter
+                      </FormLabel>
+                      <DatePicker
+                        placeholder="Choose Date"
+                        name="date"
+                        value={wdate}
+                        isRequired={true}
+                        onChange={(date) => setWdate(date)}
+                      />
+                    </FormControl>
+                    <Button
+                      onClick={addWeight}
+                      variant="solid"
+                      colorScheme={status ? "blue" : "green"}
+                      size="md"
+                      mt={10}
+                      width="full"
+                    >
+                      {status ? "Update Weight" : "Enter Weight"}
+                    </Button>
+                  </Stack>
+                </Box>
               </Box>
-            </Box>
-          </Flex>
+            </Flex>
+          ) : (
+            <Wrap
+              justify="center"
+              align="center"
+              background="#1E2225"
+              width="100%"
+              height="100%"
+            >
+              <Box width="25%" height="25%">
+                <Image
+                  src={`${process.env.NEXT_PUBLIC_URL}/loader3.gif`}
+                  alt={"Dan Abramov"}
+                />
+              </Box>
+            </Wrap>
+          )
         }
       />
     </>

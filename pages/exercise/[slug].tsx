@@ -314,7 +314,20 @@ const name = ({ exercise }: any) => {
               )}
             </Wrap>
           ) : (
-            "loading.."
+            <Wrap
+              justify="center"
+              align="center"
+              background="#1E2225"
+              width="100%"
+              height="100%"
+            >
+              <Box width="25%" height="25%">
+                <Image
+                  src={`${process.env.NEXT_PUBLIC_URL}/loader3.gif`}
+                  alt={"Dan Abramov"}
+                />
+              </Box>
+            </Wrap>
           )
         }
       />
