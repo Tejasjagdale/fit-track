@@ -25,8 +25,6 @@ import {
   HStack,
   Tag,
   TagLabel,
-  Select,
-  FormLabel,
   FormControl,
   InputRightElement,
   InputGroup,
@@ -42,6 +40,7 @@ import { AiFillTag, AiOutlineBarcode } from "react-icons/ai";
 import Cookies from "universal-cookie";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
+import Router from "next/router";
 
 const addworkout = () => {
   const cookies = new Cookies();
@@ -62,6 +61,7 @@ const addworkout = () => {
     weight: 0,
   });
   const toast = useToast();
+
 
   const delete_pcard = (pcard_index: any) => {
     playlist.splice(pcard_index, 1);

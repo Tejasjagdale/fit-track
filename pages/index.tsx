@@ -160,6 +160,7 @@ const Index = () => {
                       </Button>
                     </InputRightElement>
                   </InputGroup>
+                  <FormHelperText>the password should be of min length 8.</FormHelperText>
                   <FormHelperText textAlign="right">
                     <Link>forgot password?</Link>
                   </FormHelperText>

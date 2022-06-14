@@ -16,6 +16,11 @@ import {
   FormLabel,
   Input,
   useToast,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  NumberIncrementStepper,
+  NumberDecrementStepper,
 } from "@chakra-ui/react";
 import { DatePicker } from "chakra-ui-date-input";
 
@@ -25,7 +30,7 @@ const DailyUpdate = () => {
 
   let tDate = new Date();
   const [change, setchange] = useState(false);
-  const [weight, setWeight] = useState(0);
+  const [weight, setWeight] = useState('0.00');
   const [status, setstatus] = useState(false);
   const [wdata, setWdata] = useState({});
   const [wdate, setWdate] = useState(
@@ -74,7 +79,7 @@ const DailyUpdate = () => {
           .then((response) => response.json())
           .then((data) => {
             let weights = data.weight_data.data_track;
-            console.log(weights);
+
             if (!weights[year]) {
               data.weight_data.data_track[year] = {};
               data.weight_data.data_track[year][month] = new Array(
@@ -92,10 +97,10 @@ const DailyUpdate = () => {
             let cur_weight = weights[year][month][day - 1];
             setWdata(data.weight_data);
             if (cur_weight) {
-              setWeight(cur_weight);
+              setWeight(`${cur_weight}`);
               setstatus(true);
             } else {
-              setWeight(0);
+              setWeight('0');
               setstatus(false);
             }
           })
@@ -154,6 +159,7 @@ const DailyUpdate = () => {
             alignItems="center"
             background="#1E2225"
             overflowY="hidden"
+            overflowX="hidden"
           >
             <Box w="300px" bg="#E7EEF1" mt={10} boxShadow="dark-lg">
               <Image
@@ -177,16 +183,20 @@ const DailyUpdate = () => {
                 <Stack align="center">
                   <FormControl>
                     <FormLabel>Enter your todays weight in KGs</FormLabel>
-                    <Input
+                    <NumberInput
                       id="number"
-                      onChange={(e) => {
-                        setWeight(parseInt(e.target.value));
-                      }}
-                      value={weight}
-                      required
                       bg="white"
-                      type="number"
-                    />
+                      defaultValue={"0"}
+                      step={0.01}
+                      onChange={(e) => setWeight(e)}
+                      value={weight}
+                    >
+                      <NumberInputField />
+                      <NumberInputStepper>
+                        <NumberIncrementStepper />
+                        <NumberDecrementStepper />
+                      </NumberInputStepper>
+                    </NumberInput>
                   </FormControl>
                   <FormControl>
                     <FormLabel>
