@@ -15,6 +15,7 @@ import {
   InputRightElement,
   useToast,
   FormHelperText,
+  Spinner,
 } from "@chakra-ui/react";
 import { FaUserAlt, FaLock } from "react-icons/fa";
 import Header from "../components/Header";
@@ -33,7 +34,7 @@ const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setemail] = useState("");
   const [name, setname] = useState("");
-  const [age, setage] = useState("");
+  const [isloading, setIsloading] = useState(false);
   const [height, setheight] = useState("");
   const [pass, setpass] = useState("");
   const [DOB, setDOB] = useState("");
@@ -43,6 +44,7 @@ const Signup = () => {
 
   const SignUp = (event: any) => {
     event.preventDefault();
+    setIsloading(false);
     let Height: number = parseInt(height);
     let bmi_range = [
       19 * (Height / 100) * (Height / 100),
@@ -60,7 +62,6 @@ const Signup = () => {
         email: email,
         password: pass,
         username: name,
-        age: age,
         height: height,
         dob: fdob,
         weight_data: {
@@ -83,35 +84,48 @@ const Signup = () => {
     fetch(
       `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/auth/local/register`,
       requestOptions
-    ).then(async (res: any) => {
-      if (res.status === 200) {
+    )
+      .then(async (res: any) => {
+        if (res.status === 200) {
+          toast({
+            description: "Registration successfull",
+            status: "success",
+            duration: 3000,
+            isClosable: true,
+            position: "top",
+          });
+          let data = await res.json();
+          cookies.set("id", email, { path: "/" });
+          cookies.set("jwt", data.jwt, { path: "/" });
+          cookies.set("userid", data.user.id, { path: "/" });
+          setIsloading(true);
+          Router.push("/dailyUpdate");
+        } else {
+          setIsloading(true);
+          toast({
+            description: "Registration Failed",
+            status: "error",
+            duration: 5000,
+            isClosable: true,
+            position: "top",
+          });
+        }
+      })
+      .catch(() => {
+        setIsloading(true);
         toast({
-          description: "Registration successfull",
-          status: "success",
-          duration: 3000,
-          isClosable: true,
-          position: "top",
-        });
-        let data = await res.json();
-        cookies.set("id", email, { path: "/" });
-        cookies.set("jwt", data.jwt, { path: "/" });
-        cookies.set("userid", data.user.id, { path: "/" });
-        console.log(cookies.get("id"));
-        Router.push("/dailyUpdate");
-      } else {
-        toast({
-          description: "Registration Failed",
+          description: "Server Error",
           status: "error",
           duration: 5000,
           isClosable: true,
           position: "top",
         });
-      }
-    });
+      });
   };
 
   return (
     <>
+    <title>Fit-Track(Create Account)</title>
       <Header />
       <Flex
         flexDirection="column"
@@ -173,7 +187,9 @@ const Signup = () => {
                       </Button>
                     </InputRightElement>
                   </InputGroup>
-                  <FormHelperText>the password should be of min length 8.</FormHelperText>
+                  <FormHelperText>
+                    the password should be of min length 8.
+                  </FormHelperText>
                 </FormControl>
                 <FormControl>
                   <DatePicker
@@ -226,7 +242,7 @@ const Signup = () => {
                   width="full"
                   onClick={SignUp}
                 >
-                  SignUp
+                  {isloading ? <Spinner color="green.500" /> : ""}SignUp
                 </Button>
               </Stack>
             </form>

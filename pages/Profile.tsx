@@ -55,7 +55,7 @@ const Profile = () => {
 
   return (
     <>
-    {console.log(userData)}
+      <title>Fit-Track(Profile)</title>
       <NavBar
         children={
           <Flex

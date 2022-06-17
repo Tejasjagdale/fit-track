@@ -221,7 +221,6 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
       )
         .then((response) => response.json())
         .then((data) => {
-          console.log("");
         })
         .catch((err) => console.log(err));
     } else {

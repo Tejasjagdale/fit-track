@@ -11,6 +11,7 @@ const food = () => {
       // eslint-disable-next-line react/no-children-prop
       children={
         <>
+          <title>Fit-Track(Food)</title>
           <Questions />
         </>
       }

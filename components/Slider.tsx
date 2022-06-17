@@ -216,10 +216,6 @@ const Questions = () => {
     setGHW(JSON.parse(JSON.stringify(ghw)));
   };
 
-  useEffect(() => {
-    console.log(myCalorieNeeds);
-  }, [myCalorieNeeds]);
-
   const Page3 = (active: string) => {
     setActivity(active);
   };

@@ -38,6 +38,7 @@ const name = ({ exercise }: any) => {
         children={
           exercise ? (
             <Wrap width="100%" p={15} bg="#1E2225" color="white" spacingY="10">
+            <title>{exercise.exc_name}</title>
               <WrapItem display={{ md: "block" }}>
                 <Text
                   fontWeight={900}

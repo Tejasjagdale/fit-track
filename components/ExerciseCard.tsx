@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import {
   Box,
   Center,
@@ -7,6 +8,7 @@ import {
   TagLabel,
   Wrap,
   Button,
+  useClipboard,
 } from "@chakra-ui/react";
 import ImageSlider from "./ImageSlider";
 import { BsStar, BsStarFill, BsStarHalf } from "react-icons/bs";
@@ -46,6 +48,8 @@ function Rating({ rating, numReviews }: RatingProps) {
 }
 
 export default function blogPostWithImage({ data }: any) {
+  const { hasCopied, onCopy } = useClipboard(data.slug);
+
   return (
     <Center>
       <Box
@@ -192,6 +196,18 @@ export default function blogPostWithImage({ data }: any) {
                 Read More...
               </Button>
             </Link>
+            <Button
+              bg={hasCopied ? "green.700" : "green.500"}
+              color="white"
+              _hover={{
+                bg: `${hasCopied ? "green.700" : "green.500"}`,
+              }}
+              onClick={onCopy}
+              ml={2}
+              size="sm"
+            >
+              {hasCopied ? "✔️ Copied" : "Copy code"}
+            </Button>
           </Wrap>
         </Stack>
       </Box>

@@ -107,6 +107,8 @@ const List = ({ totalPage, exercises }: any) => {
 
   return (
     <>
+    <title>Fit-Track(exercises)</title>
+
       <NavBar
         // eslint-disable-next-line react/no-children-prop
         children={

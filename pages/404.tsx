@@ -4,6 +4,7 @@ import Link from "next/link";
 const errorpage = () => {
   return (
     <section className="page_404">
+    <title>404 error</title>
       <link
         href="http://fonts.cdnfonts.com/css/signature-of-the-ancient"
         rel="stylesheet"

@@ -329,6 +329,7 @@ const BmiGraph = () => {
 
   return (
     <>
+    <title>Fit-Track(BMIgraph)</title>
       <NavBar
         children={
           isloading ? (

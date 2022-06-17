@@ -15,6 +15,7 @@ import {
   FormHelperText,
   InputRightElement,
   useToast,
+  Spinner,
 } from "@chakra-ui/react";
 import { FaUserAlt, FaLock } from "react-icons/fa";
 import Header from "../components/Header";
@@ -27,6 +28,7 @@ const CFaLock = chakra(FaLock);
 const Index = () => {
   const toast = useToast();
   const [showPassword, setShowPassword] = useState(false);
+  const [isloading,setIsloading] =  useState(false)
   const [email, setemail] = useState("");
   const [pass, setpass] = useState("");
   const cookies = new Cookies();
@@ -48,6 +50,7 @@ const Index = () => {
 
   const AuthUser = (event: any) => {
     event.preventDefault();
+    setIsloading(false)
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -72,6 +75,7 @@ const Index = () => {
           cookies.set("jwt", data.jwt, { path: "/" });
           cookies.set("userid", data.user.id, { path: "/" });
           Router.push("/bmiGraph");
+          setIsloading(true)
         } else {
           toast({
             description: "User Details Were not Found",
@@ -80,10 +84,11 @@ const Index = () => {
             isClosable: true,
             position: "top",
           });
+          setIsloading(true)
         }
       })
       .catch((err) => {
-        console.log(err);
+        setIsloading(true)
         toast({
           description: "Something went wrong",
           status: "error",
@@ -96,6 +101,7 @@ const Index = () => {
 
   return (
     <>
+    <title>Fit-Track</title>
       <Header />
       <Flex
         flexDirection="column"
@@ -173,7 +179,7 @@ const Index = () => {
                   width="full"
                   onClick={AuthUser}
                 >
-                  Login
+                 {isloading?<Spinner color='green.500' ml={5}/>:""} Login
                 </Button>
               </Stack>
             </form>

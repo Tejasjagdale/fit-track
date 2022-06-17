@@ -1,3 +1,4 @@
+/* eslint-disable react/no-children-prop */
 /* eslint-disable react/jsx-no-undef */
 import {
   Box,
@@ -165,8 +166,8 @@ const List = () => {
 
   return (
     <>
+      <title>Fit-Track(exercises)</title>
       <NavBar
-        // eslint-disable-next-line react/no-children-prop
         children={
           isloading ? (
             <Wrap

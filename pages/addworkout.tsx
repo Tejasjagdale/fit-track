@@ -41,7 +41,6 @@ import { AiFillTag, AiOutlineBarcode } from "react-icons/ai";
 import Cookies from "universal-cookie";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
-import Router from "next/router";
 
 const addworkout = () => {
   const cookies = new Cookies();
@@ -53,6 +52,7 @@ const addworkout = () => {
   const [schedule, setSchedule] = useState<any>({});
   const [isloading, setIsloading] = useState(false);
   const [tags, setTags] = useState([]);
+  const [fstags, setFstags] = useState<any>([]);
   const [ftags, setFtags] = useState(["all"]);
   const [day, setDay] = useState("");
   const [data, setData] = useState<any>({
@@ -63,7 +63,6 @@ const addworkout = () => {
     weight: 0,
   });
   const toast = useToast();
-
 
   const delete_pcard = (pcard_index: any) => {
     playlist.splice(pcard_index, 1);
@@ -150,8 +149,6 @@ const addworkout = () => {
     settab1(false);
   };
 
-  const start_exc = () => {};
-
   const fetch_data = () => {
     fetch(
       `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/users/${cookies.get(
@@ -168,21 +165,35 @@ const addworkout = () => {
       .then((response) => response.json())
       .then((data) => {
         let stags: any = new Set(["all"]);
+        let fstag: any = new Set();
+        let scoltag: any = {};
         setSchedule(data.schedule);
         setPlaylist(data.playlist);
         setFplaylist(data.playlist);
         setUpdate([]);
-        data.playlist ? data.playlist.map((exc: any) => {
-          stags.add(exc.tag);
-        }):""
+        data.playlist
+          ? data.playlist.map((exc: any) => {
+              stags.add(exc.tag);
+            })
+          : "";
+
+        Object.keys(data.schedule).forEach(function (key) {
+          fstag = new Set();
+          data.schedule[key].map((exc: any) => {
+            fstag.add(exc.Main_Muscle_Worked);
+          });
+          scoltag[key] = Array.from(fstag);
+        });
+
         stags = Array.from(stags);
         setTags(stags);
+        setFstags(scoltag);
       });
   };
 
   useEffect(() => {
     fetch_data();
-    setIsloading(true)
+    setIsloading(true);
   }, []);
 
   const update_exc = (type: any) => {
@@ -311,8 +322,7 @@ const addworkout = () => {
             }
           } else {
             toast({
-              description:
-                "Your Exercise code didn't matched in database found!😔",
+              description: "Your Exercise code didn't matched in database!😔",
               status: "error",
               duration: 3000,
               isClosable: true,
@@ -373,19 +383,26 @@ const addworkout = () => {
                         Muscel Targeted:
                       </Text>
                       <HStack width="100%" mb={3} spacing={4}>
-                        <Tag
-                          size="md"
-                          borderRadius="full"
-                          variant="solid"
-                          bg="white"
-                          color="black"
-                        >
-                          <TagLabel>Forearms</TagLabel>
-                        </Tag>
+                        {fstags[data[1].toLowerCase()]
+                          ? fstags[data[1].toLowerCase()].map(
+                              (fstag: any, i: any) => (
+                                <Tag
+                                  size="md"
+                                  borderRadius="full"
+                                  variant="solid"
+                                  bg="white"
+                                  color="black"
+                                  key={"fstag" + i}
+                                >
+                                  <TagLabel>{fstag}</TagLabel>
+                                </Tag>
+                              )
+                            )
+                          : ""}
                       </HStack>
 
                       <Wrap maxW="100%">
-                        <Heading width="100%" fontSize={20}>
+                        <Heading width="100%" textAlign="start" fontSize={20}>
                           Exercises
                         </Heading>
 
@@ -477,14 +494,14 @@ const addworkout = () => {
                                           </Wrap>
 
                                           <HStack>
-                                            <Button
-                                              colorScheme="green"
-                                              onClick={(e) => {
-                                                start_exc;
-                                              }}
+                                            <Link
+                                              href={`${process.env.NEXT_PUBLIC_URL}/exercise/${exc.code}`}
+                                              passHref
                                             >
-                                              Start
-                                            </Button>
+                                              <Button colorScheme="green">
+                                                Start
+                                              </Button>
+                                            </Link>
                                             <Button
                                               colorScheme="teal"
                                               onClick={(e) => {
@@ -586,107 +603,107 @@ const addworkout = () => {
             ))}
           </HStack>
 
-          {fplaylist ?fplaylist.map((exc: any, index: number) => (
-            <>
-              <Wrap
-                display={{ md: "flex", sm: "block" }}
-                w="300px"
-                h="275px"
-                bg="#191A1C"
-                color="white"
-                boxShadow="dark-lg"
-                p={8}
-              >
-                <Stack w="100%">
-                  <Heading width="100%" fontSize={20}>
-                    {exc.exc_name}
-                  </Heading>
-                  <Wrap>
-                    <Text mr={1}>Muscle Targeted :</Text>
-                    <Tag
-                      fontSize={"14"}
-                      borderRadius="full"
-                      variant="solid"
-                      bg="#9933FF"
-                    >
-                      <TagLabel>
+          {fplaylist
+            ? fplaylist.map((exc: any, index: number) => (
+                <>
+                  <Wrap
+                    display={{ md: "flex", sm: "block" }}
+                    w="300px"
+                    h="275px"
+                    bg="#191A1C"
+                    color="white"
+                    boxShadow="dark-lg"
+                    p={8}
+                  >
+                    <Stack w="100%">
+                      <Heading width="100%" textAlign="start" fontSize={20}>
+                        {exc.exc_name}
+                      </Heading>
+                      <Wrap>
+                        <Text mr={1}>Muscle Targeted :</Text>
+                        <Tag
+                          fontSize={"14"}
+                          borderRadius="full"
+                          variant="solid"
+                          bg="#9933FF"
+                        >
+                          <TagLabel>
+                            <Link
+                              href={`${process.env.NEXT_PUBLIC_URL}/exercise/muscle/${exc.Main_Muscle_Worked}`}
+                              passHref
+                            >
+                              {exc.Main_Muscle_Worked}
+                            </Link>
+                          </TagLabel>
+                        </Tag>
+                      </Wrap>
+
+                      <Wrap>
+                        <Text mr={1}>Equipment Type :</Text>
+                        <Tag
+                          fontSize={"14"}
+                          borderRadius="full"
+                          variant="solid"
+                          bg="blue.500"
+                        >
+                          <TagLabel>
+                            <Link
+                              href={`${process.env.NEXT_PUBLIC_URL}/exercise/equipment/${exc.Equipment}`}
+                              passHref
+                            >
+                              {exc.Equipment}
+                            </Link>
+                          </TagLabel>
+                        </Tag>
+                      </Wrap>
+
+                      <Wrap w="100%" m={3}>
+                        <WrapItem flex="1">
+                          <Center p={2}>
+                            <Text>{exc.weight} kg</Text>
+                          </Center>
+                        </WrapItem>
+                        <WrapItem flex="1">
+                          <Center p={2}>
+                            <Text>{exc.reps} reps</Text>
+                          </Center>
+                        </WrapItem>
+                        <WrapItem flex="1">
+                          <Center p={2}>
+                            <Text>{exc.sets} sets</Text>
+                          </Center>
+                        </WrapItem>
+                      </Wrap>
+
+                      <HStack>
                         <Link
-                          href={`${process.env.NEXT_PUBLIC_URL}/exercise/muscle/${exc.Main_Muscle_Worked}`}
+                          href={`${process.env.NEXT_PUBLIC_URL}/exercise/${exc.code}`}
                           passHref
                         >
-                          {exc.Main_Muscle_Worked}
+                          <Button colorScheme="green">Start</Button>
                         </Link>
-                      </TagLabel>
-                    </Tag>
-                  </Wrap>
-
-                  <Wrap>
-                    <Text mr={1}>Equipment Type :</Text>
-                    <Tag
-                      fontSize={"14"}
-                      borderRadius="full"
-                      variant="solid"
-                      bg="blue.500"
-                    >
-                      <TagLabel>
-                        <Link
-                          href={`${process.env.NEXT_PUBLIC_URL}/exercise/equipment/${exc.Equipment}`}
-                          passHref
+                        <Button
+                          colorScheme="teal"
+                          onClick={(e) => {
+                            edit_pcard(index);
+                          }}
                         >
-                          {exc.Equipment}
-                        </Link>
-                      </TagLabel>
-                    </Tag>
+                          Edit
+                        </Button>
+                        <Button
+                          colorScheme="red"
+                          onClick={(e) => {
+                            delete_pcard(index);
+                          }}
+                        >
+                          Delete
+                        </Button>
+                      </HStack>
+                    </Stack>
                   </Wrap>
-
-                  <Wrap w="100%" m={3}>
-                    <WrapItem flex="1">
-                      <Center p={2}>
-                        <Text>{exc.weight} kg</Text>
-                      </Center>
-                    </WrapItem>
-                    <WrapItem flex="1">
-                      <Center p={2}>
-                        <Text>{exc.reps} reps</Text>
-                      </Center>
-                    </WrapItem>
-                    <WrapItem flex="1">
-                      <Center p={2}>
-                        <Text>{exc.sets} sets</Text>
-                      </Center>
-                    </WrapItem>
-                  </Wrap>
-
-                  <HStack>
-                    <Button
-                      colorScheme="green"
-                      onClick={(e) => {
-                        start_exc;
-                      }}
-                    >
-                      Start
-                    </Button>
-                    <Button
-                      colorScheme="teal"
-                      onClick={(e) => {
-                        edit_pcard(index);
-                      }}
-                    >
-                      Edit
-                    </Button>
-                    <Button
-                      colorScheme="red"
-                      onClick={(e) => {
-                        delete_pcard(index);
-                      }}
-                    >
-                      Delete
-                    </Button>
-                  </HStack>
-                </Stack>
-              </Wrap>
-            </>
-          )):""}
+                </>
+              ))
+            : ""}
 
           <Flex
             w="300px"
@@ -774,6 +791,7 @@ const addworkout = () => {
     return (
       <>
         <Header type={type} />
+        <title>Fit-Track(addworkout)</title>
         <Flex
           align="center"
           justify="space-between"
@@ -914,57 +932,55 @@ const addworkout = () => {
   return (
     <NavBar
       children={
-        isloading ?
-        <>
-          <title>Fit-track(AddWorkout)</title>
-          <Tabs isFitted variant="enclosed">
-            <TabList mb="1em">
-              <Tab
-                outline="none"
-                color="white"
-                _selected={{ color: "white", bg: "teal" }}
-              >
-                Schedule
-              </Tab>
-              <Tab
-                outline="none"
-                color="white"
-                _selected={{ color: "white", bg: "teal" }}
-              >
-                Playlits
-              </Tab>
-            </TabList>
-            <TabPanels>
-              <TabPanel p={0}>{tab1 ? Schedule() : Body("schedule")}</TabPanel>
-              <TabPanel p={0}>
-                {tab2 ? exc_playlist() : Body("playlist")}
-              </TabPanel>
-            </TabPanels>
-          </Tabs>
-        </>: (
-            <Wrap
-              justify="center"
-              align="center"
-              background="#1E2225"
-              width="100%"
-              height="100%"
-            >
-              <Box width="25%" height="25%">
-                <Image
-                  src={`${process.env.NEXT_PUBLIC_URL}/loader3.gif`}
-                  alt={"Dan Abramov"}
-                />
-              </Box>
-            </Wrap>
-          )
+        isloading ? (
+          <>
+            <title>Fit-track(AddWorkout)</title>
+            <Tabs isFitted variant="enclosed">
+              <TabList mb="1em">
+                <Tab
+                  outline="none"
+                  color="white"
+                  _selected={{ color: "white", bg: "teal" }}
+                >
+                  Schedule
+                </Tab>
+                <Tab
+                  outline="none"
+                  color="white"
+                  _selected={{ color: "white", bg: "teal" }}
+                >
+                  Playlits
+                </Tab>
+              </TabList>
+              <TabPanels>
+                <TabPanel p={0}>
+                  {tab1 ? Schedule() : Body("schedule")}
+                </TabPanel>
+                <TabPanel p={0}>
+                  {tab2 ? exc_playlist() : Body("playlist")}
+                </TabPanel>
+              </TabPanels>
+            </Tabs>
+          </>
+        ) : (
+          <Wrap
+            justify="center"
+            align="center"
+            background="#1E2225"
+            width="100%"
+            height="100%"
+          >
+            <Box width="25%" height="25%">
+              <Image
+                src={`${process.env.NEXT_PUBLIC_URL}/loader3.gif`}
+                alt={"Dan Abramov"}
+              />
+            </Box>
+          </Wrap>
+        )
       }
     />
   );
 };
 
 export default addworkout;
-function key(
-  key: any
-): (value: string, index: number, array: string[]) => void {
-  throw new Error("Function not implemented.");
-}

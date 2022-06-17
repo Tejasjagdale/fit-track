@@ -134,8 +134,6 @@ const List = ({ totalPage, exercises }: any) => {
       }
     );
 
-    console.log(temp_query, query, filters);
-
     fetch(
       `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/exercises?${query}&&pagination[page]=${curpage}&pagination[pageSize]=10`
     )
@@ -187,6 +185,7 @@ const List = ({ totalPage, exercises }: any) => {
 
   return (
     <>
+    <title>Fit-Track(exercises)</title>
       <NavBar
         children={
           isloading ? (
