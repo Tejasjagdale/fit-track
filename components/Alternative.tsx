@@ -49,12 +49,7 @@ function Rating({ rating, numReviews }: RatingProps) {
   );
 }
 
-export default function SocialProfileWithImageHorizontal() {
-  let Slides: string[] = [
-    "https://www.bodybuilding.com/exercises/exerciseImages/sequences/742/Male/l/742_1.jpg",
-    "https://www.bodybuilding.com/exercises/exerciseImages/sequences/742/Male/l/742_2.jpg",
-  ];
-
+export default function SocialProfileWithImageHorizontal({ data }: any) {
   return (
     <Center w={{ md: "600px", sm: "300px" }}>
       <Stack
@@ -67,7 +62,7 @@ export default function SocialProfileWithImageHorizontal() {
         boxShadow={"2xl"}
       >
         <Center w={{ md: "50%", sm: "100%" }} height="fit-content">
-          <ImageSlider slides={Slides} />
+          <ImageSlider slides={data.ext_img} />
         </Center>
 
         <Center w={{ md: "50%", sm: "100%" }} height="fit-content">
@@ -79,14 +74,14 @@ export default function SocialProfileWithImageHorizontal() {
               fontSize={"17"}
               fontFamily={"body"}
             >
-              Rickshaw Carry
+              {data.exc_name}
             </Text>
             <Wrap>
               <Text mr={1}>Muscle Targeted :</Text>
               <Tag size={"md"} borderRadius="full" variant="solid" bg="#9933FF">
                 <TagLabel>
                   <Link href={"#"} passHref>
-                    Forearms
+                    {data.Main_Muscle_Worked}
                   </Link>
                 </TagLabel>
               </Tag>
@@ -97,7 +92,7 @@ export default function SocialProfileWithImageHorizontal() {
               <Tag size={"md"} borderRadius="full" variant="solid" bg="#202124">
                 <TagLabel>
                   <Link href={"#"} passHref>
-                    Other
+                    {data.Equipment}
                   </Link>
                 </TagLabel>
               </Tag>
@@ -106,15 +101,20 @@ export default function SocialProfileWithImageHorizontal() {
             <Wrap>
               <Rating rating={4} numReviews={94} />
             </Wrap>
-            <Wrap>
-              <Button
-                bgColor="#2CCCA8"
-                color="white"
-                _hover={{ bg: "#2CCCA8" }}
-                size="sm"
+            <Wrap pb={5}>
+              <Link
+                href={`${process.env.NEXT_PUBLIC_URL}/exercise/${data.slug}`}
+                passHref
               >
-                View More...
-              </Button>
+                <Button
+                  bgColor="#2CCCA8"
+                  color="white"
+                  _hover={{ bg: "#2CCCA8" }}
+                  size="sm"
+                >
+                  View More...
+                </Button>
+              </Link>
             </Wrap>
           </Stack>
         </Center>

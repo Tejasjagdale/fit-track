@@ -1,3 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable react/no-children-prop */
+/* eslint-disable react-hooks/rules-of-hooks */
 import {
   Box,
   Button,
@@ -21,24 +24,40 @@ import React, { useEffect, useState } from "react";
 import { MdCheckCircle } from "react-icons/md";
 import NavBar from "../../components/NavBar";
 import ImageSlider from "../../components/ImageSlider";
-import SocialProfileWithImageHorizontal from "../../components/Card2";
-import Router, { useRouter } from "next/router";
+import SocialProfileWithImageHorizontal from "../../components/Alternative";
+import { useRouter } from "next/router";
 
 const name = ({ exercise }: any) => {
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   const router = useRouter();
   const Slug: any = router.query.slug;
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   const { hasCopied, onCopy } = useClipboard(Slug);
+  const [related, setRelated] = useState<any>([]);
+
+  useEffect(() => {
+    let temp_rel = new Set();
+    exercise.related_excercises.map(async (exc: any, index: any) => {
+      let rel_exc: any = await fetch(
+        `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/exercises?filters[exc_name]=${exc.name}`
+      );
+      let rel_output: any = await rel_exc.json();
+      temp_rel.add(rel_output.data[0].attributes);
+      if (index === exercise.related_excercises.length - 1) {
+        setRelated(JSON.parse(JSON.stringify(Array.from(temp_rel))));
+      }
+    });
+  }, [exercise]);
+
+  useEffect(() => {
+    console.log(related);
+  }, [related]);
 
   return (
     <>
       <NavBar
-        // eslint-disable-next-line react/no-children-prop
         children={
           exercise ? (
             <Wrap width="100%" p={15} bg="#1E2225" color="white" spacingY="10">
-            <title>{exercise.exc_name}</title>
+              <title>{exercise.exc_name}</title>
               <WrapItem display={{ md: "block" }}>
                 <Text
                   fontWeight={900}
@@ -281,7 +300,7 @@ const name = ({ exercise }: any) => {
                 ""
               )}
 
-              {exercise.related_excercises ? (
+              {exercise.related_excercises.length !== 0 ? (
                 <WrapItem width="100%" display={{ md: "block" }}>
                   <Text
                     fontWeight={900}
@@ -293,21 +312,13 @@ const name = ({ exercise }: any) => {
                   </Text>
 
                   <Wrap width="100%">
-                    <WrapItem width="100%">
-                      <Center width={{ md: "auto", sm: "100%" }}>
-                        <SocialProfileWithImageHorizontal />
-                      </Center>
-                    </WrapItem>
-                    <WrapItem width="100%">
-                      <Center width={{ md: "auto", sm: "100%" }}>
-                        <SocialProfileWithImageHorizontal />
-                      </Center>
-                    </WrapItem>
-                    <WrapItem width="100%">
-                      <Center width={{ md: "auto", sm: "100%" }}>
-                        <SocialProfileWithImageHorizontal />
-                      </Center>
-                    </WrapItem>
+                    {related.map((exc: any, index: any) => (
+                      <WrapItem key={"relexc" + index} width="100%">
+                        <Center width={{ md: "auto", sm: "100%" }}>
+                          <SocialProfileWithImageHorizontal data={exc} />
+                        </Center>
+                      </WrapItem>
+                    ))}
                   </Wrap>
                 </WrapItem>
               ) : (
@@ -345,6 +356,6 @@ export async function getServerSideProps(context: { query: { slug: any } }) {
   let output: any = await req.json();
 
   return {
-    props: { exercise: output.data[0].attributes }, // will be passed to the page component as props
+    props: { exercise: output.data[0].attributes },
   };
 }

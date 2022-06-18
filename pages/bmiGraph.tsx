@@ -178,7 +178,7 @@ const BmiGraph = () => {
 
   const annotation1 = {
     type: "box",
-    backgroundColor: "rgba(38, 246, 0, 0.4)",
+    backgroundColor: "rgba(38, 246, 0, 0.2)",
     borderColor: "rgb(101, 33, 171)",
     borderWidth: 1,
     click: function () {
